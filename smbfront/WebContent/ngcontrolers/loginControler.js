@@ -4,12 +4,13 @@ app.controller("loginController", [
 		'$location',
 		'$rootScope',
 		'$cookieStore',
-		function($scope, $http, $location, $rootScope, $cookieStore) {
+		'$route',
+		function($scope, $http, $location, $rootScope, $cookieStore, $route) {
 			$scope.loginSubmit = function() {
 
 				var dataObj = {
-					username : $scope.username,
-					password : $scope.password,
+					username : $scope.login_username,
+					password : $scope.login_password
 				};
 
 				$http.post('/smbcustsrv/rest/checkLoginData', dataObj).success(
@@ -25,4 +26,15 @@ app.controller("loginController", [
 					alert('Blad serwera.');
 				});
 			};
+
+			$scope.wyloguj = function() {
+				$cookieStore.remove("loggedIn");
+				$cookieStore.remove("loggedName");
+				$route.reload();
+			};
+			
+			$scope.goToRegister = function() {
+				$location.path('/rejestracja');
+			};
+			
 		} ]);

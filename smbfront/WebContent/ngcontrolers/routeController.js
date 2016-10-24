@@ -6,8 +6,6 @@ app.config(function($routeProvider) {
 			"check" : function($location, $cookieStore) {
 				if (!$cookieStore.get("loggedIn")) {
 					$location.path('/logowanie');
-				}else{
-					alert($cookieStore.get("loggedName"));
 				}
 			}
 		},
@@ -21,13 +19,15 @@ app.config(function($routeProvider) {
 				}
 			},
 			templateUrl : "loginPage.html"
+	}).when('/rejestracja', {
+		templateUrl : "rejestracja.html"
 	}).otherwise({
 		resolve : {
 			"check" : function($location, $cookieStore) {
 				if ($cookieStore.get("loggedIn")) {
 					$location.path('/');
 				}else{
-					location.path('/logowanie');
+					$location.path('/logowanie');
 				}
 			}
 		},

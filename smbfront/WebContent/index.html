@@ -8,12 +8,39 @@
 <script type="text/javascript" src="lib/angularjs/angular-cookies.min.js"></script>
 <script type="text/javascript" src="ngcontrolers/routeController.js"></script>
 <script type="text/javascript" src="ngcontrolers/loginControler.js"></script>
+<script type="text/javascript" src="ngcontrolers/registerController.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
 
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
 <link href="lib/bootstrap/css/simple-sidebar.css" rel="stylesheet"></link>
 </head>
 <body ng-app="smb">
-	<div ng-view></div>
+	<div id="wrapper">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand"><a href="#/"> Start Bootstrap </a></li>
+				<li><a href="#/">Dashboard</a></li>
+				<li><a href="#/">Shortcuts</a></li>
+				<li><a href="#/">Overview</a></li>
+				<li><a href="#/">Events</a></li>
+				<li><a href="#/">About</a></li>
+				<li><a href="#/">Services</a></li>
+				<li><a href="#/">Contact</a></li>
+			</ul>
+		</div>
+		<div id="page-content-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="col-sm-12 controls">
+							<div ng-view></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 </body>
 </html>
