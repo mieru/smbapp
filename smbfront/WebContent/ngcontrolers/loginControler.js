@@ -13,13 +13,15 @@ app.controller("loginController", [
 					password : $scope.login_password
 				};
 
-				$http.post('/smbcustsrv/rest/checkLoginData', dataObj).success(
+				$http.post('/smbcustsrv/rest/query/login/checkLoginData', dataObj).success(
 						function(data) {
-							if (data.logged) {
+							if (data.login_result == true) {
 								$cookieStore.put("loggedIn", true);
 								$cookieStore.put("loggedName", dataObj.username);
 								$location.path('/welecomeUser');
-							} else {
+							}else if (data.login_result == "not_active") {
+								alert('Konto nie zostało aktywowane.');
+							}else{
 								alert('Podano nieprawidłowy login lub hasło.');
 							}
 						}).error(function(data) {
