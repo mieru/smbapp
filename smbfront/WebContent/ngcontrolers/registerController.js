@@ -7,22 +7,26 @@ app.controller("registerController", [
 		'$route',
 		function($scope, $http, $location, $rootScope, $cookieStore, $route) {
 			$scope.registerSubmit = function() {
-
 				var dataObj = {
 					username : $scope.register_username,
 					password : $scope.register_password,
-					email : $scope.register_email
+					email : $scope.register_email,
+					activationUri : $location.absUrl()
 				};
-
-				$http.post('/smbcustsrv/rest/registerUser', dataObj).success(
+			alert("Rejestacja...")
+				$http.post('/smbcustsrv/rest/command/register/registerUser', dataObj).success(
 						function(data) {
-							alert("success");
+							alert("Na twój email został wysłany link aktywacyjny.");
 						}).error(function(data) {
 					alert('Blad serwera.');
 				});
 			};
 			
+			
+			
 			$scope.goToLoggin = function() {
 				$location.path('/logowanie');
 			};
 		} ]);
+
+

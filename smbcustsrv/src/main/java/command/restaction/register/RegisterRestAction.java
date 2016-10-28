@@ -1,17 +1,12 @@
 package command.restaction.register;
 
 import java.util.Base64;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +25,7 @@ import mailer.MailSender;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 
 @RequestScoped
-@Path("/")
+@Path("/command/register")
 public class RegisterRestAction {
 
 	 @Context
@@ -55,7 +51,7 @@ public class RegisterRestAction {
 		uzytkownik = uzytkownikEjbCommandController.insert(uzytkownik);
 		
 		byte[] encodedBytes = Base64.getEncoder().encode(uzytkownik.getIdUser().toString().getBytes());
-		String activationLink = uri.getBaseUri().toString() + "activeAccount?code=" + new String(encodedBytes);
+		String activationLink = json.activationUri.substring(0, json.activationUri.indexOf("rejestracja")) + "activationAccount?code=" + new String(encodedBytes);
 
 		MailSender mailSender = new MailSender();
 		String subject = "Link aktywacyjny";
@@ -65,12 +61,12 @@ public class RegisterRestAction {
 		return jsonObject.toString();
 	}
 	
-	@GET
+	@POST
 	@Path("/activeAccount")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String activeAccount(@QueryParam("code") String encodeId) throws JSONException {
-		byte[] decodedBytes = Base64.getDecoder().decode(encodeId);
+	public String activeAccount(RegisterJsonData json) throws JSONException {
+		byte[] decodedBytes = Base64.getDecoder().decode(json.idEncoded);
 		Integer idUser = Integer.valueOf(new String(decodedBytes));
 		Uzytkownik user = uzytkownikEjbQueryController.findEntityByID(idUser);
 		user.setState("A");

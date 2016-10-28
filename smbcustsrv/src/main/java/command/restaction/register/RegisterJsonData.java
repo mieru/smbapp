@@ -11,4 +11,9 @@ public class RegisterJsonData{
     public String password;
     @XmlElement(name="email")
     public String email;
+    @XmlElement(name="code")
+    public String idEncoded;
+    @XmlElement(name="activationUri")
+    public String activationUri;
+    
 }

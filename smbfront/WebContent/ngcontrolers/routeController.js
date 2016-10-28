@@ -10,6 +10,8 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "home.html"
+	}).when('/activationAccount', {
+		templateUrl : "activationAccount.html"
 	}).when('/logowanie', {
 			resolve : {
 				"check" : function($location, $cookieStore) {
