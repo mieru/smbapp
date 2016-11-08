@@ -18,7 +18,7 @@ public class MailSender {
 	public void sendMail(String subject, String body, String email) throws AddressException, MessagingException {
 		System.out.println("SendMail START");
 		mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587");
+		mailServerProperties.put("mail.smtp.port", "587"); // standardowy port smtp 25
 		mailServerProperties.put("mail.smtp.auth", "true");
 		mailServerProperties.put("mail.smtp.starttls.enable", "true");
 
@@ -30,7 +30,7 @@ public class MailSender {
 
 		Transport transport = getMailSession.getTransport("smtp");
 
-		transport.connect("smtp.gmail.com", "mieru1994@gmail.com", "barcelona");
+		transport.connect("smtp.gmail.com", "smbpracinz@gmail.com", "SMBpracinz2016");
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 		System.out.println("SendMail STOP");

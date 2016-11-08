@@ -1,0 +1,84 @@
+<div ng-app="smb" ng-controller="zamowienieDetailController">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="row" style="margin-bottom: 30px">
+				<div class="col-md-4">
+					<spam>Data zamówienia: {{zamowienieDetail.dataZlozenia}}</spam>
+				</div>
+				<div class="col-md-4" style="text-align: right;">
+					<spam>Status: {{zamowienieDetail.status}}</spam>
+				</div>
+				<div class="col-md-4" style="text-align: right;">
+					<spam>Pracownik obsługujący:
+					{{zamowienieDetail.pracownikObs}}</spam>
+				</div>
+			</div>
+			<div class="row" style="margin-bottom: 30px">
+				<div class="col-md-4">
+					<label> <input ng-model="zamowienieDetail.czyFaktura"
+						type="checkbox" ng-readonly="zamowienieDetail.czyFaktura" disabled>Faktura VAT.
+					</label> <br />
+					<spam>Dane do faktury:
+					{{zamowienieDetail.daneDoFaktury}}</spam>
+				</div>
+				<div class="col-md-8" style="text-align: right;">
+					<spam>Adres dostawy:<br />
+					{{zamowienieDetail.adresDostawy}}</spam>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<spam>Lista produktów:</spam>
+			</div>
+
+			<table class="table" style="border-bottom: 1px solid">
+				<tr>
+					<th>Lp.</th>
+					<th>Nazwa</th>
+					<th>Ilość</th>
+					<th>Cena netto</th>
+					<th>Stawka VAT</th>
+					<th>Cena brutto</th>
+				</tr>
+				<tr ng-repeat="item in listaProd">
+					<td>{{$index + 1}}</td>
+					<td>{{item.nazwa}}</td>
+					<td>{{item.ilosc}}</td>
+					<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
+					<td>{{item.stawka_vat}} %</td>
+					<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
+				</tr>
+			</table>
+			<div class="col-md-12" style="padding-left: 80px; text-align: right;">
+				<div class="col-md-12">Suma netto:
+					{{zamowienieDetail.wartoscAllNetto | currency:''}} zł</div>
+				<div class="col-md-12">Podatek VAT:
+					{{zamowienieDetail.sumaPodatkuVat | currency:''}} zł</div>
+				<div class="col-md-12" style="font-size: 20px; font-weight: bold">Do
+					zapłaty: {{zamowienieDetail.wartoscAllBrutto | currency:''}} zł</div>
+			</div>
+		</div>
+		<div class="col-md-5" style="margin:5px;">
+		<div class="row"  ng-repeat="aktywn in aktywnosci" style="margin-bottom: 30px">
+			<div class="row">
+				<div class="col-lg-12">
+					Data : {{aktywn.data}}<br/>
+					User : {{aktywn.uzytkownik}}<br/>
+					Tresc : {{aktywn.tresc}}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="row">
+				<div class="col-lg-10" style="margin: 10px; text-align: right;">
+				<form>
+					<textarea class="form-control" ng-model="tresc_wiadomosci" rows="5" cols="0" placeholder="Dodaj wiadomość do obsługujacego"></textarea>
+					<button id="button-1" class="btn btn-default" ng-click="addActivity()">Dodaj</button>
+				</form>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+

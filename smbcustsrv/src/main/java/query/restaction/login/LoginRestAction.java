@@ -1,6 +1,6 @@
 package query.restaction.login;
 
-import java.util.Collection;
+import java.util.Base64;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -25,6 +25,7 @@ import utils.status.Status;
 public class LoginRestAction {
 	private final String LOGIN_RESULT = "login_result";
 	private final String NOT_ACTIVE = "not_active";
+	private final String ID_USER = "id_user";
 	@Context
 	private UriInfo uri;
 
@@ -39,13 +40,14 @@ public class LoginRestAction {
 
 		Uzytkownik uzytkownik = new Uzytkownik();
 		uzytkownik.setLogin(json.username);
-		uzytkownik.setPassword(json.password);
+		uzytkownik.setPassword(new String(Base64.getEncoder().encode(json.password.getBytes())));
 		List<Uzytkownik> userList = uzytkownikQueryControler.findEntity(uzytkownik);
 		JSONObject jsonObject = new JSONObject();
 		if (userList.size() == 1) {
 			uzytkownik = userList.iterator().next();
-			if (uzytkownik.getState().equals(Status.USER_STATS.ACTIVE)) {
+			if (uzytkownik.getState().equals(Status.USER_STATE.ACTIVE)) {
 				jsonObject.put(LOGIN_RESULT, Boolean.TRUE);
+				jsonObject.put(ID_USER, uzytkownik.getIdUser());
 			} else {
 				jsonObject.put(LOGIN_RESULT, NOT_ACTIVE);
 			}

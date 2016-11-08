@@ -1,0 +1,71 @@
+<div ng-app="smb" ng-controller="ofertaController">
+		<table class="table" style="border-bottom: 1px solid">
+			<tr>
+				<th>Lp.</th>
+				<th>Nazwa</th>
+				<th>Ilość</th>
+				<th>Cena netto</th>
+				<th>Stawka VAT</th>
+				<th>Cena brutto</th>
+				<th></th>
+			</tr>
+			<tr ng-repeat="item in koszykLista">
+				<td>{{$index + 1}}</td>
+				<td>{{item.nazwa}}</td>
+				<td><input type="number" ng-model="item.ilosc" ng-change="recalculateForm(item,$index)" min="1"> </td>
+				<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
+				<td>{{item.stawka_vat}} %</td>
+				<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
+				<td><span class="glyphicon glyphicon-remove" ng-click="removeElement(item)" style="cursor: pointer;"></span></td>
+			</tr>
+		</table>
+		<div class="col-md-12" style="padding-left: 80px; text-align: right;">
+			<div class="col-md-12">Suma netto: {{koszyk.wartoscAllNetto | currency:''}} zł</div>
+			<div class="col-md-12">Podatek VAT: {{koszyk.sumaPodatkuVat | currency:''}} zł</div>
+			<div class="col-md-12" style="font-size: 20px; font-weight: bold">Do
+				zapłaty: {{koszyk.wartoscAllBrutto | currency:''}} zł</div>
+		</div>
+	
+
+
+
+	<div class="row" style="margin-bottom: 30px">
+		<div class="col-md-4">
+			<spam>Adres dostawy:</spam>
+			<textarea required="required" ng-model="zamowienie_adres_dostawy" class="form-control required" rows="4" cols="20"
+				placeholder="Adres dostawy:"></textarea>
+		</div>
+
+		<div class="col-md-4">
+			<spam ng-show="zamowienie_faktuaVat">Dane do faktury:</spam>
+			<textarea ng-required="false" ng-show="zamowienie_faktuaVat" ng-model="zamowienie_dane_do_faktury" class="form-control" rows="4" cols="20"
+				placeholder="Dane do faktury:"></textarea>
+		</div>
+	</div>
+
+	<div class="row" style="text-align: center;">
+		<div class="col-md-4">
+			<textarea ng-model="zamowienie_wiad_do_sprzedawcy" class="form-control" rows="4" cols="20"
+				placeholder="Wiadomość do sprzedawcy"></textarea>
+		</div>
+		<div class="col-md-2">
+			<div class="checkbox">
+				<label> <input ng-model="zamowienie_faktuaVat" type="checkbox">Zaznacz
+					jeśli chcesz fakturę VAT.
+				</label>
+			</div>
+		</div>
+
+		<div class="col-md-6" style="text-align: right;">
+			<div class="row" style="margin: 10px;">
+				<button id="btn-login" ng-click="submitOrder()"
+					class="btn btn-success">Potwierdź zamówienie</button>
+			</div>
+			<div class="row" style="margin: 10px;">
+				<button id="btn-login" ng-click="clearFormAndSession()"
+					class="btn btn-primary">Anuluj zamówienie</button>
+			</div>
+	</div>
+</div>
+</div>
+

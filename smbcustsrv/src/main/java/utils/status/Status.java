@@ -1,5 +1,7 @@
 package utils.status;
 
 public class Status {
-	public static UserState USER_STATS;
+	public static class USER_STATE {
+		public static final String ACTIVE = "A";
+	}
 }

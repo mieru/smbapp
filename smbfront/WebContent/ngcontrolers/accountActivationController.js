@@ -4,7 +4,10 @@ app.controller("accountActivationController", [
 		'$location',
 		'$routeParams',
 		'$route',
-		function($scope, $http, $location, $routeParams, $route) {
+		'$rootScope' ,
+		function($scope, $http, $location, $routeParams, $route, $rootScope) {
+			$rootScope.showKat = false;
+			$rootScope.logged = $cookieStore.get("loggedIn");
 			$scope.activateAccount = function() {
 				var dataObj = {
 					code : $routeParams.code,

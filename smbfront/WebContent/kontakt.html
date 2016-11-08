@@ -1,0 +1,65 @@
+<div ng-app="smb" ng-controller="kontaktController">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="row" style="margin-bottom: 30px">
+				<div class="col-md-12">
+					<h4>Data firmy:</h4>
+					{{daneFirmy.nazwa}}</br>
+					{{daneFirmy.nip}}</br>
+					{{daneFirmy.adres1}}</br>
+					{{daneFirmy.adres2}}</br>
+				</div>
+			</div>
+			<div class="row" style="margin-bottom: 30px">
+				<div class="col-md-8">
+					<h4>Mapa dojazdu:</h4>
+					<br />
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2517.374566912716!2d20.63784171505893!3d50.879777464218385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471827be35849801%3A0x99149978917cac90!2sPolitechnika+%C5%9Awi%C4%99tokrzyska!5e0!3m2!1spl!2spl!4v1478439018470"
+						frameborder="0" style="border: 0" allowfullscreen width="600px"
+						height="200px"></iframe>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-md-5" style="margin: 5px;">
+			<div class="row">
+					<div class="col-lg-12">
+						<form>
+							<h4>Kategoria:</h4>
+							<div class="row">
+								<div class="col-lg-12" style="margin-bottom: 15px">
+									<select class="form-control"  ng-model="idKategoriaZgl" >
+										<option ng-repeat="kat in katkontakt" value="{{kat.id}}" >{{kat.name}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12" style="margin-bottom: 15px">
+									<input id="temat" type="text" class="form-control" name="temat"
+										ng-model="zgloszenie_temat" placeholder="Temat">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12" style="margin-bottom: 15px">
+									<textarea class="form-control" ng-model="tresc_zgloszenia"
+										rows="5" cols=" " placeholder="Treść"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12" style="margin-bottom: 15px; text-align: right">
+									<button id="button-1" class="btn btn-primary"
+										ng-click="dodajZgloszenie()">Dodaj zgłoszenie</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" style="margin: 5px;">
+			<zgloszeniatable />
+		</div>
+	</div>
+</div>

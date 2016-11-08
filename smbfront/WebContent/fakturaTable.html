@@ -1,0 +1,22 @@
+<div ng-app="smb">
+	<table class="table" >
+	<thead>
+		<tr>
+			<th>Lp.</th>
+			<th>Nr faktury</th>
+			<th>Data wystawienia</th>
+			<th>Adnotacje</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="faktura in faktury">
+			<td>{{$index+1}}</td>
+			<td>{{faktura.numerFaktury}}</td>
+			<td>{{faktura.dataWystawienia}}</td>
+			<td>{{faktura.adnotacje}}</td>
+			<td><img title="Pobierz" style="cursor: pointer;" width="30px" height="30px" src="lib/images/pdf_icon.png" ng-click="downloadPdf(faktura)"/></td>
+		</tr>
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,59 @@
+<div ng-app="smb" ng-controller="ofertaController"
+	style="width: 100%">
+	<div class="row">
+		<div class="col-lg-9">
+			<div class="well well-md">
+				<input id="szuaj_oferta" type="text" class="form-control"
+					name="username" ng-model="search" value=""
+					placeholder="Czego szukasz ?">
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="well well-md" style="cursor: pointer;"
+				ng-click="goToCartView()">
+				<div class="row">
+					<div class="col-xs-2" style="margin-right: 50px">
+						<img class="group list-group-image"
+							src="https://openclipart.org/image/2400px/svg_to_png/60139/cart.png"
+							style="width: 40px; height: 40px" />
+					</div>
+					<div>Liczba produktów: {{koszyk.iloscAll}}</div>
+					<div>Wartość koszyka: {{koszyk.wartoscAllBrutto | currency:''}} zł</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="products" class="row list-group"  style="padding: 15px">
+		<div class="item  col-xs-4 col-lg-4 list-group-item">
+			<div class="thumbnail" ng-repeat="towar in towary | filter:search | offset: ((currentPage - 1) * itemsPerPage) | limitTo:itemsPerPage"
+			style="margin-bottom: 5px">
+				<img class="group list-group-image"
+					src="data:image/gif;base64,{{towar.image}}" style="width: 156px;"/>
+				<div class="caption">
+					<h4 class="group inner list-group-item-heading">
+						{{towar.nazwa}}</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="group inner list-group-item-text">{{towar.opis}}</div>
+						</div>
+						<div class="col-md-4">
+							<div class="col-xs-12" style="text-align: right;">
+								<p class="lead">{{towar.cbrutto | currency:''}} zł</p>
+							</div>
+							<div class="col-xs-12" style="text-align: right;">
+								<p class="lead" style="font-size: 11px">(netto:
+									{{towar.cnetto | currency:''}} zł)</p>
+							</div>
+							<div class="col-xs-12" style="text-align: right;">
+								<input width="50px" ng-init="towar.ilosc = towar.ilosc || 1"
+									ng-model="towar.ilosc" type="number" min="0" value="1" style="font-size: 10px"> {{towar.jednostka}}
+								<a class="btn btn-success" ng-click="addToCart(towar)" style="font-size: 10px; margin: 5px">Dodaj
+									do koszyka</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

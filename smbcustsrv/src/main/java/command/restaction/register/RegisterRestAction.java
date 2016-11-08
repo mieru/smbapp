@@ -44,10 +44,27 @@ public class RegisterRestAction {
 	public String checkLoginData(RegisterJsonData json) throws JSONException, AddressException, MessagingException {
 		Uzytkownik uzytkownik = new Uzytkownik();
 		uzytkownik.setLogin(json.username);
-		uzytkownik.setPassword(json.password);
-		uzytkownik.setRole("C");
+		uzytkownik.setPassword(new String(Base64.getEncoder().encode(json.password.getBytes())));
+		
+		uzytkownik.setName(json.name);
+		uzytkownik.setSurname(json.surname);
+		
+		uzytkownik.setCompanyName(json.companyName);
+		uzytkownik.setNip(json.nip);
+		
 		uzytkownik.setMail(json.email);
+		uzytkownik.setPhone(json.phone);
+
+		uzytkownik.setStreet(json.street);
+		uzytkownik.setBuildingNumber(json.buildingNumber);
+		uzytkownik.setRoomNumber(json.flatNumber);
+		uzytkownik.setCity(json.city);
+		uzytkownik.setPosCode(json.postCode);
+		
+		uzytkownik.setCustomerType(json.customerType);
+		uzytkownik.setRole("C");
 		uzytkownik.setState("R");
+		
 		uzytkownik = uzytkownikEjbCommandController.insert(uzytkownik);
 		
 		byte[] encodedBytes = Base64.getEncoder().encode(uzytkownik.getIdUser().toString().getBytes());
