@@ -2,7 +2,7 @@ package dbmodel;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -30,13 +30,11 @@ public class ZamowienieSprzedaz implements Serializable {
 	@Column(name="dane_do_faktury")
 	private String daneDoFaktury;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="data_zakonczenia")
-	private Date dataZakonczenia;
+	private Timestamp dataZakonczenia;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="data_zlozenia")
-	private Date dataZlozenia;
+	private Timestamp dataZlozenia;
 
 	@Column(name="lista_produktow")
 	private String listaProduktow;
@@ -99,19 +97,19 @@ public class ZamowienieSprzedaz implements Serializable {
 		this.daneDoFaktury = daneDoFaktury;
 	}
 
-	public Date getDataZakonczenia() {
+	public Timestamp getDataZakonczenia() {
 		return this.dataZakonczenia;
 	}
 
-	public void setDataZakonczenia(Date dataZakonczenia) {
+	public void setDataZakonczenia(Timestamp dataZakonczenia) {
 		this.dataZakonczenia = dataZakonczenia;
 	}
 
-	public Date getDataZlozenia() {
+	public Timestamp getDataZlozenia() {
 		return this.dataZlozenia;
 	}
 
-	public void setDataZlozenia(Date dataZlozenia) {
+	public void setDataZlozenia(Timestamp dataZlozenia) {
 		this.dataZlozenia = dataZlozenia;
 	}
 

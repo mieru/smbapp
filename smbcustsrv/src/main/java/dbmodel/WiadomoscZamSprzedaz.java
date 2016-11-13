@@ -2,7 +2,7 @@ package dbmodel;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -20,9 +20,8 @@ public class WiadomoscZamSprzedaz implements Serializable {
 	@Column(name="id_wiad_zam_sprzed")
 	private Integer idWiadZamSprzed;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="data_dodanie")
-	private Date dataDodanie;
+	private Timestamp dataDodanie;
 
 	private String tresc;
 
@@ -47,11 +46,11 @@ public class WiadomoscZamSprzedaz implements Serializable {
 		this.idWiadZamSprzed = idWiadZamSprzed;
 	}
 
-	public Date getDataDodanie() {
+	public Timestamp getDataDodanie() {
 		return this.dataDodanie;
 	}
 
-	public void setDataDodanie(Date dataDodanie) {
+	public void setDataDodanie(Timestamp dataDodanie) {
 		this.dataDodanie = dataDodanie;
 	}
 

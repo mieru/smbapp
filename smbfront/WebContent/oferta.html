@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-xs-2" style="margin-right: 50px">
 						<img class="group list-group-image"
-							src="https://openclipart.org/image/2400px/svg_to_png/60139/cart.png"
+							src="lib/images/cart.png"
 							style="width: 40px; height: 40px" />
 					</div>
 					<div>Liczba produktów: {{koszyk.iloscAll}}</div>
@@ -25,7 +25,7 @@
 	</div>
 	<div id="products" class="row list-group"  style="padding: 15px">
 		<div class="item  col-xs-4 col-lg-4 list-group-item">
-			<div class="thumbnail" ng-repeat="towar in towary | filter:search | offset: ((currentPage - 1) * itemsPerPage) | limitTo:itemsPerPage"
+			<div class="thumbnail" ng-repeat="towar in towary | filter:search  | offset: currentPage*itemOnPage| limitTo: itemOnPage "
 			style="margin-bottom: 5px">
 				<img class="group list-group-image"
 					src="data:image/gif;base64,{{towar.image}}" style="width: 156px;"/>
@@ -46,7 +46,7 @@
 							</div>
 							<div class="col-xs-12" style="text-align: right;">
 								<input width="50px" ng-init="towar.ilosc = towar.ilosc || 1"
-									ng-model="towar.ilosc" type="number" min="0" value="1" style="font-size: 10px"> {{towar.jednostka}}
+									ng-model="towar.ilosc" type="number" min="1" value="1" style="font-size: 10px"> {{towar.jednostka}}
 								<a class="btn btn-success" ng-click="addToCart(towar)" style="font-size: 10px; margin: 5px">Dodaj
 									do koszyka</a>
 							</div>
@@ -54,6 +54,13 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> 
+		<div class="row" style="text-align: center">
+			<ul class="pagination" >
+			  <li ng-repeat="page in pages" ng-class="{ 'active': $index == currentPage}"><a href="" ng-click="changePage($index,page)">{{$index+1}}</a></li>
+			</ul>
+		</div> 
+		 
 	</div>
+	
 </div>

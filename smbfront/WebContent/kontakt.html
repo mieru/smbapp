@@ -2,12 +2,17 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="row" style="margin-bottom: 30px">
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<h4>Data firmy:</h4>
 					{{daneFirmy.nazwa}}</br>
 					{{daneFirmy.nip}}</br>
 					{{daneFirmy.adres1}}</br>
 					{{daneFirmy.adres2}}</br>
+				</div>
+				<div class="col-md-6">
+					<h4>Dane kontaktowe:</h4>
+					Telefon: {{daneFirmy.telefon}}</br>
+					   Mail: {{daneFirmy.email}}</br>
 				</div>
 			</div>
 			<div class="row" style="margin-bottom: 30px">
@@ -25,31 +30,31 @@
 		<div class="col-md-5" style="margin: 5px;">
 			<div class="row">
 					<div class="col-lg-12">
-						<form>
+						<form ng-submit="dodajZgloszenie()">
 							<h4>Kategoria:</h4>
 							<div class="row">
-								<div class="col-lg-12" style="margin-bottom: 15px">
-									<select class="form-control"  ng-model="idKategoriaZgl" >
-										<option ng-repeat="kat in katkontakt" value="{{kat.id}}" >{{kat.name}}</option>
+								<div class="col-lg-12" style="margin-bottom: 15px" required>
+									<select class="form-control"  ng-model="idKategoriaZgl" required>
+										<option ng-selected="true" ng-repeat="kat in katkontakt" value="{{kat.id}}" >{{kat.name}}</option>
 									</select>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12" style="margin-bottom: 15px">
 									<input id="temat" type="text" class="form-control" name="temat"
-										ng-model="zgloszenie_temat" placeholder="Temat">
+										ng-model="zgloszenie_temat" placeholder="Temat" required>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12" style="margin-bottom: 15px">
 									<textarea class="form-control" ng-model="tresc_zgloszenia"
-										rows="5" cols=" " placeholder="Treść"></textarea>
+										rows="5" cols=" " placeholder="Treść" required></textarea>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12" style="margin-bottom: 15px; text-align: right">
-									<button id="button-1" class="btn btn-primary"
-										ng-click="dodajZgloszenie()">Dodaj zgłoszenie</button>
+									<input type="submit" id="button-1" class="btn btn-primary"
+										value="Dodaj zgłoszenie">
 								</div>
 							</div>
 						</form>

@@ -45,6 +45,8 @@ public class DaneFirmyRestAction {
 			jsonObject.put("nr_lokalu", dane.getNrLokalu());
 			jsonObject.put("kod_pocztowy", dane.getKodPocztowy());
 			jsonObject.put("miasto", dane.getMiasto());
+			jsonObject.put("email", dane.getMail());
+			jsonObject.put("telefon", dane.getTelefon());
 		
 		return jsonObject.toString();
 	}

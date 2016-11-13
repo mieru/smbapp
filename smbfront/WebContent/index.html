@@ -6,6 +6,7 @@
 <script type="text/javascript" src="lib/angularjs/angular.min.js"></script>
 <script type="text/javascript" src="lib/angularjs/angular-route.min.js"></script>
 <script type="text/javascript" src="lib/angularjs/angular-cookies.min.js"></script>
+<script type="text/javascript" src="lib/angularjs/ui-bootstrap-tpls-2.2.0.min.js"></script>
 <script type="text/javascript" src="ngcontrolers/mainController.js"></script>
 <script type="text/javascript" src="ngcontrolers/routeController.js"></script>
 <script type="text/javascript" src="ngcontrolers/loginControler.js"></script>
@@ -32,6 +33,7 @@
 				<li><a href="#/faktury">Faktury</a></li>
 				<li><a href="#/ustawienia">Ustawienia konta</a></li>
 				<li><a href="#/kontakt">Kontakt</a></li>
+				<li><a href="" ng-hide="logged" ng-click="goToLoggin()" >Zaloguj</a></li>
 			</ul>
 		</div>
 		<div id="page-content-wrapper">

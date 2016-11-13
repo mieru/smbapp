@@ -21,6 +21,7 @@ import dbmodel.WiadomoscZamSprzedaz;
 import dbmodel.ZamowienieSprzedaz;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.ejbcontrol.zamowieniasprzedarz.ZamowieniaSprzedEjbQueryController;
+import utils.status.Status;
 
 @RequestScoped
 @Path("/query/zamowienia")
@@ -56,8 +57,8 @@ public class ZamowieniaRestAction {
 			jsonObject = new JSONObject();
 			
 			jsonObject.put("id", zamowienieSprzedaz.getIdZamowieniaSprzedaz());
-			jsonObject.put("dataZlozenia", zamowienieSprzedaz.getDataZlozenia());
-			jsonObject.put("status", zamowienieSprzedaz.getStatus());
+			jsonObject.put("dataZlozenia", zamowienieSprzedaz.getDataZlozenia().getTime());
+			jsonObject.put("status", Status.ZAMOWIENIE_STATE.getText(zamowienieSprzedaz.getStatus()));
 			if(zamowienieSprzedaz.getUzytkownik2() != null)
 				jsonObject.put("pracownik", zamowienieSprzedaz.getUzytkownik2().getName() + " " +  zamowienieSprzedaz.getUzytkownik2().getSurname());
 			jsonObject.put("numer_zam", zamowienieSprzedaz.getNumerZamowienia());
@@ -80,10 +81,11 @@ public class ZamowieniaRestAction {
 			jsonObject.put("czyFaktura", zamowienieSprzedaz.getCzyFaktura());
 			jsonObject.put("daneDoFaktury", zamowienieSprzedaz.getDaneDoFaktury());
 			jsonObject.put("listaProd", zamowienieSprzedaz.getListaProduktow());
-			jsonObject.put("dataZakonczenia", zamowienieSprzedaz.getDataZakonczenia());
-			jsonObject.put("dataZlozenia", zamowienieSprzedaz.getDataZlozenia());
+			if(zamowienieSprzedaz.getDataZakonczenia() != null)
+			jsonObject.put("dataZakonczenia", zamowienieSprzedaz.getDataZakonczenia().getTime());
+			jsonObject.put("dataZlozenia", zamowienieSprzedaz.getDataZlozenia().getTime());
 			jsonObject.put("adresDostawy", zamowienieSprzedaz.getAdresDostawy());
-			jsonObject.put("status", zamowienieSprzedaz.getStatus());
+			jsonObject.put("status", Status.ZAMOWIENIE_STATE.getText(zamowienieSprzedaz.getStatus()));
 			jsonObject.put("aktywnosci", getJsonArray(zamowienieSprzedaz.getWiadomoscZamSprzedazs()));
 			
 			Float wartoscAllNetto = 0f;
@@ -115,7 +117,7 @@ public class ZamowieniaRestAction {
 		for (WiadomoscZamSprzedaz wiadomoscZamSprzedaz : wiadomoscZamSprzedazs) {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", wiadomoscZamSprzedaz.getIdWiadZamSprzed());
-			jsonObject.put("data", wiadomoscZamSprzedaz.getDataDodanie());
+			jsonObject.put("data", wiadomoscZamSprzedaz.getDataDodanie().getTime());
 			jsonObject.put("tresc", wiadomoscZamSprzedaz.getTresc());
 			String uzytkownikName = "";
 			if(wiadomoscZamSprzedaz.getUzytkownik().getCompanyName() != null){
@@ -124,7 +126,6 @@ public class ZamowieniaRestAction {
 				uzytkownikName = wiadomoscZamSprzedaz.getUzytkownik().getName() + " " + wiadomoscZamSprzedaz.getUzytkownik().getSurname();
 			}
 			jsonObject.put("uzytkownik", uzytkownikName);
-		//	jsonObject.put('typ', );
 			
 			jsonArray.put(jsonObject);
 		}

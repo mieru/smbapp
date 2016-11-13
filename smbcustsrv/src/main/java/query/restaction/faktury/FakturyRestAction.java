@@ -53,7 +53,8 @@ public class FakturyRestAction {
 			jsonObject.put("daneKlienta", fakturaSprzedazy.getDaneKlienta());
 			jsonObject.put("adnotacje", fakturaSprzedazy.getAdnotacja());
 			jsonObject.put("daneWystawiajacego", fakturaSprzedazy.getDaneWystawiajacego());
-			jsonObject.put("dataWystawienia", fakturaSprzedazy.getDataWystawienia());
+			if(fakturaSprzedazy.getDataWystawienia() != null)
+			jsonObject.put("dataWystawienia", fakturaSprzedazy.getDataWystawienia().getTime());
 			jsonObject.put("listaTowarow", fakturaSprzedazy.getListaTowarow());
 			jsonObject.put("numerFaktury", fakturaSprzedazy.getNumerFaktury());
 			jsonObject.put("status", fakturaSprzedazy.getStatus());
@@ -76,7 +77,7 @@ public class FakturyRestAction {
 			jsonObject.put("daneKlienta", fakturaSprzedazy.getDaneKlienta());
 			jsonObject.put("adnotacje", fakturaSprzedazy.getAdnotacja());
 			jsonObject.put("daneWystawiajacego", fakturaSprzedazy.getDaneWystawiajacego());
-			jsonObject.put("dataWystawienia", fakturaSprzedazy.getDataWystawienia());
+			jsonObject.put("dataWystawienia", fakturaSprzedazy.getDataWystawienia().getTime());
 			jsonObject.put("listaTowarow", fakturaSprzedazy.getListaTowarow());
 			jsonObject.put("numerFaktury", fakturaSprzedazy.getNumerFaktury());
 			jsonObject.put("status", fakturaSprzedazy.getStatus());

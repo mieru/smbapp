@@ -6,15 +6,17 @@
 			<th>Nr faktury</th>
 			<th>Data wystawienia</th>
 			<th>Adnotacje</th>
-			<th></th>
+			<th>Kwota</th>
+			<th>Pobierz</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr ng-repeat="faktura in faktury">
 			<td>{{$index+1}}</td>
 			<td>{{faktura.numerFaktury}}</td>
-			<td>{{faktura.dataWystawienia}}</td>
+			<td>{{faktura.dataWystawienia | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			<td>{{faktura.adnotacje}}</td>
+			<td>{{faktura.cena}}</td>
 			<td><img title="Pobierz" style="cursor: pointer;" width="30px" height="30px" src="lib/images/pdf_icon.png" ng-click="downloadPdf(faktura)"/></td>
 		</tr>
 		</tbody>

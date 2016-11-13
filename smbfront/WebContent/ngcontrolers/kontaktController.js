@@ -45,7 +45,9 @@ app.controller("kontaktController", [
 						regon : 'REGON: ' + response.regon,
 						krs: 'KRS: ' +  response.krs,
 						adres1 : response.ulica + ' ' + response.nr_budynku + '/' + response.nr_lokalu,
-						adres2 : response.kod_pocztowy + ' ' + response.miasto
+						adres2 : response.kod_pocztowy + ' ' + response.miasto,
+						telefon : response.telefon,
+						email : response.email
 				}
 				
 				if(response.nr_lokalu == undefined){
@@ -64,7 +66,7 @@ app.controller("kontaktController", [
 			}
 			
 			$scope.showDetail = function(zgloszenie){
-				$location.path('/zgloszenieDetail').search({id_zgloszenia: zgloszenie.id});;
+				$location.path('/zgloszenieDetail').search({id_zgloszenia: zgloszenie.id});
 			}
 			
 		}]);

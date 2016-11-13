@@ -1,6 +1,6 @@
 package command.restaction.zamowieniesprzedaz;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -10,9 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,13 +22,11 @@ import dbmodel.WiadomoscZamSprzedaz;
 import dbmodel.ZamowienieSprzedaz;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.ejbcontrol.zamowieniasprzedarz.ZamowieniaSprzedEjbQueryController;
+import utils.status.Status;
 
 @RequestScoped
 @Path("/command/zamowienie")
 public class ZamowienieRestAction {
-
-	 @Context
-	 private UriInfo uri;
 	
 	@EJB
 	ZamowienieSprzedEjbCommandContoller zamowienieSprzedEjbCommandContoller;
@@ -55,18 +51,21 @@ public class ZamowienieRestAction {
 		zamowienieSprzedaz.setAdresDostawy(json.adresDostawy);
 		zamowienieSprzedaz.setCzyFaktura(json.czyFaktura);
 		zamowienieSprzedaz.setDaneDoFaktury(json.daneDoFaktury);
-		zamowienieSprzedaz.setDataZlozenia(new Date(System.currentTimeMillis()));
+		zamowienieSprzedaz.setDataZlozenia(new Timestamp(System.currentTimeMillis()));
 		zamowienieSprzedaz.setListaProduktow(json.listaPoduktow);
-		zamowienieSprzedaz.setStatus("N");
-
+		zamowienieSprzedaz.setStatus(Status.USER_STATE.NEW);
+		zamowienieSprzedaz.setNumerZamowienia(zamowienieSprzedEjbQueryContoller.generujNumerZgloszenia());
+		
+		
 		Uzytkownik uzytkownik  = uzytkownikEjbQueryController.findEntityByID(Integer.parseInt(json.idZamawiajacego));
 		zamowienieSprzedaz.setUzytkownik1(uzytkownik);
 		
 		zamowienieSprzedaz = zamowienieSprzedEjbCommandContoller.insert(zamowienieSprzedaz);
 		
 		WiadomoscZamSprzedaz wiadomoscZamSprzedaz = new WiadomoscZamSprzedaz();
-		wiadomoscZamSprzedaz.setDataDodanie(new Date(System.currentTimeMillis()));
-		wiadomoscZamSprzedaz.setTresc("ZAMOWIENIE ZAREJESTROWANE \\n\\n " + json.wiadDoSprzedawcy);
+		wiadomoscZamSprzedaz.setDataDodanie(new Timestamp(System.currentTimeMillis()));
+		if(json.wiadDoSprzedawcy != null)
+			wiadomoscZamSprzedaz.setTresc(json.wiadDoSprzedawcy);
 		wiadomoscZamSprzedaz.setUzytkownik(uzytkownik);
 		wiadomoscZamSprzedaz.setZamowienieSprzedaz(zamowienieSprzedaz);
 		
@@ -93,7 +92,7 @@ public class ZamowienieRestAction {
 		WiadomoscZamSprzedaz wiadomoscZamSprzedaz = new WiadomoscZamSprzedaz();
 		wiadomoscZamSprzedaz.setTresc(json.trescWiadomosci);
 		wiadomoscZamSprzedaz.setUzytkownik(uzytkownik);
-		wiadomoscZamSprzedaz.setDataDodanie(new Date(System.currentTimeMillis()));
+		wiadomoscZamSprzedaz.setDataDodanie(new Timestamp(System.currentTimeMillis()));
 		wiadomoscZamSprzedaz.setZamowienieSprzedaz(zamowienieSprzedaz);
 		
 		wiadZamSprzedEjbCommandController.insert(wiadomoscZamSprzedaz);

@@ -24,6 +24,8 @@ public class DaneFirmy implements Serializable {
 
 	private String krs;
 
+	private String mail;
+
 	private String miasto;
 
 	private String nazwa;
@@ -37,6 +39,8 @@ public class DaneFirmy implements Serializable {
 	private String nrLokalu;
 
 	private String regon;
+
+	private String telefon;
 
 	private String ulica;
 
@@ -65,6 +69,14 @@ public class DaneFirmy implements Serializable {
 
 	public void setKrs(String krs) {
 		this.krs = krs;
+	}
+
+	public String getMail() {
+		return this.mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 	public String getMiasto() {
@@ -113,6 +125,14 @@ public class DaneFirmy implements Serializable {
 
 	public void setRegon(String regon) {
 		this.regon = regon;
+	}
+
+	public String getTelefon() {
+		return this.telefon;
+	}
+
+	public void setTelefon(String telefon) {
+		this.telefon = telefon;
 	}
 
 	public String getUlica() {

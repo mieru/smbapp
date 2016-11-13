@@ -2,7 +2,7 @@ package dbmodel;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -28,9 +28,14 @@ public class FakturaSprzedazy implements Serializable {
 	@Column(name="dane_wystawiajacego")
 	private String daneWystawiajacego;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="data_wystawienia")
-	private Date dataWystawienia;
+	private Timestamp dataWystawienia;
+
+	@Column(name="file_name")
+	private String fileName;
+
+	@Column(name="file_path")
+	private String filePath;
 
 	@Column(name="lista_towarow")
 	private String listaTowarow;
@@ -90,12 +95,28 @@ public class FakturaSprzedazy implements Serializable {
 		this.daneWystawiajacego = daneWystawiajacego;
 	}
 
-	public Date getDataWystawienia() {
+	public Timestamp getDataWystawienia() {
 		return this.dataWystawienia;
 	}
 
-	public void setDataWystawienia(Date dataWystawienia) {
+	public void setDataWystawienia(Timestamp dataWystawienia) {
 		this.dataWystawienia = dataWystawienia;
+	}
+
+	public String getFileName() {
+		return this.fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return this.filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
 	public String getListaTowarow() {

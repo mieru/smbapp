@@ -14,6 +14,13 @@ app.controller("ustawieniaController", [
 			}
 			$http.post('/smbcustsrv/rest/query/uzytkownik/getUzytkownikaById', config).success(function(response){
 				$scope.user = response;
+				if(response.company_name !== undefined){
+					$scope.userCompany = true;
+					$scope.userPerson = false;
+				}else{
+					$scope.userCompany = false;
+					$scope.userPerson = true;
+				}
 			});
 			
 			

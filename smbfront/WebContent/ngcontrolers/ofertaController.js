@@ -32,11 +32,25 @@ app.controller("ofertaController", [
 			}
 			$http.post('/smbcustsrv/rest/query/oferta/getOferta', postData)
 					.success(function(data) {
+						$scope.itemOnPage = 5;
+						$scope.currentPage = 0;
+						var countOfPages = Math.ceil(data.length / $scope.itemOnPage);
+						var pages = [];
+						for (var j = 0; j < countOfPages; j++) {
+							pages.push({
+								start: j * $scope.itemOnPage,
+							});
+						}
+						
+						$scope.pages = pages;
 						$scope.towary = data;
-						$scope.currentPage = 1;
-						$scope.itemsPerPage = 20;
+						
 					})
 
+			$scope.changePage = function(idx,page) {
+				$scope.currentPage = idx;
+			}
+					
 			$scope.addToCart = function(towar) {
 				$scope.koszyk.iloscAll += parseInt(towar.ilosc);
 				$scope.koszyk.wartoscAllBrutto += towar.cbrutto * towar.ilosc;
@@ -224,9 +238,12 @@ function clearOferta(){
 		} ]);
 
 
-
-app.filter('offset', function() {
-	return function(input, start) {
-		return input.slice(start);
-	};
+app.filter('offset', function () {
+    return function (input, offset) {
+        return (input instanceof Array) 
+          ? input.slice(+offset) 
+          : input
+    }
 })
+
+

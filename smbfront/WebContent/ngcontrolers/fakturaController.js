@@ -16,8 +16,13 @@ app.controller("fakturaController", [
 				$http.post('/smbcustsrv/rest/query/faktury/getFaktury', config).success(function(response){
 					$scope.faktury = response;
 				});
-				
-				
+
+			$scope.downloadPdf = function(faktura){
+				var url = '/smbcustsrv/rest/faktury/query/downloadPdf?';
+					url += 'idFaktury=' + faktura.id;
+				window.location.replace(url);
+			}
+			
 		}]);
 			
 app.directive('fakturatable',[function() {

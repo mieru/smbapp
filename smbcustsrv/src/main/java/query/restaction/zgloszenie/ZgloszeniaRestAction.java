@@ -26,13 +26,11 @@ import dbmodel.ZgloszenieKomentarz;
 import query.ejbcontrol.kategoriazgloszenie.KategoriaZgloszenieEjbQueryController;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.ejbcontrol.zgloszenia.ZgloszeniaEjbQueryController;
+import utils.status.Status;
 
 @RequestScoped
 @Path("/query/zgloszenia")
 public class ZgloszeniaRestAction {
-	@Context
-	private UriInfo uri;
-
 	@EJB
 	ZgloszeniaEjbQueryController zgloszeniaEjbQueryController;
 	
@@ -48,7 +46,6 @@ public class ZgloszeniaRestAction {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String getKategorieZglosznia() throws JSONException, AddressException, MessagingException {
 		List<KategoiaZgloszenia> katCol = kategoriaZgloszenieEjbQueryController.findAll();
-		
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = null;
 		
@@ -56,6 +53,7 @@ public class ZgloszeniaRestAction {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
 			jsonObject.put("name", kategoiaZgloszenia.getNazwa());
+			jsonObject.put("default", katCol.indexOf(kategoiaZgloszenia) == 1);
 			
 			jsonArray.put(jsonObject);
 		}
@@ -76,14 +74,15 @@ public class ZgloszeniaRestAction {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", zgloszenie.getIdZgloszenia());
 			jsonObject.put("numer_zgl", zgloszenie.getNumerZgloszenia());
-			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia());
-			jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia());
+			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia().getTime());
+			if(zgloszenie.getDataZamkniecia() != null)
+			jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia().getTime());
 			jsonObject.put("kategoria", zgloszenie.getKategoiaZgloszenia().getNazwa());
 			jsonObject.put("temat", zgloszenie.getTemat());
 			if( zgloszenie.getUzytkownik1() != null){
 				jsonObject.put("pracownik_obsl", zgloszenie.getUzytkownik1().getName() +" "+  zgloszenie.getUzytkownik1().getSurname());
 			}
-			jsonObject.put("status", zgloszenie.getStatus());
+			jsonObject.put("status", Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
 			
 			jsonArray.put(jsonObject);
 		}
@@ -101,8 +100,9 @@ public class ZgloszeniaRestAction {
 			JSONObject	jsonObject = new JSONObject();
 			jsonObject.put("id", zgloszenie.getIdZgloszenia());
 			jsonObject.put("numer_zgl", zgloszenie.getNumerZgloszenia());
-			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia());
-			jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia());
+			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia().getTime());
+			if(zgloszenie.getDataZamkniecia() != null)
+			jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia().getTime());
 			jsonObject.put("kategoria", zgloszenie.getKategoiaZgloszenia().getNazwa());
 			jsonObject.put("temat", zgloszenie.getTemat());
 			jsonObject.put("tresc", zgloszenie.getTresc());
@@ -111,7 +111,7 @@ public class ZgloszeniaRestAction {
 			if( zgloszenie.getUzytkownik1() != null){
 				jsonObject.put("pracownik_obsl", zgloszenie.getUzytkownik1().getName() +" "+  zgloszenie.getUzytkownik1().getSurname());
 			}
-			jsonObject.put("status", zgloszenie.getStatus());
+			jsonObject.put("status", Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
 			
 		
 		return jsonObject.toString();
@@ -119,26 +119,29 @@ public class ZgloszeniaRestAction {
 
 
 
-private JSONArray getJsonArray(List<ZgloszenieKomentarz> zgloszenieKomentarze) throws JSONException {
-JSONArray jsonArray = new JSONArray();
-JSONObject jsonObject = null;
+	private JSONArray getJsonArray(
+			List<ZgloszenieKomentarz> zgloszenieKomentarze)
+			throws JSONException {
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = null;
 
-for (ZgloszenieKomentarz zglKom : zgloszenieKomentarze) {
-jsonObject = new JSONObject();
-jsonObject.put("id", zglKom.getIdKomentarzaZgloszenia());
-jsonObject.put("data", zglKom.getDataDodania());
-jsonObject.put("tresc", zglKom.getTresc());
-String uzytkownikName = "";
-if(zglKom.getUzytkownik().getCompanyName() != null){
-	uzytkownikName = zglKom.getUzytkownik().getCompanyName();
-}else{
-	uzytkownikName = zglKom.getUzytkownik().getName() + " " + zglKom.getUzytkownik().getSurname();
-}
-jsonObject.put("uzytkownik", uzytkownikName);
-//	jsonObject.put('typ', );
+		for (ZgloszenieKomentarz zglKom : zgloszenieKomentarze) {
+			jsonObject = new JSONObject();
+			jsonObject.put("id", zglKom.getIdKomentarzaZgloszenia());
+			jsonObject.put("data", zglKom.getDataDodania().getTime());
+			jsonObject.put("tresc", zglKom.getTresc());
+			String uzytkownikName = "";
+			if (zglKom.getUzytkownik().getCompanyName() != null) {
+				uzytkownikName = zglKom.getUzytkownik().getCompanyName();
+			} else {
+				uzytkownikName = zglKom.getUzytkownik().getName() + " "
+						+ zglKom.getUzytkownik().getSurname();
+			}
+			jsonObject.put("uzytkownik", uzytkownikName);
+			// jsonObject.put('typ', );
 
-jsonArray.put(jsonObject);
-}
-return jsonArray;
-}
+			jsonArray.put(jsonObject);
+		}
+		return jsonArray;
+	}
 }

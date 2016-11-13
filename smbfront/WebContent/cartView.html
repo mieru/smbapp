@@ -1,4 +1,5 @@
 <div ng-app="smb" ng-controller="ofertaController">
+<form ng-submit="submitOrder()">
 		<table class="table" style="border-bottom: 1px solid">
 			<tr>
 				<th>Lp.</th>
@@ -12,7 +13,7 @@
 			<tr ng-repeat="item in koszykLista">
 				<td>{{$index + 1}}</td>
 				<td>{{item.nazwa}}</td>
-				<td><input type="number" ng-model="item.ilosc" ng-change="recalculateForm(item,$index)" min="1"> </td>
+				<td><input type="number" ng-model="item.ilosc" ng-change="recalculateForm(item,$index)" min="1"><span>{{item.jednostka}}</span> </td>
 				<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
 				<td>{{item.stawka_vat}} %</td>
 				<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
@@ -32,13 +33,13 @@
 	<div class="row" style="margin-bottom: 30px">
 		<div class="col-md-4">
 			<spam>Adres dostawy:</spam>
-			<textarea required="required" ng-model="zamowienie_adres_dostawy" class="form-control required" rows="4" cols="20"
-				placeholder="Adres dostawy:"></textarea>
+			<textarea  ng-model="zamowienie_adres_dostawy" class="form-control required" rows="4" cols="20"
+				placeholder="Adres dostawy:" required></textarea>
 		</div>
 
 		<div class="col-md-4">
 			<spam ng-show="zamowienie_faktuaVat">Dane do faktury:</spam>
-			<textarea ng-required="false" ng-show="zamowienie_faktuaVat" ng-model="zamowienie_dane_do_faktury" class="form-control" rows="4" cols="20"
+			<textarea ng-required="zamowienie_faktuaVat" ng-show="zamowienie_faktuaVat" ng-model="zamowienie_dane_do_faktury" class="form-control" rows="4" cols="20"
 				placeholder="Dane do faktury:"></textarea>
 		</div>
 	</div>
@@ -58,8 +59,8 @@
 
 		<div class="col-md-6" style="text-align: right;">
 			<div class="row" style="margin: 10px;">
-				<button id="btn-login" ng-click="submitOrder()"
-					class="btn btn-success">Potwierdź zamówienie</button>
+				<input id="btn-login" type="submit"
+					class="btn btn-success" value="Potwierdź zamówienie">
 			</div>
 			<div class="row" style="margin: 10px;">
 				<button id="btn-login" ng-click="clearFormAndSession()"
@@ -67,5 +68,6 @@
 			</div>
 	</div>
 </div>
+</form>
 </div>
 

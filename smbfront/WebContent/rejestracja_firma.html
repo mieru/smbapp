@@ -1,6 +1,7 @@
 <div class="container" ng-app="smb">
 	<div ng-controller="registerController">
-		<form id="loginform" class="form-horizontal">
+		<form id="loginform" class="form-horizontal"
+			ng-submit="registerCompanySubmit()">
 			<div id="loginbox" class="col-md-12 col-sm-2">
 				<div class="row">
 					<div class="col-md-8" style="margin: 20px; padding-left: 25px">
@@ -21,28 +22,28 @@
 										class="glyphicon glyphicon-briefcase"></i></span> <input
 										id="register_namecompany" type="text" class="form-control"
 										name="register_namecompany" ng-model="register_namecompany"
-										value="" placeholder="Nazwa">
+										value="" placeholder="Nazwa" required>
 								</div>
 								<div style="margin-bottom: 20px" class="input-group">
 									<span class="input-group-addon"><i
 										class="glyphicon glyphicon-briefcase"></i></span> <input
 										id="register_nip" type="text" class="form-control"
 										name="register_nip" ng-model="register_nip" value=""
-										placeholder="Nip">
+										placeholder="Nip" required>
 								</div>
 								<div style="margin-bottom: 20px" class="input-group">
 									<span class="input-group-addon"><i
 										class="glyphicon glyphicon-lock"></i></span> <input
 										id="register_login" type="text" class="form-control"
 										name="register_login" ng-model="register_login"
-										placeholder="Login">
+										placeholder="Login" required  maxlength="10" min="3">
 								</div>
 								<div style="margin-bottom: 20px" class="input-group">
 									<span class="input-group-addon"><i
 										class="glyphicon glyphicon-lock"></i></span> <input
 										id="register_password" type="password" class="form-control"
 										name="register_password" ng-model="register_password" value=""
-										placeholder="Hasło">
+										placeholder="Hasło" required>
 								</div>
 							</div>
 							<div style="padding-top: 30px" class="panel-body col-md-12">
@@ -51,14 +52,14 @@
 										class="glyphicon glyphicon-envelope"></i></span> <input
 										id="register_email" type="email" class="form-control"
 										name="register_email" ng-model="register_email"
-										placeholder="E-mail">
+										placeholder="E-mail" required>
 								</div>
 								<div style="margin-bottom: 20px" class="input-group">
 									<span class="input-group-addon"><i
 										class="glyphicon glyphicon-phone-alt"></i></span> <input
 										id="register_phone" type="text" class="form-control"
 										name="register_phone" ng-model="register_phone"
-										placeholder="Telefon kontaktowy">
+										placeholder="Telefon kontaktowy" pattern="\d+">
 								</div>
 							</div>
 						</div>
@@ -68,14 +69,15 @@
 									class="glyphicon glyphicon-home"></i></span> <input
 									id="register_street" type="text" class="form-control"
 									name="register_street" ng-model="register_street" value=""
-									placeholder="Ulica">
+									placeholder="Ulica" required>
 							</div>
 							<div style="margin-bottom: 20px" class="input-group">
 								<span class="input-group-addon"><i
 									class="glyphicon glyphicon-home"></i></span> <input
 									id="register_building_number" type="text" class="form-control"
 									name="register_building_number"
-									ng-model="register_building_number" placeholder="Numer domu">
+									ng-model="register_building_number" placeholder="Numer domu"
+									required>
 							</div>
 							<div style="margin-bottom: 20px" class="input-group">
 								<span class="input-group-addon"><i
@@ -88,29 +90,28 @@
 								<span class="input-group-addon"><i
 									class="glyphicon glyphicon-home"></i></span> <input id="register_city"
 									type="text" class="form-control" name="register_city"
-									ng-model="register_city" placeholder="Miejscowość">
+									ng-model="register_city" placeholder="Miejscowość" required>
 							</div>
 							<div style="margin-bottom: 20px" class="input-group">
 								<span class="input-group-addon"><i
 									class="glyphicon glyphicon-home"></i></span> <input
 									id="register_post_code" type="text" class="form-control"
 									name="register_post_code" ng-model="register_post_code"
-									placeholder="Kod pocztowy">
+									placeholder="Kod pocztowy" required>
 							</div>
 							<div class="col-md-12" style="margin: 20px; text-align: right">
 								<div class="col-sm-9">
 									<a id="btn-rejestracja" ng-click="goToLoggin()" class="btn ">Logowanie</a>
 								</div>
 								<div class="col-sm-3">
-									<button id="btn-login" ng-click="registerCompanySubmit()"
-										class="btn btn-success">Zarejestruj</button>
+									<button id="btn-login" type="submit" class="btn btn-success">Zarejestruj</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</form>
 	</div>
-	</form>
-</div>
+
 </div>

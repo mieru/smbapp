@@ -1,4 +1,4 @@
-var app = angular.module('smb', [ 'ngRoute', 'ngCookies' ]);
+var app = angular.module('smb', [ 'ngRoute', 'ngCookies', 'ui.bootstrap' ]);
 
 app.controller("mainContoller", [
 		'$scope',
@@ -22,6 +22,9 @@ app.controller("mainContoller", [
 				$location.path('/logowanie');
 			};
 			
+			$scope.goToLoggin = function() {
+				$location.path('/logowanie');
+			};
 			
 		}]);
 			
