@@ -10,7 +10,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class MailSender {
+import dbmodel.Uzytkownik;
+import utils.SmbUtil;
+
+public class MailSender { // DOROBIC KONFIGURACJE Z GUI
 	private Properties mailServerProperties = null;
 	private Session getMailSession = null;
 	private MimeMessage generateMailMessage = null;
@@ -35,4 +38,13 @@ public class MailSender {
 		transport.close();
 		System.out.println("SendMail STOP");
 	}
+	
+	public void sendActivationMail(Uzytkownik uzytkownik, String activationUri) throws AddressException, MessagingException{
+		String encodedUserId = SmbUtil.encodeInteger(uzytkownik.getIdUser());
+		String activationLink = activationUri.substring(0, activationUri.indexOf("rejestracja")) + "activationAccount?code=" + encodedUserId;
+
+		String subject = "Link aktywacyjny";
+		sendMail(subject, activationLink, uzytkownik.getMail());
+	}
+	
 }

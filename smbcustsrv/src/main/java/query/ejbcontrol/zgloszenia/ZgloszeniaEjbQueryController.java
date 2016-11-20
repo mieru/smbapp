@@ -21,9 +21,10 @@ public class ZgloszeniaEjbQueryController extends AbstractEjbQueryController<Zgl
 	
 	public String generujNumerZgloszenia() {
 		Integer id = entityManager.createQuery("select max(z.id) from Zgloszenie z", Integer.class).getSingleResult();
+		id++;
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM");
-		return dateFormat.format(new Date(System.currentTimeMillis())) + "/" + ++id;
+		return dateFormat.format(new Date(System.currentTimeMillis())) + "/" + id;
 	}
 
 	

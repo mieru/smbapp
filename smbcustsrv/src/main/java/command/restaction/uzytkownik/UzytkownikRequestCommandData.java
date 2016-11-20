@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class UzytkownikJsonData{
+public class UzytkownikRequestCommandData{
 	@XmlElement(name="id_uzytkownika")
     public Integer idUser;
     @XmlElement(name="username")

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ZgloszenieJsonData{
+public class ZgloszenieRequestData{
 	@XmlElement(name="id_uzytkownika")
     public Integer idUser;
     @XmlElement(name="id_kategoria")

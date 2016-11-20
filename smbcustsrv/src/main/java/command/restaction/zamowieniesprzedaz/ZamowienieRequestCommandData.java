@@ -2,7 +2,7 @@ package command.restaction.zamowieniesprzedaz;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class ZamowienieJsonData {
+public class ZamowienieRequestCommandData {
 	    @XmlElement(name="adres_dostawy")
 	    public String adresDostawy;
 	    @XmlElement(name="czyFaktura")
@@ -16,7 +16,7 @@ public class ZamowienieJsonData {
 	    @XmlElement(name="wiad_do_sprz")
 	    public String wiadDoSprzedawcy;
 	    @XmlElement(name="id_zamawiajacego")
-	    public String idZamawiajacego;
+	    public Integer idZamawiajacego;
 	    @XmlElement(name="id_zamowienia")
 	    public Integer idZamowienia;
 	    @XmlElement(name="tresc")

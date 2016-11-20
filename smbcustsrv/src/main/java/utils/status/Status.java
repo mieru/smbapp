@@ -25,6 +25,30 @@ public class Status {
 		}
 
 	}
+	public static class USER_ROLE {
+		public static final String CUSTOMER = "A";
+		public static final String ADMIN = "N";
+		public static final String EMPLOYEE = "L";
+
+		public static final String CUSTOMER_TEXT = "Klient";
+		public static final String ADMIN_TEXT = "Admin";
+		public static final String EMPLOYEE_TEXT = "Pracownik";
+
+		public static String getText(String userState) {
+			switch (userState) {
+				case CUSTOMER :
+					return CUSTOMER_TEXT;
+				case ADMIN :
+					return ADMIN_TEXT;
+				case EMPLOYEE :
+					return EMPLOYEE_TEXT;
+				default :
+					return userState;
+			}
+
+		}
+
+	}
 	public static class ZGLOSZENIE_STATE {
 		public static final String REALIZOWANE = "R";
 		public static final String NOWE = "N";
