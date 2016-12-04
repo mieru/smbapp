@@ -1,0 +1,48 @@
+<div class="container" ng-app="smb">
+	<div ng-controller="konfMailController">
+		<form id="mailKonf" class="form-horizontal"
+			ng-submit="saveMailConf()">
+			<div id="loginbox" class="col-md-12 col-sm-2">
+				<div class="row">
+					<div class="panel-body col-md-12">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<div style="margin-bottom: 20px" class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-envelope"></i></span> <input
+										id="mail" type="email" class="form-control"
+										name="mail" ng-model="mailKonf.mail"
+										placeholder="E-mail" required>
+								</div>
+								<div style="margin-bottom: 20px" class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-briefcase"></i></span> <input
+										id="password" type="password" class="form-control"
+										name="password" ng-model="mailKonf.password" value=""
+										placeholder="Hasło" required>
+								</div>
+								<div style="margin-bottom: 20px" class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-briefcase"></i></span> <input
+										id="register_login" type="text" class="form-control"
+										name="register_login" ng-model="mailKonf.host"
+										placeholder="Host" required>
+								</div>
+								<div style="margin-bottom: 20px" class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-lock"></i></span> <input
+										id="port" type="text" class="form-control"
+										name="port" ng-model="mailKonf.port"
+										placeholder="Port" required pattern="\d+">
+								</div>
+								<div class="col-sm-12" style="text-align: right;">
+									<button id="btn-login" type="submit" class="btn btn-success">Zapisz</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -33,7 +33,7 @@ public class LogowanieFacade {
 			uzytkownik.setPassword(new String(Base64.getEncoder().encode(loginRequestData.password.getBytes())));
 			List<Uzytkownik> userList = uzytkownikEjbQueryController.findEntity(uzytkownik);
 			
-			if (userList.size() == 1) {
+			if (userList.size() == 1 && userList.iterator().next().getRole().contains(Status.USER_ROLE.CUSTOMER)) {
 				uzytkownik = userList.iterator().next();
 				if (uzytkownik.getState().equals(Status.USER_STATE.ACTIVE)) {
 					jsonObject.put(LOGIN_RESULT, Boolean.TRUE);

@@ -46,7 +46,7 @@ public class UzytkownikFacade {
 		return jsonObject.toString();
 	}
 	
-	public String sprawdzDaneLogowania(UzytkownikRequestCommandData uzytkownikRequestData) throws JSONException{
+	public String poprawDaneUzytkownika(UzytkownikRequestCommandData uzytkownikRequestData) throws JSONException{
 		JSONObject jsonObject = new JSONObject();
 		Uzytkownik uzytkownik = null;
 		if(uzytkownikRequestData.idUser != null){

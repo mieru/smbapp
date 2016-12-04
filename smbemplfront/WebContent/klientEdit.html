@@ -1,0 +1,105 @@
+<div ng-app="smb">
+	<div ng-controller="editKlientController">
+	<form  ng-submit="editKlientAction()">
+		<div class="col-md-6">
+				<div style="margin-bottom: 20px" class="input-group" ng-show="userPerson">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span> <input id="register_name"
+						type="text" class="form-control" name="register_name"
+						ng-model="user.name" value="" placeholder="Imię" ng-required="userPerson">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group" ng-show="userPerson">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span> <input id="register_name"
+						type="text" class="form-control" name="register_name"
+						ng-model="user.surname"  placeholder="Nazwisko" ng-required="userPerson">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group" ng-show="userCompany">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-briefcase"></i></span> <input
+						id="register_namecompany" type="text" class="form-control"
+						name="register_namecompany" ng-model="user.company_name" value=""
+						placeholder="Nazwa" ng-required="userCompany">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group" ng-show="userCompany">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-briefcase"></i></span> <input
+						id="register_nip" type="text" class="form-control"
+						name="register_nip" ng-model="user.nip" value="" placeholder="Nip" ng-required="userCompany">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+						<span class="input-group-addon"><i
+							class="glyphicon glyphicon-lock"></i></span> <input
+							id="login" type="text" class="form-control"
+							name="login" ng-model="user.login" placeholder="Login"
+							required>
+					</div>
+					<div style="margin-bottom: 20px" class="input-group">
+						<span class="input-group-addon"><i
+							class="glyphicon glyphicon-lock"></i></span> <input
+							id="password" type="text" class="form-control"
+							name="password" ng-model="user.password" placeholder="Hasło"
+							required>
+					</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-envelope"></i></span> <input
+						id="register_email" type="email" class="form-control"
+						name="register_email" ng-model="user.email" placeholder="E-mail"
+						required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-phone-alt"></i></span> <input
+						id="register_phone" type="text" class="form-control"
+						name="register_phone" ng-model="user.phone"
+						placeholder="Telefon kontaktowy" pattern="\d+">
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input id="register_street"
+						type="text" class="form-control" name="register_street"
+						ng-model="user.street" value="" placeholder="Ulica" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_building_number" type="text" class="form-control"
+						name="register_building_number" ng-model="user.number_house"
+						placeholder="Numer domu" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_flat_number" type="text" class="form-control"
+						name="register_flat_number" ng-model="user.number_flat"
+						placeholder="Numer mieszkania">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input id="register_city"
+						type="text" class="form-control" name="register_city"
+						ng-model="user.city" placeholder="Miejscowość" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_post_code" type="text" class="form-control"
+						name="register_post_code" ng-model="user.post_code"
+						placeholder="Kod pocztowy" required>
+				</div>
+				<div class="col-md-12" style="margin-top: 10px; text-align: right">
+					<input type="submit" id="btn-save-form" class="btn btn-success"
+						value="Zapisz">
+				</div>
+			</div>
+		</form>
+		<div class="col-md-12" style="margin-top: 10px; text-align: right">
+				<input type="button" id="btn-save-form" class="btn btn-success"
+						value="Usuń klienta" ng-click="removeElement()">
+						 </div>
+	</div>
+</div>

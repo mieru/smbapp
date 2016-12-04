@@ -18,7 +18,7 @@ app.controller("fakturaController", [
 				});
 
 			$scope.downloadPdf = function(faktura){
-				var url = '/smbcustsrv/rest/faktury/query/downloadPdf?';
+				var url = '/smbcustsrv/rest/query/faktury/downloadPdf?';
 					url += 'idFaktury=' + faktura.id;
 				window.location.replace(url);
 			}

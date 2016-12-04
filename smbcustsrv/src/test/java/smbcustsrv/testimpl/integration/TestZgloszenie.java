@@ -118,7 +118,7 @@ public class TestZgloszenie implements IntegrationTest{
 	
 	
 	@Test
-	public void testDodaniaZgloszenia() throws AddressException, JSONException, MessagingException {
+	public void addNewNotification() throws AddressException, JSONException, MessagingException {
 		String numer_zgl= zgloszeniaEjbQueryController.generujNumerZgloszenia();
 		zgloszenieRequestData.idZgloszenia = zgloszenieFacade.dodajZgloszenie(zgloszenieRequestData);
 		

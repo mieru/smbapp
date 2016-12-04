@@ -13,6 +13,7 @@ app.controller("kontaktController", [
 			getZgloszeniaUzytkownika();
 			$http.post('/smbcustsrv/rest/query/zgloszenia/getKategorie').success(function(response){
 				$scope.katkontakt = response;
+				 $scope.idKategoriaZgl = '' + response[0].id
 			});
 			
 			
@@ -33,7 +34,7 @@ app.controller("kontaktController", [
 						temat: $scope.zgloszenie_temat
 					}
 				
-				$http.post('/smbcustsrv/rest/command/zgloszenia/dodajZgloszenie', config).success(function(response){
+				$http.post('/smbcustsrv/rest/command/zgloszenia/addNewNotification', config).success(function(response){
 					getZgloszeniaUzytkownika();
 				});
 			}
@@ -103,7 +104,7 @@ app.controller("zgloszenieDetailController", [
                                         				id_zgloszenia: $routeParams.id_zgloszenia,
                                         				id_uzytkownika: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbcustsrv/rest/command/zgloszenia/addActivity', config).success(
+                                        			$http.post('/smbcustsrv/rest/command/zgloszenia/addMessageToNotification', config).success(
                                         					function(response){
                                         						getZgloszenieById();
                                         						$scope.tresc_wiadomosci = "";

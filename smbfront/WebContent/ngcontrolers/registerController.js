@@ -24,7 +24,6 @@ app.controller("registerController", [
 					flat_number : $scope.register_flat_number,
 					city : $scope.register_city,
 					post_code : $scope.register_post_code,
-					
 					activationUri : $location.absUrl()
 				};
 			alert("Rejestacja...")

@@ -26,9 +26,9 @@ public class Status {
 
 	}
 	public static class USER_ROLE {
-		public static final String CUSTOMER = "A";
-		public static final String ADMIN = "N";
-		public static final String EMPLOYEE = "L";
+		public static final String CUSTOMER = "C";
+		public static final String ADMIN = "A";
+		public static final String EMPLOYEE = "E";
 
 		public static final String CUSTOMER_TEXT = "Klient";
 		public static final String ADMIN_TEXT = "Admin";

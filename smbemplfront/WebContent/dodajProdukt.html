@@ -1,0 +1,89 @@
+<div ng-app="smb" ng-controller="dodajProduktController">
+	<div>
+		<form ng-submit="dodajProdAction()">
+			<div class="col-md-6">
+				Zdjecie:</br> <img class="group list-group-image" src="{{newProd.image}}"
+					style="width: 150px; height: 150px; margin: 10px" /> <input
+					type="file" fileread="newProd.image" /> Nazwa produktu:
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span> <input id="register_name"
+						type="text" class="form-control" name="register_name"
+						ng-model="newProd.name" value="" placeholder="Nazwa produktu"
+						ng-required="true">
+				</div>
+				Opis:
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span>
+					<textarea class="form-control" ng-model="newProd.opis" rows="3"
+						cols=" " placeholder="Opis" required></textarea>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-lg-12" style="margin-bottom: 15px" required>
+						Kategoria produktu: <select class="form-control"
+							ng-model="newProd.kat" required>
+							<option ng-repeat="kat in katprod" value="{{kat.id}}">{{kat.name}}</option>
+						</select> Magazyn: <select class="form-control"
+							ng-model="newProd.id_magazynu" required>
+							<option ng-repeat="mag in magazyny" value="{{mag.id}}">{{mag.name}}</option>
+						</select>
+					</div>
+					<div class="col-lg-12" style="margin-bottom: 15px" required>
+						<div class="row">
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Cena netto: <input id="register_street" type="text"
+										class="form-control" name="register_street"
+										ng-model="newProd.cnetto" value="" placeholder="Cena netto"
+										required>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Stawka VAT: <input id="register_building_number" type="number"
+										class="form-control" name="register_building_number"
+										ng-model="newProd.stawka_vat" placeholder="Stawka VAT"
+										required> 
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div style="margin-bottom: 20px" class="input-group">
+									Jednostka: <input id="register_flat_number" type="text"
+										class="form-control" name="register_flat_number"
+										ng-model="newProd.jednostka" placeholder="Jednostka miary">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div style="margin-bottom: 20px" class="input-group">
+									Ilość<input
+										ng-init="newProd.ilosc = 0" id="register_city" type="number"
+										min="0" class="form-control" name="register_city"
+										ng-model="newProd.ilosc" placeholder="Ilość">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div style="margin-bottom: 20px" class="input-group">
+									Stan min.<input
+										ng-init="newProd.stan_min = 1" id="register_city"
+										type="number" min="1" class="form-control"
+										name="register_city" ng-model="newProd.stan_min"
+										placeholder="Stan minimalny">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" style="margin-top: 10px; text-align: right">
+							<input type="submit" id="btn-save-form" class="btn btn-success"
+								value="Utwórz">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

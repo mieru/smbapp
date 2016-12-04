@@ -1,0 +1,93 @@
+<div ng-app="smb" ng-controller="dodajPracController">
+	<div>
+		<form ng-submit="dodajPracAction()">
+			<div class="col-md-6">
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span> <input id="register_name"
+						type="text" class="form-control" name="register_name"
+						ng-model="newUser.name" value="" placeholder="Imię"
+						ng-required="true">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-user"></i></span> <input id="register_name"
+						type="text" class="form-control" name="register_name"
+						ng-model="newUser.surname" placeholder="Nazwisko"
+						ng-required="true">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-lock"></i></span> <input id="login"
+						type="text" class="form-control" name="login"
+						ng-model="newUser.login" placeholder="Login" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-lock"></i></span> <input id="password"
+						type="text" class="form-control" name="password"
+						ng-model="newUser.password" placeholder="Hasło" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-envelope"></i></span> <input
+						id="register_email" type="email" class="form-control"
+						name="register_email" ng-model="newUser.email"
+						placeholder="E-mail" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-phone-alt"></i></span> <input
+						id="register_phone" type="text" class="form-control"
+						name="register_phone" ng-model="newUser.phone"
+						placeholder="Telefon kontaktowy" pattern="\d+">
+				</div>
+				<h4>Uprawnienia:</h4>
+				<label class="checkbox-inline"><input type="checkbox"
+					value="" ng-model="czyPrac">Pracownik</label> <label
+					class="checkbox-inline"><input type="checkbox" value=""
+					ng-model="czyAdmin">Administrator</label>
+			</div>
+
+			<div class="col-md-6">
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input id="register_street"
+						type="text" class="form-control" name="register_street"
+						ng-model="newUser.street" value="" placeholder="Ulica" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_building_number" type="text" class="form-control"
+						name="register_building_number" ng-model="newUser.number_house"
+						placeholder="Numer domu" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_flat_number" type="text" class="form-control"
+						name="register_flat_number" ng-model="newUser.number_flat"
+						placeholder="Numer mieszkania">
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input id="register_city"
+						type="text" class="form-control" name="register_city"
+						ng-model="newUser.city" placeholder="Miejscowość" required>
+				</div>
+				<div style="margin-bottom: 20px" class="input-group">
+					<span class="input-group-addon"><i
+						class="glyphicon glyphicon-home"></i></span> <input
+						id="register_post_code" type="text" class="form-control"
+						name="register_post_code" ng-model="newUser.post_code"
+						placeholder="Kod pocztowy" required>
+				</div>
+				<div class="col-md-12" style="margin-top: 10px; text-align: right">
+					<input type="submit" id="btn-save-form" class="btn btn-success"
+						value="Utwórz">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

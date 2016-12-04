@@ -51,7 +51,12 @@ public class ZamowienieFacade {
 		ZamowienieSprzedaz zamowienieSprzedaz = new ZamowienieSprzedaz();
 		zamowienieSprzedaz.setAdresDostawy(zamowienieRequestCommandData.adresDostawy);
 		zamowienieSprzedaz.setCzyFaktura(zamowienieRequestCommandData.czyFaktura);
-		zamowienieSprzedaz.setDaneDoFaktury(zamowienieRequestCommandData.daneDoFaktury);
+		if(zamowienieSprzedaz.getCzyFaktura() == null){
+			zamowienieSprzedaz.setCzyFaktura(false);
+		}else{
+		    zamowienieSprzedaz.setDaneDoFaktury(zamowienieRequestCommandData.daneDoFaktury);
+		}
+		
 		zamowienieSprzedaz.setDataZlozenia(new Timestamp(System.currentTimeMillis()));
 		zamowienieSprzedaz.setListaProduktow(zamowienieRequestCommandData.listaPoduktow);
 		zamowienieSprzedaz.setStatus(Status.USER_STATE.NEW);

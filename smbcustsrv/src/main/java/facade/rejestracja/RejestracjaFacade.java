@@ -28,9 +28,11 @@ public class RejestracjaFacade {
 	@EJB
 	UzytkownikEjbQueryController uzytkownikEjbQueryController;
 	
+	@EJB
+	MailSender mailSender;
+	
 	public String rejestrujUzytkownika(RegisterRequestData registerRequestData) throws JSONException, AddressException, MessagingException{
 		JSONObject jsonObject = new JSONObject();
-		MailSender mailSender = new MailSender();
 		
 		Uzytkownik uzytkownik = fillUzytkownikByRequest(registerRequestData);
 		if(uzytkownikEjbQueryController.isLoginExist(uzytkownik.getLogin())){

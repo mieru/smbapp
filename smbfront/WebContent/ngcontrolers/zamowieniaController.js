@@ -53,9 +53,9 @@ app.controller("zamowienieDetailController", [
                                 				var config = {
                                         				tresc : $scope.tresc_wiadomosci,
                                         				id_zamowienia: $routeParams.id_zamowienia,
-                                        				id_uzytkownika: $cookieStore.get('loggedId')
+                                        				id_zamawiajacego: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbcustsrv/rest/command/zamowienie/addActivity', config).success(
+                                        			$http.post('/smbcustsrv/rest/command/zamowienie/addMessageToOrder', config).success(
                                         					function(response){
                                         						getZamowienieById();
                                         						$scope.tresc_wiadomosci = "";

@@ -26,6 +26,7 @@
 	<class>dbmodel.KategoiaZgloszenia</class>
 	<class>dbmodel.KategoriaTowar</class>
 	<class>dbmodel.Magazyn</class>
+	<class>dbmodel.MailKonf</class>
 	<class>dbmodel.Paragon</class>
 	<class>dbmodel.Producent</class>
 	<class>dbmodel.Towar</class>

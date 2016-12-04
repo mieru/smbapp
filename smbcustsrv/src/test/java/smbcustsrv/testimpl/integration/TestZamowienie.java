@@ -16,6 +16,7 @@ import javax.mail.internet.AddressException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.json.JSONException;
@@ -121,7 +122,7 @@ public class TestZamowienie implements IntegrationTest{
 	
 	
 	@Test
-	public void testDodaniaZamowienia() throws AddressException, JSONException, MessagingException {
+	public void addNewOrder() throws AddressException, JSONException, MessagingException {
 		String numer_zgl= zamowieniaSprzedEjbQueryController.generujNumerZgloszenia();
 		zamowienieFacade.dodajNoweZamowienie(zamowienieRequestData);
 		

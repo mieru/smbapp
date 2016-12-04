@@ -1,0 +1,44 @@
+<div ng-app="smb" ng-controller="magazynKonfController">
+	<div class="row">
+		<div class="col-md-6" style="margin: 5px;">
+			<div class="row">
+				<div class="col-lg-12">
+					<form ng-submit="dodajMagazyn()">
+						<div class="col-lg-10" style="margin-bottom: 15px">
+							<input id="temat" type="text" class="form-control" name="temat"
+								ng-model="name" placeholder="Nazwa nowego magazynu"
+								required>
+						</div>
+						<div class="col-lg-2"
+							style="margin-bottom: 15px; text-align: right">
+							<input type="submit" id="button-1" class="btn btn-primary"
+								value="Dodaj magazyn">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" style="margin: 5px;">
+			<div ng-app="smb">
+				<h4>Magazyny</h4>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Lp.</th>
+							<th>Nazwa</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="m in magazyny" >
+							<td>{{$index+1}}</td>
+							<td>{{m.name}}</td>
+							<td><span class="glyphicon glyphicon-remove" ng-click="removeElement(m)" style="cursor: pointer;"></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

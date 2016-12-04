@@ -2,6 +2,9 @@ package mailer;
 
 import java.util.Properties;
 
+import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -10,18 +13,27 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import dbmodel.MailKonf;
 import dbmodel.Uzytkownik;
+import query.ejbcontrol.konfmail.KonfMailEjbQueryController;
 import utils.SmbUtil;
 
-public class MailSender { // DOROBIC KONFIGURACJE Z GUI
+@Stateless
+@LocalBean
+public class MailSender { 
 	private Properties mailServerProperties = null;
 	private Session getMailSession = null;
 	private MimeMessage generateMailMessage = null;
 
+	@EJB
+	KonfMailEjbQueryController konfMailEjbQueryController;
+	
+	
 	public void sendMail(String subject, String body, String email) throws AddressException, MessagingException {
+		MailKonf mailKonf = konfMailEjbQueryController.findAll().iterator().next();
 		System.out.println("SendMail START");
 		mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587"); // standardowy port smtp 25
+		mailServerProperties.put("mail.smtp.port", mailKonf.getPort()); 
 		mailServerProperties.put("mail.smtp.auth", "true");
 		mailServerProperties.put("mail.smtp.starttls.enable", "true");
 
@@ -33,7 +45,7 @@ public class MailSender { // DOROBIC KONFIGURACJE Z GUI
 
 		Transport transport = getMailSession.getTransport("smtp");
 
-		transport.connect("smtp.gmail.com", "smbpracinz@gmail.com", "SMBpracinz2016");
+		transport.connect(mailKonf.getHost(), mailKonf.getMail(), mailKonf.getPassword());
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 		System.out.println("SendMail STOP");

@@ -19,6 +19,8 @@ public class ZamowieniaSprzedEjbQueryController extends AbstractEjbQueryControll
 	
 	public String generujNumerZgloszenia() {
 		Integer id = entityManager.createQuery("select max(z.id) from ZamowienieSprzedaz z", Integer.class).getSingleResult();
+		if(id == null)
+			id = 0;
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM");
 		return dateFormat.format(new Date(System.currentTimeMillis())) + "/" + ++id;

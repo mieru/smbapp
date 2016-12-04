@@ -1,0 +1,65 @@
+<div ng-app="smb" ng-controller="uzytkownicyAdminController">
+	<form id="loginform" class="form-horizontal" ng-submit="addNewUser()">
+		<div id="loginbox" class="col-md-12 col-sm-2">
+			<div class="row">
+				<div class="col-md-12">
+					<button type="button" class="btn btn-default btn-md"
+						ng-click="goToPracownicy()">
+						</span> Pracownicy
+					</button>
+					<button type="button" class="btn btn-primary btn-md"
+						ng-click="goToKlienci()">
+						</span> Klienci
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" style="margin: 5px;">
+					<h2>Klienci</h2>
+					<div class="row">
+					<div class="col-lg-12">
+						<button style="margin-bottom: 10px"  type="button" class="btn btn-success btn-md"
+							ng-click="goToAddCustomer()">
+							</span> Dodaj Klienta
+						</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="well well-md">
+								<input id="szuaj_oferta" type="text" class="form-control"
+									name="username" ng-model="search" value=""
+									placeholder="Kogo szukasz ?">
+							</div>
+						</div>
+					</div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Lp.</th>
+								<th>Imię</th>
+								<th>Nazwisko</th>
+								<th>Login</th>
+								<th>Uprawnienia</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="uzyt in uzytkownicy | filter:search "
+								ng-click="editKlientForm(uzyt)">
+								<td>{{$index+1}}</td>
+								<td>{{uzyt.name}}</td>
+								<td>{{uzyt.surname}}</td>
+								<td>{{uzyt.login}}</td>
+								<td>{{uzyt.upr}}</td>
+								<td>{{uzyt.status}}</td>
+								<td><span ng-click="removeElement(uzyt)"
+									class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

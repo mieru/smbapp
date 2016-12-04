@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="smbemplsrv">
+	<jta-data-source>java:/PostgresDS</jta-data-source>
+	<class>smbemplsrv.dbmodel.DaneFirmy</class>
+	<class>smbemplsrv.dbmodel.FakturaSprzedazy</class>
+	<class>smbemplsrv.dbmodel.KategoiaZgloszenia</class>
+	<class>smbemplsrv.dbmodel.KategoriaTowar</class>
+	<class>smbemplsrv.dbmodel.Magazyn</class>
+	<class>smbemplsrv.dbmodel.MailKonf</class>
+	<class>smbemplsrv.dbmodel.Paragon</class>
+	<class>smbemplsrv.dbmodel.Producent</class>
+	<class>smbemplsrv.dbmodel.Towar</class>
+	<class>smbemplsrv.dbmodel.TowarImage</class>
+	<class>smbemplsrv.dbmodel.Uzytkownik</class>
+	<class>smbemplsrv.dbmodel.WiadomoscZamSprzedaz</class>
+	<class>smbemplsrv.dbmodel.ZamowienieSprzedaz</class>
+	<class>smbemplsrv.dbmodel.Zgloszenie</class>
+	<class>smbemplsrv.dbmodel.ZgloszenieKomentarz</class>
+	</persistence-unit>
+</persistence>

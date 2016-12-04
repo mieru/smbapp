@@ -26,7 +26,7 @@ public class UzytkownikRestAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String checkLoginData(UzytkownikRequestCommandData uzytkownikRequestData) throws JSONException, AddressException, MessagingException {
-		return uzytkownikFacade.sprawdzDaneLogowania(uzytkownikRequestData);
+		return uzytkownikFacade.poprawDaneUzytkownika(uzytkownikRequestData);
 	}
 	
 }

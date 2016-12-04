@@ -12,9 +12,11 @@ import javax.mail.internet.AddressException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +30,7 @@ import dbmodel.DaneFirmy;
 import dbmodel.FakturaSprzedazy;
 import dbmodel.KategoiaZgloszenia;
 import dbmodel.KategoriaTowar;
+import dbmodel.KonfMail;
 import dbmodel.Magazyn;
 import dbmodel.Paragon;
 import dbmodel.Producent;
@@ -42,6 +45,7 @@ import facade.rejestracja.RejestracjaFacade;
 import facade.uzytkownik.UzytkownikFacade;
 import mailer.MailSender;
 import query.ejbcontrol.abst.AbstractEjbQueryController;
+import query.ejbcontrol.konfmail.KonfMailEjbQueryController;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.restaction.uzytkownik.UzytkwonikRequestQueryData;
 import smbcustsrv.testinteface.IntegrationTest;
@@ -62,6 +66,7 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	    				      SmbUtil.class,
 	    				      Status.class,
 	    				      MailSender.class,
+	    				      KonfMailEjbQueryController.class,
 	    				      UzytkownikEjbQueryController.class,
 	    				      UzytkownikEjbCommandController.class,
 	    				      AbstractEjbCommandController.class,
@@ -69,6 +74,7 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	    				      UzytkownikFacade.class,
 	    				      AbstractEjbQueryController.class,
 	    				  	  Uzytkownik.class,
+	    				  	  KonfMail.class,
 	    				      DaneFirmy.class,
 		        		 	  FakturaSprzedazy.class,
 		        			  KategoiaZgloszenia.class,
@@ -117,15 +123,7 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 		 registerRequestData.buildingNumber = "1";
 		 registerRequestData.city = "Testowe";
 		 registerRequestData.postCode = "11-111";
-	//usuniecie go z bazy jesli istnieje 
-		 uzytkownik = new Uzytkownik();
-		 uzytkownik.setLogin(registerRequestData.username);
-		 List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
-			if(resultList.size() > 0){
-				for (Uzytkownik uzyt : resultList) {
-					uzytkownikEjbCommandController.delete(uzyt);
-				}
-			}
+	
 	//nowe dane do poprawienia
 			uzytkownikRequestData  = new UzytkownikRequestCommandData();
 			uzytkownikRequestData.name = "TestNEW";
@@ -141,12 +139,30 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	
 	
 	@Test
-	public void testRejestracjaAktywacjaLogowanie() throws AddressException, JSONException, MessagingException {
+	@InSequence(1)
+	public void cleanBeforeTest() throws AddressException, JSONException, MessagingException {
+		 uzytkownik = new Uzytkownik();
+		 uzytkownik.setLogin(registerRequestData.username);
+		 List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
+			if(resultList.size() > 0){
+				for (Uzytkownik uzyt : resultList) {
+					uzytkownikEjbCommandController.delete(uzyt);
+				}
+			}
+	}
+		
+	@Test
+	@InSequence(2)
+	public void registerUser() throws AddressException, JSONException, MessagingException {
 		rejestracjaFacade.rejestrujUzytkownika(registerRequestData);
+		
+		 uzytkownik = new Uzytkownik();
+		 uzytkownik.setLogin(registerRequestData.username);
 		List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
+		
 		assertNotNull(resultList);
 		assertEquals(resultList.size(), 1);
-		
+			
 		uzytkownik = resultList.iterator().next();
 		 
 		assertNotNull(uzytkownik);
@@ -165,8 +181,19 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 		assertEquals(uzytkownik.getRole(), Status.USER_ROLE.CUSTOMER);
 		
 		
+	}
+	
+	
+	@Test
+	@InSequence(3)
+	public void changeUserData() throws AddressException, JSONException, MessagingException {
+		 uzytkownik = new Uzytkownik();
+		 uzytkownik.setLogin(registerRequestData.username);
+		 List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
+		 uzytkownik = resultList.iterator().next();
+		 
 		uzytkownikRequestData.idUser = uzytkownik.getIdUser();
-		uzytkownikFacade.sprawdzDaneLogowania(uzytkownikRequestData);
+		uzytkownikFacade.poprawDaneUzytkownika(uzytkownikRequestData);
 		
 		uzytkownik = uzytkownikEjbQueryController.findEntityByID(uzytkownik.getIdUser());
 		
@@ -185,7 +212,8 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 		
 	}
 	
-	@After
+	@Test
+	@InSequence(4)
 	public void cleanAfterTest(){
 		uzytkownikEjbCommandController.delete(uzytkownik);
 	}

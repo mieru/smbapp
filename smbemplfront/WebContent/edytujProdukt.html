@@ -1,0 +1,101 @@
+<div ng-app="smb" ng-controller="edytujProduktController">
+	<div>
+		<form ng-submit="edytujProdAction()">
+			<div class="col-md-6">
+				Zdjecie:</br> <img class="group list-group-image" src="{{prod.image}}"
+					style="width: 150px; height: 150px; margin: 10px" /> <input
+					type="file" fileread="prod.image" />
+				<div class="col-md-12" style="margin-bottom: 20px"
+					class="input-group">
+					Nazwa produktu: <input id="register_name" type="text"
+						class="form-control" name="register_name" ng-model="prod.name"
+						value="" placeholder="Nazwa produktu" ng-required="true">
+				</div>
+
+				<div class="col-md-12" style="margin-bottom: 20px"
+					class="input-group">
+					Opis:
+					<textarea class="form-control" ng-model="prod.opis" rows="3"
+						cols=" " placeholder="Opis" required></textarea>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-lg-12" style="margin-bottom: 15px" required>
+						Kategoria produktu: <select class="form-control"
+							ng-model="prod.kat" required>
+							<option ng-repeat="kat in katprod" value="{{kat.id}}">{{kat.name}}</option>
+						</select> Magazyn: <select class="form-control" ng-model="prod.id_magazynu"
+							required>
+							<option ng-repeat="mag in magazyny" value="{{mag.id}}">{{mag.name}}</option>
+						</select>
+					</div>
+					<div class="col-lg-12" style="margin-bottom: 15px" required>
+						<div class="row">
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Cena netto: <input id="register_street" type="text"
+										class="form-control" name="register_street"
+										ng-model="prod.cnetto" value="" placeholder="Cena netto"
+										required>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Stawka VAT: <input id="register_building_number" type="number"
+										class="form-control" name="register_building_number"
+										ng-model="prod.stawka_vat" placeholder="Stawka VAT" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Jednostka: <input id="register_flat_number" type="text"
+										class="form-control" name="register_flat_number"
+										ng-model="prod.jednostka" placeholder="Jednostka miary">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div style="margin-bottom: 20px" class="input-group">
+									Ilość<input ng-init="prod.ilosc = 0" id="register_city"
+										type="number" min="0" class="form-control"
+										name="register_city" ng-model="prod.ilosc" placeholder="Ilość">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<div class="row">
+										<div style="margin-bottom: 20px" class="input-group">
+											Stan minimalny<input ng-init="prod.stan_min = 1"
+												id="register_city" type="number" min="1"
+												class="form-control" name="register_city"
+												ng-model="prod.stan_min" placeholder="Stan minimalny" readonly>
+										</div>
+										<label class="checkbox-inline"><input type="checkbox"
+											value="" ng-model="prod.czyStanUzyt">Ustaw stan minimalny</label></br>
+										<div ng-show="prod.czyStanUzyt" style="margin-bottom: 20px" class="input-group">
+											Stan minimalny uzytkownika<input
+												ng-init="prod.stan_min = 1" id="register_city" type="number"
+												min="1" class="form-control" name="register_city"
+												ng-model="prod.stan_min_uzyt" placeholder="Stan minimalny uzytkownika"
+												ng-required="prod.czyStanUzyt">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12"
+								style="margin-top: 10px; text-align: right">
+								<input type="submit" id="btn-save-form" class="btn btn-success"
+									value="Zapisz zmiany">
+							</div>
+						</div>
+					</div>
+				</div>
+		</form>
+	</div>
+</div>
