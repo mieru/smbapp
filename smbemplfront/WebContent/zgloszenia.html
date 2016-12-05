@@ -1,0 +1,28 @@
+<div ng-app="smb" ng-controller="zgloszenieController">
+			<h4>Twoje zgloszenia:</h4>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Lp.</th>
+							<th>Data zgłoszenia</th>
+							<th>Kategoria</th>
+							<th>Temat</th>
+							<th>Klient</th>
+							<th>Status</th>
+							<th>Data zakończenia</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="zgloszenie in zgloszenia" style="cursor: pointer;"
+							ng-click="showDetail(zgloszenie)">
+							<td>{{$index+1}}</td>
+							<td>{{zgloszenie.data_zgloszenia | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+							<td>{{zgloszenie.kategoria}}</td>
+							<td>{{zgloszenie.temat}}</td>
+							<td>{{zgloszenie.klient}}</td>
+							<td>{{zgloszenie.status}}</td>
+							<td>{{zgloszenie.data_zamkniecia | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>

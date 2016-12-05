@@ -1,22 +1,29 @@
 <div ng-app="smb" ng-controller="katZglController">
 	<div class="row">
-		<div class="col-md-6" style="margin: 5px;">
-			<div class="row">
-				<div class="col-lg-12">
-					<form ng-submit="dodajKategorie()">
-						<div class="col-lg-10" style="margin-bottom: 15px">
-							<input id="temat" type="text" class="form-control" name="temat"
-								ng-model="name" placeholder="Nazwa nowej kategorii"
-								required>
+		<div class="col-lg-12">
+			<form ng-submit="dodajKategorie()">
+				<div class="row">
+					<div class="col-lg-4" style="margin-bottom: 15px">
+						<input id="temat" type="text" class="form-control" name="temat"
+							ng-model="name" placeholder="Nazwa nowej kategorii" required>
+					</div>
+					<div class="col-lg-2" style="margin-bottom: 15px">
+						<div class="row">
+							<label class="checkbox-inline"><input type="checkbox"
+								value="" ng-model="czyKlient">Widoczna dla klienta</label>
 						</div>
-						<div class="col-lg-2"
-							style="margin-bottom: 15px; text-align: right">
-							<input type="submit" id="button-1" class="btn btn-primary"
-								value="Dodaj kategorie">
-						</div>
-					</form>
+						<div class="row">
+							<label class="checkbox-inline"><input type="checkbox"
+								value="" ng-model="czyMagazyn">Zgloszenia magazynowe</label>
+						</div> 
+					</div>
+					<div class="col-lg-2"
+						style="margin-bottom: 15px; text-align: right">
+						<input type="submit" id="button-1" class="btn btn-primary"
+							value="Dodaj kategorie">
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 	<div class="row">
@@ -28,14 +35,15 @@
 						<tr>
 							<th>Lp.</th>
 							<th>Nazwa</th>
-							
+
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="kat in katZgl" >
+						<tr ng-repeat="kat in katZgl">
 							<td>{{$index+1}}</td>
 							<td>{{kat.name}}</td>
-							<td><span class="glyphicon glyphicon-remove" ng-click="removeElement(kat)" style="cursor: pointer;"></span></td>
+							<td><span class="glyphicon glyphicon-remove"
+								ng-click="removeElement(kat)" style="cursor: pointer;"></span></td>
 						</tr>
 					</tbody>
 				</table>

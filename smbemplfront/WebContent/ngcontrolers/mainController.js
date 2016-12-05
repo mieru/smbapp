@@ -12,6 +12,10 @@ app.controller("mainContoller", [
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
 			
+			$http.post('/smbemplsrv/rest/query/katzgl/getAll').success(function(data){
+				$rootScope.katZgl = data;
+			})
+			
 			$http.post('/smbemplsrv/rest/query/magkonf/getAll').success(function(data, status, headers, config) {
 				$rootScope.magazyny = data;
 			})
@@ -63,6 +67,12 @@ app.directive('magazynmenu',["$location", function($location) {
 app.directive('adminmenu',["$location", function($location) {
 	 return {
 		    templateUrl: "adminmenu.html"
+		    };
+
+}]);
+app.directive('zglmenu',["$location", function($location) {
+	 return {
+		    templateUrl: "zglmenu.html"
 		    };
 
 }]);

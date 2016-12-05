@@ -1,4 +1,4 @@
-package smbemplsrv.command.restaction.uzytkownicy;
+package smbemplsrv.command.restaction.zgloszenie;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -11,38 +11,28 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import smbemplsrv.facade.uzytkownicy.UzytkownicyFacade;
+import smbemplsrv.facade.zgloszenia.ZgloszeniaFacade;
 
 @RequestScoped
-@Path("/command/uzytkonf")
-public class UzytkownikRestAction {
+@Path("/command/zgloszenie")
+public class ZgloszenieRestAction {
 	
 	@EJB
-	UzytkownicyFacade uzytkownicyFacade;
+	ZgloszeniaFacade zgloszeniaFacade;
 	
 	@POST
-	@Path("/addNewUser")
+	@Path("/addNewMessage")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addNewUser(UzytkownikRequestData uzytkownikRequestData) throws AddressException, MessagingException {
-		return uzytkownicyFacade.dodajUzytkownika(uzytkownikRequestData);
+	public String addNewUser(ZgloszenieRequestData zgloszenieRequestData) throws AddressException, MessagingException {
+		return zgloszeniaFacade.dodajWiadomoscDoZgloszenia(zgloszenieRequestData);
 	}
 	
 	@POST
-	@Path("/editUser")
+	@Path("/closeZgl")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String editUser(UzytkownikRequestData uzytkownikRequestData) throws AddressException, MessagingException {
-		return uzytkownicyFacade.edytujUzytkownika(uzytkownikRequestData);
+	public String closeZgl(ZgloszenieRequestData zgloszenieRequestData) throws AddressException, MessagingException {
+		return zgloszeniaFacade.zamknijZgloszenie(zgloszenieRequestData);
 	}
-	
-	@POST
-	@Path("/deleteUser")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String deleteUser(UzytkownikRequestData uzytkownikRequestData) throws AddressException, MessagingException {
-		return uzytkownicyFacade.usunUzytkownika(uzytkownikRequestData);
-	}
-	
-	
 }
- 

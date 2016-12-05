@@ -233,6 +233,15 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "edytujProdukt.html"
+	}).when('/zgloszenieDetail', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "zgloszenieDetail.html"
 	}).otherwise({
 		resolve : {
 			"check" : function($location, $cookieStore) {

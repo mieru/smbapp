@@ -76,6 +76,8 @@
 												ng-model="prod.stan_min" placeholder="Stan minimalny" readonly>
 										</div>
 										<label class="checkbox-inline"><input type="checkbox"
+											value="" ng-model="prod.czyStanSys">Systemowy stan min.</label></br>
+										<label class="checkbox-inline"><input type="checkbox"
 											value="" ng-model="prod.czyStanUzyt">Ustaw stan minimalny</label></br>
 										<div ng-show="prod.czyStanUzyt" style="margin-bottom: 20px" class="input-group">
 											Stan minimalny uzytkownika<input

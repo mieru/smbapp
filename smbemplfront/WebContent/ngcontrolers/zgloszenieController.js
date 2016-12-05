@@ -1,31 +1,34 @@
-app.controller("zamowienieController", [
+app.controller("zgloszenieController", [
 		'$scope',
 		'$http',
 		'$location',
 		'$rootScope',
 		'$cookieStore',
 		'$route',
-		function($scope, $http, $location, $rootScope, $cookieStore, $route) {
-			$rootScope.pageTitle = 'Zamówienia';
+		'$routeParams',
+		function($scope, $http, $location, $rootScope, $cookieStore, $route, $routeParams) {
+			$rootScope.pageTitle = 'Zgloszenia';
 			$rootScope.showKat = false;
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
 			var config = {
 				id_uzytkownika : $cookieStore.get('loggedId'),
-				status : ''
+				id_kategorii : $routeParams.katId
 			}
-			$http.post('/smbcustsrv/rest/query/zamowienia/getZamowienia', config).success(function(response){
-				$scope.zamowienia = response;
+			
+			
+			$http.post('/smbemplsrv/rest/query/zgloszenia/getZgloszenia', config).success(function(response){
+				$scope.zgloszenia = response;
 			});
 			
-			$scope.showDetail = function(zamowienie){
-				$location.path('/zamowienieDetail').search({id_zamowienia: zamowienie.id});
+			$scope.showDetail = function(zgloszenie){
+				$location.path('/zgloszenieDetail').search({id_zgloszenia: zgloszenie.id});
 			}
 			
 		}]);
 
-app.controller("zamowienieDetailController", [
+app.controller("zgloszenieDetailController", [
                                 		'$scope',
                                 		'$http',
                                 		'$location',
@@ -33,33 +36,42 @@ app.controller("zamowienieDetailController", [
                                 		'$cookieStore',
                                 		'$routeParams',
                                 		function($scope, $http, $location, $rootScope, $cookieStore, $routeParams) {
-                                			$rootScope.pageTitle = 'Zamówienie';
-                                			getZamowienieById();
+                                			$rootScope.pageTitle = 'Zgloszenie';
+                                			getZgloszenieById();
                                 			
-                                			$scope.addActivity = function(){
-                                				getAktywnosciDoZamowienia();
+
+                                			$scope.closeTask = function(){
+                                				var config = {
+                                        				id_zgloszenia : $routeParams.id_zgloszenia
+                                        			}
+                                				$http.post('/smbemplsrv/rest/command/zgloszenie/closeZgl', config).success(function(data, status, headers, config) {
+                                					getZgloszenieById();
+                                				});
                                 			}
                                 			
-                                			function getZamowienieById(){
+                                			$scope.addActivity = function(){
+                                				addAktywnosciDoZgloszenia();
+                                			}
+                                			
+                                			function getZgloszenieById(){
                                 				var config = {
-                                        				id_zamowienia : $routeParams.id_zamowienia,
+                                        				id_zgloszenia : $routeParams.id_zgloszenia,
                                         			}
-                                        			$http.post('/smbcustsrv/rest/query/zamowienia/getZamowienieById', config).success(function(response){
-                                        				$scope.zamowienieDetail = response;
-                                        				$scope.listaProd = JSON.parse(response.listaProd);
+                                        			$http.post('/smbemplsrv/rest/query/zgloszenia/getZgloszenieById', config).success(function(response){
+                                        				$scope.zgloszenieDetail = response;
                                         				$scope.aktywnosci = response.aktywnosci;
                                         			});
                                 			}
                                 			
-                                			function getAktywnosciDoZamowienia(){
+                                			function addAktywnosciDoZgloszenia(){
                                 				var config = {
                                         				tresc : $scope.tresc_wiadomosci,
-                                        				id_zamowienia: $routeParams.id_zamowienia,
+                                        				id_zgloszenia : $routeParams.id_zgloszenia,
                                         				id_uzytkownika: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbcustsrv/rest/command/zamowienie/addActivity', config).success(
+                                        			$http.post('/smbemplsrv/rest/command/zgloszenie/addNewMessage', config).success(
                                         					function(response){
-                                        						getZamowienieById();
+                                        						getZgloszenieById();
                                         						$scope.tresc_wiadomosci = "";
                                         			});
                                 			}
@@ -67,9 +79,3 @@ app.controller("zamowienieDetailController", [
                                 			
                                 		}]);
 			
-app.directive('zamowienietable',[function() {
-		 return {
-			    templateUrl: "zamowienieTable.html"
-			    };
-	 
-	}]);

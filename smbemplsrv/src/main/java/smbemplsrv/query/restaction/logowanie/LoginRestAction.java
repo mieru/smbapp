@@ -26,5 +26,5 @@ public class LoginRestAction {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String checkLoginData(LoginRequestData loginRequestData) throws JSONException{
 		return logowanieFacade.sprawdzDaneLogowania(loginRequestData);
-	}
+	} 
 }

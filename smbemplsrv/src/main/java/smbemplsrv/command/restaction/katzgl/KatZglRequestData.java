@@ -11,4 +11,8 @@ public class KatZglRequestData {
 	public String name;
 	@XmlElement(name = "default")
 	public String def;
+	@XmlElement(name = "czyKlient")
+	public Boolean czyKlient;
+	@XmlElement(name = "czyMagazyn")
+	public Boolean czyMagazyn;
 }

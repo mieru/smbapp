@@ -13,7 +13,6 @@ public class ProduktRequestData {
 	public String def;
 	@XmlElement(name = "id_magazynu")
 	public Integer idMagazynu;
-	
 	@XmlElement(name = "image")
 	public String image;
 	@XmlElement(name = "opis")
@@ -40,6 +39,8 @@ public class ProduktRequestData {
 	public String fontColor;
 	@XmlElement(name = "czyStanUzyt")
 	public Boolean czyStanUzyt;
+	@XmlElement(name = "czyStanSys")
+	public Boolean czyStanSys;
 	
 	
 	

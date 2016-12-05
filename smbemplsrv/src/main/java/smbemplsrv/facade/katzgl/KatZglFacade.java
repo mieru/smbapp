@@ -41,7 +41,8 @@ public class KatZglFacade {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
 			jsonObject.put("name", kategoiaZgloszenia.getNazwa());
-			jsonObject.put("default", katCol.indexOf(kategoiaZgloszenia) == 1);
+			jsonObject.put("czyKlient", kategoiaZgloszenia.getCzyKlient());
+			jsonObject.put("czyMagazyn", kategoiaZgloszenia.getCzyMagazyn());
 			
 			jsonArray.put(jsonObject);
 		}
@@ -52,12 +53,24 @@ public class KatZglFacade {
 		JSONObject jsonObject = new JSONObject();
 		KategoiaZgloszenia kategoiaZgloszenia = new KategoiaZgloszenia();
 		kategoiaZgloszenia.setNazwa(katZglRequestData.name);
+		if(katZglRequestData.czyKlient == null){
+			kategoiaZgloszenia.setCzyKlient(false);
+		}else{
+			kategoiaZgloszenia.setCzyKlient(katZglRequestData.czyKlient);
+		}
+		if(katZglRequestData.czyMagazyn == null){
+			kategoiaZgloszenia.setCzyMagazyn(false);
+		}else{
+			kategoiaZgloszenia.setCzyMagazyn(katZglRequestData.czyMagazyn);
+		}
+		
 		
 		kategoiaZgloszenia = katZglEjbCommandController.insert(kategoiaZgloszenia);
 		
 		jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
 		jsonObject.put("name", kategoiaZgloszenia.getNazwa());
-		jsonObject.put("default", false);
+		jsonObject.put("czyKlient", kategoiaZgloszenia.getCzyKlient());
+		jsonObject.put("czyMagazyn", kategoiaZgloszenia.getCzyMagazyn());
 		
 		return jsonObject.toString();
 	}

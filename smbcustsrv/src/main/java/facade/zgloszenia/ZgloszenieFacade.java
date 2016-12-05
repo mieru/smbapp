@@ -30,86 +30,102 @@ import utils.status.Status;
 public class ZgloszenieFacade {
 	@EJB
 	ZgloszeniaEjbQueryController zgloszeniaEjbQueryController;
-	
+
 	@EJB
 	ZgloszeniaEjbCommandContoller zgloszeniaEjbCommandContoller;
-	
+
 	@EJB
 	UzytkownikEjbQueryController uzytkownikEjbQueryController;
-	
+
 	@EJB
 	KategoriaZgloszenieEjbQueryController kategoriaZgloszenieEjbQueryController;
-	
+
 	@EJB
-	ZgloszenieKomentarzEjbCommandContoller zgloszenieKomentarzEjbCommandContoller; 
-	
-	
-	public String getKategorieZglosznia() throws JSONException, AddressException, MessagingException {
-		List<KategoiaZgloszenia> katCol = kategoriaZgloszenieEjbQueryController.findAll();
+	ZgloszenieKomentarzEjbCommandContoller zgloszenieKomentarzEjbCommandContoller;
+
+	public String getKategorieZglosznia()
+			throws JSONException, AddressException, MessagingException {
+		List<KategoiaZgloszenia> katCol = kategoriaZgloszenieEjbQueryController
+				.findAll();
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = null;
-		
+
 		for (KategoiaZgloszenia kategoiaZgloszenia : katCol) {
-			jsonObject = new JSONObject();
-			jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
-			jsonObject.put("name", kategoiaZgloszenia.getNazwa());
-			jsonObject.put("default", katCol.indexOf(kategoiaZgloszenia) == 1);
-			
-			jsonArray.put(jsonObject);
+			if ("T".equals(kategoiaZgloszenia.getCzyKlient())) {
+				jsonObject = new JSONObject();
+				jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
+				jsonObject.put("name", kategoiaZgloszenia.getNazwa());
+
+				jsonArray.put(jsonObject);
+			}
 		}
 		return jsonArray.toString();
 	}
-	
-	public String getZgloszeniaUzytkownika(ZgloszenieRequestData zgloszenieRequestData) throws JSONException, AddressException, MessagingException {
-		Uzytkownik uzytkownik = uzytkownikEjbQueryController.findEntityByID(zgloszenieRequestData.idUser);
+
+	public String getZgloszeniaUzytkownika(ZgloszenieRequestData zgloszenieRequestData)
+			throws JSONException, AddressException, MessagingException {
+		Uzytkownik uzytkownik = uzytkownikEjbQueryController
+				.findEntityByID(zgloszenieRequestData.idUser);
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = null;
 		List<Zgloszenie> colZgl = uzytkownik.getZgloszenies2();
-		
+
 		for (Zgloszenie zgloszenie : colZgl) {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", zgloszenie.getIdZgloszenia());
 			jsonObject.put("numer_zgl", zgloszenie.getNumerZgloszenia());
-			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia().getTime());
-			if(zgloszenie.getDataZamkniecia() != null)
-			jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia().getTime());
-			jsonObject.put("kategoria", zgloszenie.getKategoiaZgloszenia().getNazwa());
+			jsonObject.put("data_zgloszenia",
+					zgloszenie.getDataZgloszenia().getTime());
+			if (zgloszenie.getDataZamkniecia() != null)
+				jsonObject.put("data_zamkniecia",
+						zgloszenie.getDataZamkniecia().getTime());
+			jsonObject.put("kategoria",
+					zgloszenie.getKategoiaZgloszenia().getNazwa());
 			jsonObject.put("temat", zgloszenie.getTemat());
-			if( zgloszenie.getUzytkownik1() != null){
-				jsonObject.put("pracownik_obsl", zgloszenie.getUzytkownik1().getName() +" "+  zgloszenie.getUzytkownik1().getSurname());
+			if (zgloszenie.getUzytkownik1() != null) {
+				jsonObject.put("pracownik_obsl",
+						zgloszenie.getUzytkownik1().getName() + " "
+								+ zgloszenie.getUzytkownik1().getSurname());
 			}
-			jsonObject.put("status", Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
-			
+			jsonObject.put("status",
+					Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
+
 			jsonArray.put(jsonObject);
 		}
-		
+
 		return jsonArray.toString();
 	}
-	
-	public String getZgloszenieById(ZgloszenieRequestData zgloszenieRequestData) throws JSONException, AddressException, MessagingException {
-		Zgloszenie zgloszenie = zgloszeniaEjbQueryController.findEntityByID(zgloszenieRequestData.idZgloszenia);
-		
-			JSONObject	jsonObject = new JSONObject();
-			jsonObject.put("id", zgloszenie.getIdZgloszenia());
-			jsonObject.put("numer_zgl", zgloszenie.getNumerZgloszenia());
-			jsonObject.put("data_zgloszenia", zgloszenie.getDataZgloszenia().getTime());
-			if(zgloszenie.getDataZamkniecia() != null)
-				jsonObject.put("data_zamkniecia", zgloszenie.getDataZamkniecia().getTime());
-			jsonObject.put("kategoria", zgloszenie.getKategoiaZgloszenia().getNazwa());
-			jsonObject.put("temat", zgloszenie.getTemat());
-			jsonObject.put("tresc", zgloszenie.getTresc());
-			jsonObject.put("aktywnosci", getJsonArray(zgloszenie.getZgloszenieKomentarzs()));
-			
-			if( zgloszenie.getUzytkownik1() != null){
-				jsonObject.put("pracownik_obsl", zgloszenie.getUzytkownik1().getName() +" "+  zgloszenie.getUzytkownik1().getSurname());
-			}
-			jsonObject.put("status", Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
-			
-		
+
+	public String getZgloszenieById(ZgloszenieRequestData zgloszenieRequestData)
+			throws JSONException, AddressException, MessagingException {
+		Zgloszenie zgloszenie = zgloszeniaEjbQueryController
+				.findEntityByID(zgloszenieRequestData.idZgloszenia);
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("id", zgloszenie.getIdZgloszenia());
+		jsonObject.put("numer_zgl", zgloszenie.getNumerZgloszenia());
+		jsonObject.put("data_zgloszenia",
+				zgloszenie.getDataZgloszenia().getTime());
+		if (zgloszenie.getDataZamkniecia() != null)
+			jsonObject.put("data_zamkniecia",
+					zgloszenie.getDataZamkniecia().getTime());
+		jsonObject.put("kategoria",
+				zgloszenie.getKategoiaZgloszenia().getNazwa());
+		jsonObject.put("temat", zgloszenie.getTemat());
+		jsonObject.put("tresc", zgloszenie.getTresc());
+		jsonObject.put("aktywnosci",
+				getJsonArray(zgloszenie.getZgloszenieKomentarzs()));
+
+		if (zgloszenie.getUzytkownik1() != null) {
+			jsonObject.put("pracownik_obsl",
+					zgloszenie.getUzytkownik1().getName() + " "
+							+ zgloszenie.getUzytkownik1().getSurname());
+		}
+		jsonObject.put("status",
+				Status.ZGLOSZENIE_STATE.getText(zgloszenie.getStatus()));
+
 		return jsonObject.toString();
 	}
-
-
 
 	private JSONArray getJsonArray(
 			List<ZgloszenieKomentarz> zgloszenieKomentarze)
@@ -136,60 +152,67 @@ public class ZgloszenieFacade {
 		}
 		return jsonArray;
 	}
-	
-	
-	public Integer dodajZgloszenie(ZgloszenieRequestData zgloszenieRequestData){
+
+	public Integer dodajZgloszenie(
+			ZgloszenieRequestData zgloszenieRequestData) {
 		try {
 			KategoiaZgloszenia kategoiaZgloszenia = null;
 			Uzytkownik uzytkownik = null;
-			if(zgloszenieRequestData.idUser != null){
-				 uzytkownik = uzytkownikEjbQueryController.findEntityByID(zgloszenieRequestData.idUser);
+			if (zgloszenieRequestData.idUser != null) {
+				uzytkownik = uzytkownikEjbQueryController
+						.findEntityByID(zgloszenieRequestData.idUser);
 			}
-			
-			if(zgloszenieRequestData.idKategoria != null){
-				 kategoiaZgloszenia = kategoriaZgloszenieEjbQueryController.findEntityByID(zgloszenieRequestData.idKategoria);
+
+			if (zgloszenieRequestData.idKategoria != null) {
+				kategoiaZgloszenia = kategoriaZgloszenieEjbQueryController
+						.findEntityByID(zgloszenieRequestData.idKategoria);
 			}
-			
+
 			Zgloszenie zgloszenie = null;
-			
-			if(uzytkownik != null && kategoiaZgloszenia != null){
+
+			if (uzytkownik != null && kategoiaZgloszenia != null) {
 				zgloszenie = new Zgloszenie();
 				zgloszenie.setUzytkownik2(uzytkownik);
 				zgloszenie.setTresc(zgloszenieRequestData.tresc);
 				zgloszenie.setTemat(zgloszenieRequestData.temat);
 				zgloszenie.setStatus(Status.ZGLOSZENIE_STATE.NOWE);
-				zgloszenie.setNumerZgloszenia(zgloszeniaEjbQueryController.generujNumerZgloszenia());
-				zgloszenie.setDataZgloszenia(new Timestamp(System.currentTimeMillis()));
+				zgloszenie.setNumerZgloszenia(
+						zgloszeniaEjbQueryController.generujNumerZgloszenia());
+				zgloszenie.setDataZgloszenia(
+						new Timestamp(System.currentTimeMillis()));
 				zgloszenie.setKategoiaZgloszenia(kategoiaZgloszenia);
-				
+
 				zgloszenie = zgloszeniaEjbCommandContoller.insert(zgloszenie);
 			}
 			return zgloszenie.getIdZgloszenia();
 		} catch (Exception e) {
 			return null;
 		}
-}
-	
-	public void dodajWiadomoscDoZgloszenia(ZgloszenieRequestData zgloszenieRequestData){
+	}
+
+	public void dodajWiadomoscDoZgloszenia(
+			ZgloszenieRequestData zgloszenieRequestData) {
 		Zgloszenie zgloszenie = null;
-		if(zgloszenieRequestData.idZgloszenia != null){
-			 zgloszenie = zgloszeniaEjbQueryController.findEntityByID(zgloszenieRequestData.idZgloszenia);
+		if (zgloszenieRequestData.idZgloszenia != null) {
+			zgloszenie = zgloszeniaEjbQueryController
+					.findEntityByID(zgloszenieRequestData.idZgloszenia);
 		}
 		Uzytkownik uzytkownik = null;
-		if(zgloszenieRequestData.idUser != null){
-			 uzytkownik = uzytkownikEjbQueryController.findEntityByID(zgloszenieRequestData.idUser);
+		if (zgloszenieRequestData.idUser != null) {
+			uzytkownik = uzytkownikEjbQueryController
+					.findEntityByID(zgloszenieRequestData.idUser);
 		}
-		
+
 		ZgloszenieKomentarz zgloszenieKomentarz = new ZgloszenieKomentarz();
 		zgloszenieKomentarz.setTresc(zgloszenieRequestData.tresc);
 		zgloszenieKomentarz.setTyp("K");
-		zgloszenieKomentarz.setDataDodania(new Timestamp(System.currentTimeMillis()));
+		zgloszenieKomentarz
+				.setDataDodania(new Timestamp(System.currentTimeMillis()));
 		zgloszenieKomentarz.setUzytkownik(uzytkownik);
 		zgloszenieKomentarz.setZgloszenie(zgloszenie);
-		
+
 		zgloszenieKomentarzEjbCommandContoller.insert(zgloszenieKomentarz);
-		
+
 	}
-	
-	
+
 }

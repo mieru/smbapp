@@ -10,26 +10,32 @@ app.controller("katZglController", [
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
 			$rootScope.showKat = false;
-			$http.post('/smbemplsrv/rest/query/katzgl/getAll').success(function(data){
-				$rootScope.katZgl = data;
-			})
-			
-			$scope.dodajKategorie = function(){
+			$http.post('/smbemplsrv/rest/query/katzgl/getAll').success(
+					function(data) {
+						$rootScope.katZgl = data;
+					})
+
+			$scope.dodajKategorie = function() {
 				var data = {
-						name: $scope.name
+					name : $scope.name,
+					czyKlient : $scope.czyKlient,
+					czyMagazyn : $scope.czyMagazyn
 				}
-				
-				$http.post('/smbemplsrv/rest/command/katzgl/addNewCategory',data).success(function(resp){
+
+				$http.post('/smbemplsrv/rest/command/katzgl/addNewCategory',
+						data).success(function(resp) {
 					$rootScope.katZgl.push(resp);
 				});
-				
-			}
-			
-			$scope.removeElement = function(kat){
-				$http.post('/smbemplsrv/rest/command/katzgl/deleteCategory',kat).success(function(){
-					$rootScope.katZgl.splice($rootScope.katZgl.indexOf(kat), 1);
-				});
-			}
-			
-		} ]);
 
+			}
+
+			$scope.removeElement = function(kat) {
+				$http.post('/smbemplsrv/rest/command/katzgl/deleteCategory',
+						kat).success(
+						function() {
+							$rootScope.katZgl.splice($rootScope.katZgl
+									.indexOf(kat), 1);
+						});
+			}
+
+		} ]);

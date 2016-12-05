@@ -12,6 +12,7 @@
 	<class>smbemplsrv.dbmodel.Producent</class>
 	<class>smbemplsrv.dbmodel.Towar</class>
 	<class>smbemplsrv.dbmodel.TowarImage</class>
+	<class>smbemplsrv.dbmodel.Tranzakcje</class>
 	<class>smbemplsrv.dbmodel.Uzytkownik</class>
 	<class>smbemplsrv.dbmodel.WiadomoscZamSprzedaz</class>
 	<class>smbemplsrv.dbmodel.ZamowienieSprzedaz</class>

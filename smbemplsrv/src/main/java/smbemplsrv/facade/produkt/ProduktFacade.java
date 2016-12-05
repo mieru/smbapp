@@ -111,6 +111,8 @@ public class ProduktFacade {
 		jsonObject.put("stawka_vat", t.getStawkaVat());
 		jsonObject.put("cbrutto", t.getCenaNetto() * (1.00 + t.getStawkaVat() * 0.01));
 		jsonObject.put("jednostka", t.getJednostka());
+		jsonObject.put("czyStanUzyt", t.getCzyStanUzyt());
+		jsonObject.put("czyStanSys", t.getCzyStanSys());
 		
 		return jsonObject.toString();
 	}
@@ -124,9 +126,15 @@ public class ProduktFacade {
 		towar.setNazwa(produktRequestData.name);
 		towar.setOpis(produktRequestData.opis);
 		towar.setStawkaVat(produktRequestData.stawkaVat);
-		towar.setStanMinimalny(produktRequestData.stan_min);
 		towar.setStanMinUzyt(produktRequestData.stan_min);
 		towar.setStanMinSys(1);
+		if(produktRequestData.stan_min != null){
+			towar.setStanMinimalny(produktRequestData.stan_min);
+		}else{
+			towar.setStanMinimalny(1);
+		}
+		
+		
 		
 		Magazyn magazyn = magazynEjbQueryController.findEntityByID(produktRequestData.idMagazynu);
 		KategoriaTowar kategoriaTowar = katProdEjbQueryController.findEntityByID(produktRequestData.kat);
@@ -177,10 +185,16 @@ public class ProduktFacade {
 		towar.setOpis(produktRequestData.opis);
 		towar.setStawkaVat(produktRequestData.stawkaVat);
 		towar.setStanMinUzyt(produktRequestData.stan_min_uzyt);
+		
 		if(produktRequestData.czyStanUzyt != null && produktRequestData.czyStanUzyt){
 			towar.setStanMinimalny(produktRequestData.stan_min_uzyt);
-		}else{
+			towar.setCzyStanSys(false);
+			towar.setCzyStanUzyt(true);
+		}
+		if(produktRequestData.czyStanSys != null && produktRequestData.czyStanSys){
 			towar.setStanMinimalny(produktRequestData.stan_min_sys);
+			towar.setCzyStanSys(true);
+			towar.setCzyStanUzyt(false);
 		}
 		
 		

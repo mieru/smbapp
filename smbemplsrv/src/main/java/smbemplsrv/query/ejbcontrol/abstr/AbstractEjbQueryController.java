@@ -15,7 +15,12 @@ public abstract class AbstractEjbQueryController<T> {
 	protected EntityManager entityManager;
 	protected Class<T> dbEntity;
 
+	
 	public List<T> findEntity(T value) {
+		return findEntity(value, null);
+	}
+	
+	public List<T> findEntity(T value, StringBuilder additonalCondition) {
 		try {
 			StringBuilder queryString = new StringBuilder();
 			queryString.append("SELECT " + value.getClass().getSimpleName() + " FROM "
@@ -34,6 +39,8 @@ public abstract class AbstractEjbQueryController<T> {
 					}
 				}
 			}
+			if(additonalCondition != null)
+				queryString.append(additonalCondition.toString());
 			System.out.println(queryString.toString());
 			List<T> queryResult = entityManager.createQuery(queryString.toString()).getResultList();
 			return queryResult;
