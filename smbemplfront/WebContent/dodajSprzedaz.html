@@ -1,0 +1,93 @@
+<div ng-app="smb" ng-controller="dodajSprzedController">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-5">
+				<div class="well">
+							<input id="szuaj_oferta" type="text" class="form-control"
+								name="username" ng-model="search" value=""
+								placeholder="Czego szukasz ?">
+						</div>
+						<div id="products" class="row list-group">
+							<div class="item col-lg-12 list-group-item" style="max-height: 600px; overflow-y:auto">
+								<div class="thumbnail" ng-click="addToList(towar)" style="cursor: pointer"
+									ng-repeat="towar in towary | filter:search  | offset: currentPage*itemOnPage| limitTo: itemOnPage ">
+									<div class="caption">
+										<div class="row">
+											<div class="col-lg-1">
+												<img class="group list-group-image"
+													src="data:image/gif;base64,{{towar.image}}"
+													style="width: 40px; height: 40px;" />
+											</div>
+											<div class="col-lg-9">
+												<h5 class="group inner list-group-item-heading">{{towar.nazwa}}</h5>
+											</div>
+											<div class="col-xs-2" style="text-align: right;">
+												{{towar.cbrutto | currency:''}} zł</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+			</div>
+			<div class="col-md-7">
+				<table class="table" style="border-bottom: 1px solid">
+					<tr>
+						<th>Lp.</th>
+						<th>Nazwa</th>
+						<th>Ilość</th>
+						<th>Cena netto</th>
+						<th>Stawka VAT</th>
+						<th>Cena brutto</th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="item in koszykLista">
+						<td>{{$index + 1}}</td>
+						<td>{{item.nazwa}}</td>
+						<td><input type="number" style="width: 70px" ng-model="item.ilosc"
+							ng-change="recalculateForm(item,$index)" min="1"><span>  {{item.jednostka}}</span>
+						</td>
+						<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
+						<td>{{item.stawka_vat}} %</td>
+						<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
+						<td><span class="glyphicon glyphicon-remove"
+							ng-click="removeElement(item)" style="cursor: pointer;"></span></td>
+					</tr>
+				</table>
+				<div class="col-md-12"
+					style="padding-left: 80px; text-align: right;">
+					<div class="col-md-12">Suma netto: {{koszyk.wartoscAllNetto |
+						currency:''}} zł</div>
+					<div class="col-md-12">Podatek VAT: {{koszyk.sumaPodatkuVat |
+						currency:''}} zł</div>
+					<div class="col-md-12" style="font-size: 20px; font-weight: bold">Do
+						zapłaty: {{koszyk.wartoscAllBrutto | currency:''}} zł</div>
+				</div>
+				<form ng-submit="dodajProdAction()">
+					<div class="row" style="margin-bottom: 30px">
+						<div class="col-md-2">
+							<div class="checkbox">
+								<label> <input ng-model="zamowienie_faktuaVat"
+									type="checkbox">Faktura VAT.
+								</label>
+							</div>
+						</div>
+						<div class="col-md-10">
+							<spam ng-show="zamowienie_faktuaVat">Dane do faktury:</spam>
+							<textarea ng-required="zamowienie_faktuaVat"
+								ng-show="zamowienie_faktuaVat"
+								ng-model="zamowienie_dane_do_faktury" class="form-control"
+								rows="4" cols="20" placeholder="Dane do faktury:"></textarea>
+						</div>
+					</div>
+					<div class="row" style="text-align: right; margin: 10px;">
+						<button id="btn-login" ng-click="clearFormAndSession()"
+						class="btn btn-primary">Wyczyść</button>
+						<button id="btn-login" ng-click="submitSell()"
+							class="btn btn-success">Zatwierdź</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

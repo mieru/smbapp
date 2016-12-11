@@ -2,6 +2,7 @@ package smbemplsrv.dbmodel;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -31,6 +32,10 @@ public class Paragon implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_pacownika_wyst")
 	private Uzytkownik uzytkownik;
+
+	//bi-directional many-to-one association to Tranzakcje
+	@OneToMany(mappedBy="paragon", fetch=FetchType.EAGER)
+	private List<Tranzakcje> tranzakcjes;
 
 	public Paragon() {
 	}
@@ -73,6 +78,28 @@ public class Paragon implements Serializable {
 
 	public void setUzytkownik(Uzytkownik uzytkownik) {
 		this.uzytkownik = uzytkownik;
+	}
+
+	public List<Tranzakcje> getTranzakcjes() {
+		return this.tranzakcjes;
+	}
+
+	public void setTranzakcjes(List<Tranzakcje> tranzakcjes) {
+		this.tranzakcjes = tranzakcjes;
+	}
+
+	public Tranzakcje addTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().add(tranzakcje);
+		tranzakcje.setParagon(this);
+
+		return tranzakcje;
+	}
+
+	public Tranzakcje removeTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().remove(tranzakcje);
+		tranzakcje.setParagon(null);
+
+		return tranzakcje;
 	}
 
 }

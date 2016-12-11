@@ -78,6 +78,7 @@ public class ProduktFacade {
 			
 			jsonObject.put("image",base64);
 			jsonObject.put("ilosc",t.getIloscWMagazynie());
+			jsonObject.put("iloscZakup",1);
 			jsonObject.put("stan_min",t.getStanMinimalny());
 			jsonObject.put("opis", t.getOpis());
 			jsonObject.put("cnetto", t.getCenaNetto());

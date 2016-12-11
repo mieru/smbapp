@@ -42,5 +42,6 @@
 	<classpathentry kind="lib" path="src/main/resources/lib/javax.mail-1.5.0.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/json.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/itext-2.1.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

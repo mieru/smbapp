@@ -20,6 +20,7 @@ import dbmodel.KategoiaZgloszenia;
 import dbmodel.Uzytkownik;
 import dbmodel.Zgloszenie;
 import dbmodel.ZgloszenieKomentarz;
+import mailer.MailSender;
 import query.ejbcontrol.kategoriazgloszenie.KategoriaZgloszenieEjbQueryController;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.ejbcontrol.zgloszenia.ZgloszeniaEjbQueryController;
@@ -42,6 +43,9 @@ public class ZgloszenieFacade {
 
 	@EJB
 	ZgloszenieKomentarzEjbCommandContoller zgloszenieKomentarzEjbCommandContoller;
+	
+	@EJB
+	MailSender mailSender;
 
 	public String getKategorieZglosznia()
 			throws JSONException, AddressException, MessagingException {
@@ -51,7 +55,7 @@ public class ZgloszenieFacade {
 		JSONObject jsonObject = null;
 
 		for (KategoiaZgloszenia kategoiaZgloszenia : katCol) {
-			if ("T".equals(kategoiaZgloszenia.getCzyKlient())) {
+			if (kategoiaZgloszenia.getCzyKlient()!=null && kategoiaZgloszenia.getCzyKlient()) {
 				jsonObject = new JSONObject();
 				jsonObject.put("id", kategoiaZgloszenia.getIdKategrorii());
 				jsonObject.put("name", kategoiaZgloszenia.getNazwa());
@@ -191,7 +195,7 @@ public class ZgloszenieFacade {
 	}
 
 	public void dodajWiadomoscDoZgloszenia(
-			ZgloszenieRequestData zgloszenieRequestData) {
+			ZgloszenieRequestData zgloszenieRequestData) throws AddressException, MessagingException {
 		Zgloszenie zgloszenie = null;
 		if (zgloszenieRequestData.idZgloszenia != null) {
 			zgloszenie = zgloszeniaEjbQueryController
@@ -212,6 +216,8 @@ public class ZgloszenieFacade {
 		zgloszenieKomentarz.setZgloszenie(zgloszenie);
 
 		zgloszenieKomentarzEjbCommandContoller.insert(zgloszenieKomentarz);
+		
+		mailSender.sendMail("Nowa wiadomosc do zgloszenia nr : " + zgloszenie.getNumerZgloszenia(), "Dodanow wiadomosc do zgłoszenia..", zgloszenie.getUzytkownik1().getMail());
 
 	}
 

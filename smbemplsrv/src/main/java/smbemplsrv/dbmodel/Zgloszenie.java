@@ -29,9 +29,14 @@ public class Zgloszenie implements Serializable {
 	@Column(name="numer_zgloszenia")
 	private String numerZgloszenia;
 
+	private Boolean powiadomiono;
+
 	private String status;
 
 	private String temat;
+
+	@Column(name="towary_do_uzupelnienia")
+	private String towaryDoUzupelnienia;
 
 	private String tresc;
 
@@ -89,6 +94,14 @@ public class Zgloszenie implements Serializable {
 		this.numerZgloszenia = numerZgloszenia;
 	}
 
+	public Boolean getPowiadomiono() {
+		return this.powiadomiono;
+	}
+
+	public void setPowiadomiono(Boolean powiadomiono) {
+		this.powiadomiono = powiadomiono;
+	}
+
 	public String getStatus() {
 		return this.status;
 	}
@@ -103,6 +116,14 @@ public class Zgloszenie implements Serializable {
 
 	public void setTemat(String temat) {
 		this.temat = temat;
+	}
+
+	public String getTowaryDoUzupelnienia() {
+		return this.towaryDoUzupelnienia;
+	}
+
+	public void setTowaryDoUzupelnienia(String towaryDoUzupelnienia) {
+		this.towaryDoUzupelnienia = towaryDoUzupelnienia;
 	}
 
 	public String getTresc() {

@@ -35,6 +35,8 @@
 						<tr>
 							<th>Lp.</th>
 							<th>Nazwa</th>
+							<th>Magazyn</th>
+							<th>Dla klienta</th>
 
 						</tr>
 					</thead>
@@ -42,6 +44,8 @@
 						<tr ng-repeat="kat in katZgl">
 							<td>{{$index+1}}</td>
 							<td>{{kat.name}}</td>
+							<td>{{kat.czyMagazyn}}</td>
+							<td>{{kat.czyKlient}}</td>
 							<td><span class="glyphicon glyphicon-remove"
 								ng-click="removeElement(kat)" style="cursor: pointer;"></span></td>
 						</tr>

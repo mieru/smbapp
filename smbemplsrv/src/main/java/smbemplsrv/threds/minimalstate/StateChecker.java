@@ -1,4 +1,4 @@
-package smbemplsrv.threds.warehousestate;
+package smbemplsrv.threds.minimalstate;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -8,6 +8,9 @@ import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import smbemplsrv.command.ejbcontrol.katzgl.KatZglEjbCommandController;
 import smbemplsrv.command.ejbcontrol.produkt.ProduktEjbCommandController;
@@ -41,7 +44,7 @@ public class StateChecker {
     
     public StateChecker() {}
 	
-	@Schedule(second="*/30", minute="*", hour="*", dayOfWeek="*",
+	@Schedule(minute="*/1", hour="*", dayOfWeek="*",
       dayOfMonth="*", month="*", year="*")
     private void checkProductState(final Timer t) {
 		HashSet<Towar> towarListToSend = new HashSet<Towar>();
@@ -73,18 +76,24 @@ public class StateChecker {
 		zgloszenie.setNumerZgloszenia(zgloszeniaEjbQueryController.generujNumerZgloszenia());
 		zgloszenie.setStatus(Status.ZGLOSZENIE_STATE.REALIZOWANE);
 		zgloszenie.setTemat("Braki w magazynie. Trzeba uzupełnic zapasy.");
-		zgloszenie.setTresc(getTrescByList(towarListToSend));
+	
+		JSONArray jsonArray = new JSONArray();
+		zgloszenie.setTresc(getTrescByList(towarListToSend,jsonArray));
+		zgloszenie.setTowaryDoUzupelnienia(jsonArray.toString());
+		zgloszenie.setPowiadomiono(false);
 		
 		zgloszeniaEjbCommandController.insert(zgloszenie);
 	}
 
-	private String getTrescByList(HashSet<Towar> towarListToSend) {
+	private String getTrescByList(HashSet<Towar> towarListToSend, JSONArray jsonArray) {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append("Lista brakujących produktów:\n");
+		
 		for (Towar towar : towarListToSend) {
 			stringBuffer.append(towar.getNazwa() + "		 ilosc:	" + towar.getIloscWMagazynie() + "	 stan min.: " + towar.getStanMinimalny()+"\n");
 			towar.setPowiadomiono(true);
 			produktEjbCommandController.update(towar);
+			jsonArray.put(towar.getIdTowaru());
 		}
 		return stringBuffer.toString();
 	}

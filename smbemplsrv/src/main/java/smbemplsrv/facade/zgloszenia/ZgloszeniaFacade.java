@@ -7,22 +7,29 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import smbemplsrv.command.ejbcontrol.produkt.ProduktEjbCommandController;
 import smbemplsrv.command.ejbcontrol.zgloszenia.ZgloszeniaEjbCommandController;
 import smbemplsrv.command.ejbcontrol.zgloszeniekomentarz.ZgloszeniaKomentarzEjbCommandController;
 import smbemplsrv.command.restaction.zgloszenie.ZgloszenieRequestData;
 import smbemplsrv.dbmodel.KategoiaZgloszenia;
+import smbemplsrv.dbmodel.Towar;
 import smbemplsrv.dbmodel.Uzytkownik;
 import smbemplsrv.dbmodel.Zgloszenie;
 import smbemplsrv.dbmodel.ZgloszenieKomentarz;
 import smbemplsrv.query.ejbcontrol.katzgl.KatZglEjbQueryController;
+import smbemplsrv.query.ejbcontrol.produkt.ProduktEjbQueryController;
+import smbemplsrv.query.ejbcontrol.towarimage.TowarImageEjbQueryController;
 import smbemplsrv.query.ejbcontrol.uzytkownicy.UzytkownicyEjbQueryController;
 import smbemplsrv.query.ejbcontrol.zgloszenia.ZgloszeniaEjbQueryController;
 import smbemplsrv.query.restaction.zgloszenia.ZgloszeniaRequestQueryData;
+import utils.MailSender;
 import utils.status.Status;
 
 @Stateless
@@ -42,6 +49,15 @@ public class ZgloszeniaFacade {
 	
 	@EJB
 	UzytkownicyEjbQueryController uzytkownicyEjbQueryController;
+	
+	@EJB
+	ProduktEjbQueryController produktEjbQueryController;
+	
+	@EJB
+	ProduktEjbCommandController produktEjbCommandController;
+	
+	@EJB
+	MailSender mailSender;
 	
 	
 	public String getZgloszenia(ZgloszeniaRequestQueryData zgloszeniaRequestQueryData) throws JSONException, IOException {
@@ -103,7 +119,7 @@ public class ZgloszeniaFacade {
 		return jsonObject.toString();
 	}
 	
-	public String dodajWiadomoscDoZgloszenia(ZgloszenieRequestData zgloszenieRequestData){
+	public String dodajWiadomoscDoZgloszenia(ZgloszenieRequestData zgloszenieRequestData) throws AddressException, MessagingException{
 		Zgloszenie zgloszenie = null;
 		if(zgloszenieRequestData.idZgloszenia != null){
 			 zgloszenie = zgloszeniaEjbQueryController.findEntityByID(zgloszenieRequestData.idZgloszenia);
@@ -121,6 +137,9 @@ public class ZgloszeniaFacade {
 		zgloszenieKomentarz.setZgloszenie(zgloszenie);
 		
 		zgloszeniaKomentarzEjbCommandController.insert(zgloszenieKomentarz);
+		
+		mailSender.sendMail("Nowa wiadomosc do zgloszenia nr : " + zgloszenie.getNumerZgloszenia(), "Do twojego zgłoszenia dodano nowa wiadomoś.", zgloszenie.getUzytkownik2().getMail());
+		
 		return "";
 	}
 	
@@ -143,7 +162,6 @@ public class ZgloszeniaFacade {
 						+ zglKom.getUzytkownik().getSurname();
 			}
 			jsonObject.put("uzytkownik", uzytkownikName);
-			// jsonObject.put('typ', );
 
 			jsonArray.put(jsonObject);
 		}
@@ -153,6 +171,14 @@ public class ZgloszeniaFacade {
 
 	public String zamknijZgloszenie(ZgloszenieRequestData zgloszenieRequestData) {
 		Zgloszenie zgloszenie = zgloszeniaEjbQueryController.findEntityByID(zgloszenieRequestData.idZgloszenia);
+		if(zgloszenie.getKategoiaZgloszenia().getCzyMagazyn()){
+			JSONArray jsonArray = new JSONArray(zgloszenie.getTowaryDoUzupelnienia());
+			for (int i = 0; i < jsonArray.length(); i++) {
+				Towar towar = produktEjbQueryController.findEntityByID(jsonArray.getInt(i));
+				towar.setPowiadomiono(false);
+				produktEjbCommandController.update(towar);
+			}
+		}
 		zgloszenie.setStatus(Status.ZGLOSZENIE_STATE.ZAKONCZONE);
 		zgloszenie.setDataZamkniecia(new Timestamp(System.currentTimeMillis()));
 		zgloszeniaEjbCommandController.update(zgloszenie);

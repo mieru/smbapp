@@ -60,7 +60,9 @@ app.controller("uzytkownicyAdminController", [
 			}
 			
 			$scope.editPracForm = function(user) {
-				$location.path("/dodajPrac");
+				$location.path("/pracEdit").search({
+					id_user : user.id_uzytkownika
+				});
 			}
 
 		} ]);
@@ -127,6 +129,9 @@ app.controller("editPracController", [
 					.success(function(resp) {
 						$scope.user = resp;
 
+						if ($scope.user.uprKod.indexOf('M') !== -1) {
+							$scope.czyMagazyn = true;
+						}
 						if ($scope.user.uprKod.indexOf('E') !== -1) {
 							$scope.czyPrac = true;
 						}
@@ -146,6 +151,13 @@ app.controller("editPracController", [
 						$scope.user.uprKod = "A"
 					} else {
 						$scope.user.uprKod += ",A";
+					}
+				}
+				if ($scope.czyMagazyn) {
+					if ($scope.user.uprKod == "") {
+						$scope.user.uprKod = "M"
+					} else {
+						$scope.user.uprKod += ",M";
 					}
 				}
 				$http.post('/smbemplsrv/rest/command/uzytkonf/editUser',
@@ -179,6 +191,13 @@ app.controller("dodajPracController", [
 						$scope.newUser.uprKod = "A"
 					} else {
 						$scope.newUser.uprKod += ",A";
+					}
+				}
+				if ($scope.czyMagazyn) {
+					if ($scope.user.uprKod == "") {
+						$scope.user.uprKod = "M"
+					} else {
+						$scope.user.uprKod += ",M";
 					}
 				}
 				$http.post('/smbemplsrv/rest/command/uzytkonf/addNewUser',

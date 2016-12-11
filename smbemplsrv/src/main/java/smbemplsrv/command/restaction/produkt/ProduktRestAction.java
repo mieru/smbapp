@@ -1,6 +1,7 @@
 package smbemplsrv.command.restaction.produkt;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.ejb.EJB;
@@ -12,6 +13,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfWriter;
 
 import smbemplsrv.facade.produkt.ProduktFacade;
 
@@ -26,7 +33,7 @@ public class ProduktRestAction {
 	@Path("/addNewProd")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addNewProd(ProduktRequestData produktRequestData) throws AddressException, MessagingException, FileNotFoundException, IOException {
+	public String addNewProd(ProduktRequestData produktRequestData) throws AddressException, MessagingException, FileNotFoundException, IOException, DocumentException {
 		return produktFacade.dodajProdukt(produktRequestData);
 	}
 	

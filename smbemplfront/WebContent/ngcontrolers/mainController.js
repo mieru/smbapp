@@ -40,7 +40,20 @@ app.controller("mainContoller", [
 					href : '#/konfskrzynkipoczt'
 				}];
 				
-				
+			$rootScope.kupSprzedMenu = [{
+				nazwa: 'Zamówienia',
+				href : '#/zamowienia'
+			},{
+				nazwa: 'Faktury',
+				href : '#/faktury'
+			},{
+				nazwa: 'Paragony',
+				href : '#/paragony'
+			},{
+				nazwa: 'Hist. tranzakcji',
+				href : '#/histtranz'
+			}];
+			
 			$scope.wyloguj = function() {
 				$cookieStore.remove("loggedIn");
 				$cookieStore.remove("loggedName");
@@ -73,6 +86,12 @@ app.directive('adminmenu',["$location", function($location) {
 app.directive('zglmenu',["$location", function($location) {
 	 return {
 		    templateUrl: "zglmenu.html"
+		    };
+
+}]);
+app.directive('kupsprzedmenu',["$location", function($location) {
+	 return {
+		    templateUrl: "kupnosprzedazmenu.html"
 		    };
 
 }]);

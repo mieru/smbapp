@@ -32,7 +32,7 @@ public class MinStateCalculator {
 	@EJB
 	ProduktEjbQueryController produktEjbQueryController;
 
-	@Schedule(second="*/10", minute="*", hour="*", dayOfWeek="*",
+	@Schedule(minute="*/1", hour="*", dayOfWeek="*",
       dayOfMonth="*", month="*", year="*")
     private void calculateMinState(final Timer t) {
         System.out.println("calculateMinState START: " + new Date());

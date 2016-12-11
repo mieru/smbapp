@@ -242,6 +242,33 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "zgloszenieDetail.html"
+	}).when('/dodajSprzedaz', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "dodajSprzedaz.html"
+	}).when('/dodajZakup', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "dodajZakup.html"
+	}).when('/zamowienia', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "zamowienia.html"
 	}).otherwise({
 		resolve : {
 			"check" : function($location, $cookieStore) {

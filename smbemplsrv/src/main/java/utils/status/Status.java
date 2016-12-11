@@ -30,11 +30,15 @@ public class Status {
 		public static final String ADMIN = "A";
 		public static final String EMPLOYEE = "E";
 		public static final String EMPLOYEE_ADMIN = "E,A";
+		public static final String EMPLOYEE_MAGAZYN = "E,M";
+		public static final String EMPLOYEE_ADMIN_MAGAZYN = "E,A,M";
 
 		public static final String CUSTOMER_TEXT = "Klient";
 		public static final String ADMIN_TEXT = "Admin";
 		public static final String EMPLOYEE_TEXT = "Pracownik";
 		public static final String EMPLOYEE_ADMIN_TEXT = "Pracownik, Administrator";
+		public static final String EMPLOYEE_MAGAZYN_TEXT = "Pracownik, Magazynier";
+		public static final String EMPLOYEE_ADMIN_MAGAZYN_TEXT = "Pracownik, Administrator, Magazynier";
 
 		public static String getText(String userState) {
 			switch (userState) {
@@ -46,6 +50,10 @@ public class Status {
 					return EMPLOYEE_TEXT;
 				case EMPLOYEE_ADMIN :
 					return EMPLOYEE_ADMIN_TEXT;
+				case EMPLOYEE_ADMIN_MAGAZYN :
+					return EMPLOYEE_ADMIN_MAGAZYN_TEXT;
+				case EMPLOYEE_MAGAZYN :
+					return EMPLOYEE_MAGAZYN_TEXT;
 				default :
 					return userState;
 			}

@@ -25,18 +25,22 @@ public class Tranzakcje implements Serializable {
 	@Column(name="id_faktury_kup")
 	private Integer idFakturyKup;
 
-	@Column(name="id_faktury_sprzed")
-	private Integer idFakturySprzed;
-
-	@Column(name="id_paragonu")
-	private Integer idParagonu;
-
 	private double kwota;
 
 	@Column(name="lista_produktow")
 	private String listaProduktow;
 
 	private String typ;
+
+	//bi-directional many-to-one association to FakturaSprzedazy
+	@ManyToOne
+	@JoinColumn(name="id_faktury_sprzed")
+	private FakturaSprzedazy fakturaSprzedazy;
+
+	//bi-directional many-to-one association to Paragon
+	@ManyToOne
+	@JoinColumn(name="id_paragonu")
+	private Paragon paragon;
 
 	public Tranzakcje() {
 	}
@@ -65,22 +69,6 @@ public class Tranzakcje implements Serializable {
 		this.idFakturyKup = idFakturyKup;
 	}
 
-	public Integer getIdFakturySprzed() {
-		return this.idFakturySprzed;
-	}
-
-	public void setIdFakturySprzed(Integer idFakturySprzed) {
-		this.idFakturySprzed = idFakturySprzed;
-	}
-
-	public Integer getIdParagonu() {
-		return this.idParagonu;
-	}
-
-	public void setIdParagonu(Integer idParagonu) {
-		this.idParagonu = idParagonu;
-	}
-
 	public double getKwota() {
 		return this.kwota;
 	}
@@ -103,6 +91,22 @@ public class Tranzakcje implements Serializable {
 
 	public void setTyp(String typ) {
 		this.typ = typ;
+	}
+
+	public FakturaSprzedazy getFakturaSprzedazy() {
+		return this.fakturaSprzedazy;
+	}
+
+	public void setFakturaSprzedazy(FakturaSprzedazy fakturaSprzedazy) {
+		this.fakturaSprzedazy = fakturaSprzedazy;
+	}
+
+	public Paragon getParagon() {
+		return this.paragon;
+	}
+
+	public void setParagon(Paragon paragon) {
+		this.paragon = paragon;
 	}
 
 }

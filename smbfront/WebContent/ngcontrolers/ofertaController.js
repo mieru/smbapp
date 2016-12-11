@@ -104,9 +104,7 @@ app.controller("ofertaController", [
 				$cookieStore.put("koszykwartoscAllBrutto", $scope.koszyk.wartoscAllBrutto);
 				$cookieStore.put("koszykwartoscAllNetto", $scope.koszyk.wartoscAllNetto);
 				$cookieStore.put("koszyksumaPodatkuVat", $scope.koszyk.sumaPodatkuVat);
-				var koszykLista = $cookieStore.get('koszykLista');
-				koszykLista.splice(koszykLista.indexOf(item), 1);
-				$scope.koszykLista = koszykLista;
+				$scope.koszykLista.splice($scope.koszykLista.indexOf(item), 1);
 				$cookieStore.put('koszykLista', koszykLista);
 			};
 			

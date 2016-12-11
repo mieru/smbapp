@@ -5,46 +5,40 @@
 <title>Mat-Bud-App</title>
 <script type="text/javascript" src="lib/angularjs/angular.min.js"></script>
 <script type="text/javascript" src="lib/angularjs/angular-route.min.js"></script>
-<script type="text/javascript"
-	src="lib/angularjs/angular-cookies.min.js"></script>
-<script type="text/javascript"
-	src="lib/angularjs/ui-bootstrap-tpls-2.2.0.min.js"></script>
+<script type="text/javascript" src="lib/angularjs/angular-cookies.min.js"></script>
+<script type="text/javascript" src="lib/angularjs/ui-bootstrap-tpls-2.2.0.min.js"></script>
 <script type="text/javascript" src="ngcontrolers/mainController.js"></script>
 <script type="text/javascript" src="ngcontrolers/routeController.js"></script>
 <script type="text/javascript" src="ngcontrolers/loginControler.js"></script>
 <script type="text/javascript" src="ngcontrolers/produktController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/zgloszenieController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/adminController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/daneFirmyController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/konfMailContoller.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/katProdController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/katZglController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/uzytkownicyAdminController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/admin/magazynKonfController.js"></script>
+<script type="text/javascript" src="ngcontrolers/zgloszenieController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/adminController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/daneFirmyController.js"></script>
+<script type="text/javascript" src="ngcontrolers/zamowieniaController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/konfMailContoller.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/katProdController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/katZglController.js"></script>
+<script type="text/javascript" src="ngcontrolers/kupSprzedController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/uzytkownicyAdminController.js"></script>
+<script type="text/javascript" src="ngcontrolers/admin/magazynKonfController.js"></script>
 <script type="text/javascript" src="ngcontrolers/fakturaController.js"></script>
-<script type="text/javascript"
-	src="ngcontrolers/ustawieniaController.js"></script>
+<script type="text/javascript" src="ngcontrolers/ustawieniaController.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+
 
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
 <link href="lib/bootstrap/css/simple-sidebar.css" rel="stylesheet"></link>
 <link href="lib/css/oferta.css" rel="stylesheet"></link>
+<link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet"></link>
 </head>
 <body ng-app="smb" ng-controller="mainContoller">
 	<div id="wrapper">
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#/">Materiały Budowlane</a></li>
-				<li ng-show="logged && showPrac"><a href="#/sprzedaz">Sprzedaz</a></li>
-				<li ng-show="logged && showPrac"><a href="#/magazyn">Magazyn</a>
+				<li ng-show="logged && showPrac"><a href="#/sprzedaz">Kupno/Sprzedaz</a>
+				<kupsprzedmenu /></li>
+				<li ng-show="logged && showPrac"><a href="#/magazyn">Magazyny</a>
 				<magazynmenu ng-show="showKat" /></li>
 				<li ng-show="logged && showPrac"><a href="#/zgloszenia">Zgłoszenia</a>
 				<zglmenu /></li>

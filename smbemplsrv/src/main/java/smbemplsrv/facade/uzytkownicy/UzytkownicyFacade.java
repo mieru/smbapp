@@ -40,6 +40,10 @@ public class UzytkownicyFacade {
 		try {
 			if(uzytkwonikRequestQueryData.type.equals("E")){
 				userList.addAll(uzytkownicyEjbQueryController.findEntity(uzytkownik));
+				uzytkownik.setRole("E,M");
+				userList.addAll(uzytkownicyEjbQueryController.findEntity(uzytkownik));
+				uzytkownik.setRole("E,A,M");
+				userList.addAll(uzytkownicyEjbQueryController.findEntity(uzytkownik));
 				uzytkownik.setRole("E,A");
 				userList.addAll(uzytkownicyEjbQueryController.findEntity(uzytkownik));
 				uzytkownik.setRole("A");
@@ -125,7 +129,11 @@ public class UzytkownicyFacade {
 		
 		private void fillUzytkwnik(Uzytkownik uzytkownik, UzytkownikRequestData uzytkownikRequestData){
 			uzytkownik.setName(uzytkownikRequestData.name);
-			uzytkownik.setState(uzytkownikRequestData.status);
+			if(uzytkownikRequestData.status.length() > 1){
+				uzytkownik.setState(Status.USER_STATE.ACTIVE);
+			}else{
+				uzytkownik.setState(uzytkownikRequestData.status);
+			}
 			uzytkownik.setSurname(uzytkownikRequestData.surname);
 			uzytkownik.setCustomerType(uzytkownikRequestData.customerType);
 			uzytkownik.setCompanyName(uzytkownikRequestData.companyName);

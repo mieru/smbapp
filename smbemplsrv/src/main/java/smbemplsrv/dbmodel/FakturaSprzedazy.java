@@ -3,6 +3,7 @@ package smbemplsrv.dbmodel;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -59,6 +60,10 @@ public class FakturaSprzedazy implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_zamowienia")
 	private ZamowienieSprzedaz zamowienieSprzedaz;
+
+	//bi-directional many-to-one association to Tranzakcje
+	@OneToMany(mappedBy="fakturaSprzedazy", fetch=FetchType.EAGER)
+	private List<Tranzakcje> tranzakcjes;
 
 	public FakturaSprzedazy() {
 	}
@@ -165,6 +170,28 @@ public class FakturaSprzedazy implements Serializable {
 
 	public void setZamowienieSprzedaz(ZamowienieSprzedaz zamowienieSprzedaz) {
 		this.zamowienieSprzedaz = zamowienieSprzedaz;
+	}
+
+	public List<Tranzakcje> getTranzakcjes() {
+		return this.tranzakcjes;
+	}
+
+	public void setTranzakcjes(List<Tranzakcje> tranzakcjes) {
+		this.tranzakcjes = tranzakcjes;
+	}
+
+	public Tranzakcje addTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().add(tranzakcje);
+		tranzakcje.setFakturaSprzedazy(this);
+
+		return tranzakcje;
+	}
+
+	public Tranzakcje removeTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().remove(tranzakcje);
+		tranzakcje.setFakturaSprzedazy(null);
+
+		return tranzakcje;
 	}
 
 }
