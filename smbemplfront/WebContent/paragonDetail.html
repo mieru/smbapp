@@ -1,0 +1,43 @@
+<div ng-app="smb" ng-controller="paragonDetailController">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row" style="margin-bottom: 30px">
+				<div class="col-md-6">
+					<spam><b>Data wystawienia:</b><br/>{{paragonDetail.dataWystawienia | date:'yyyy-MM-dd HH:mm:ss'}}</spam>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<spam><b>Lista produktów:</b></spam>
+			</div>
+
+			<table class="table" style="border-bottom: 1px solid">
+				<tr>
+					<th>Lp.</th>
+					<th>Nazwa</th>
+					<th>Ilość</th>
+					<th>Cena netto</th>
+					<th>Stawka VAT</th>
+					<th>Cena brutto</th>
+				</tr>
+				<tr ng-repeat="item in listaProd">
+					<td>{{$index + 1}}</td>
+					<td>{{item.nazwa}}</td>
+					<td>{{item.ilosc}}</td>
+					<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
+					<td>{{item.stawka_vat}} %</td>
+					<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
+				</tr>
+			</table>
+			<div class="col-md-12" style="padding-left: 80px; text-align: right;">
+				<div class="col-md-12">Suma netto:
+					{{paragonDetail.wartoscAllNetto | currency:''}} zł</div>
+				<div class="col-md-12">Podatek VAT:
+					{{paragonDetail.sumaPodatkuVat | currency:''}} zł</div>
+				<div class="col-md-12" style="font-size: 20px; font-weight: bold">Do
+					zapłaty: {{paragonDetail.wartoscAllBrutto | currency:''}} zł</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

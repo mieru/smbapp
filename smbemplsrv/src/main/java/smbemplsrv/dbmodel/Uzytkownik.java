@@ -68,6 +68,10 @@ public class Uzytkownik implements Serializable {
 	@OneToMany(mappedBy="uzytkownik", fetch=FetchType.EAGER)
 	private List<Paragon> paragons;
 
+	//bi-directional many-to-one association to Tranzakcje
+	@OneToMany(mappedBy="uzytkownik", fetch=FetchType.EAGER)
+	private List<Tranzakcje> tranzakcjes;
+
 	//bi-directional many-to-one association to WiadomoscZamSprzedaz
 	@OneToMany(mappedBy="uzytkownik", fetch=FetchType.EAGER)
 	private List<WiadomoscZamSprzedaz> wiadomoscZamSprzedazs;
@@ -295,6 +299,28 @@ public class Uzytkownik implements Serializable {
 		paragon.setUzytkownik(null);
 
 		return paragon;
+	}
+
+	public List<Tranzakcje> getTranzakcjes() {
+		return this.tranzakcjes;
+	}
+
+	public void setTranzakcjes(List<Tranzakcje> tranzakcjes) {
+		this.tranzakcjes = tranzakcjes;
+	}
+
+	public Tranzakcje addTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().add(tranzakcje);
+		tranzakcje.setUzytkownik(this);
+
+		return tranzakcje;
+	}
+
+	public Tranzakcje removeTranzakcje(Tranzakcje tranzakcje) {
+		getTranzakcjes().remove(tranzakcje);
+		tranzakcje.setUzytkownik(null);
+
+		return tranzakcje;
 	}
 
 	public List<WiadomoscZamSprzedaz> getWiadomoscZamSprzedazs() {

@@ -2,6 +2,7 @@ package smbemplsrv.dbmodel;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -23,7 +24,7 @@ public class Paragon implements Serializable {
 	private String daneWystawiajacego;
 
 	@Column(name="data_wystawienia")
-	private String dataWystawienia;
+	private Timestamp dataWystawienia;
 
 	@Column(name="lista_towarow")
 	private String listaTowarow;
@@ -56,11 +57,11 @@ public class Paragon implements Serializable {
 		this.daneWystawiajacego = daneWystawiajacego;
 	}
 
-	public String getDataWystawienia() {
+	public Timestamp getDataWystawienia() {
 		return this.dataWystawienia;
 	}
 
-	public void setDataWystawienia(String dataWystawienia) {
+	public void setDataWystawienia(Timestamp dataWystawienia) {
 		this.dataWystawienia = dataWystawienia;
 	}
 

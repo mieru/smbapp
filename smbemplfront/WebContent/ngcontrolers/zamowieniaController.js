@@ -5,17 +5,36 @@ app.controller("zamowienieController", [
 		'$rootScope',
 		'$cookieStore',
 		'$route',
-		function($scope, $http, $location, $rootScope, $cookieStore, $route) {
+		'$routeParams',
+		function($scope, $http, $location, $rootScope, $cookieStore, $route,$routeParams) {
 			$rootScope.pageTitle = 'Zamówienia';
-			$rootScope.showKat = false;
+			$rootScope.showKS = true;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = false;
+			$rootScope.showMag = false;
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			var config = {
-				id_uzytkownika : $cookieStore.get('loggedId'),
-				status : ''
+					id_kategorii : $routeParams.katId
 			}
-			$http.post('/smbcustsrv/rest/query/zamowienia/getZamowienia', config).success(function(response){
+			
+			
+			if($location.path() == '/zamowieniamoje'){
+				config = {
+						id_uzytkownika : $cookieStore.get('loggedId'),
+					}
+			}
+			
+			$http.post('/smbemplsrv/rest/query/zamowienia/getZamowienia', config).success(function(response){
 				$scope.zamowienia = response;
 			});
+			
+			$scope.goToMy = function(){
+				$location.path('/zamowieniamoje');   
+			}
+			
+			$scope.goToAll = function(){
+				$location.path('/zamowieniawszystkie');
+			}
 			
 			$scope.showDetail = function(zamowienie){
 				$location.path('/zamowienieDetail').search({id_zamowienia: zamowienie.id});;
@@ -42,20 +61,47 @@ app.controller("zamowienieDetailController", [
                                 				var config = {
                                         				id_zamowienia : $routeParams.id_zamowienia,
                                         			}
-                                        			$http.post('/smbcustsrv/rest/query/zamowienia/getZamowienieById', config).success(function(response){
+                                        			$http.post('/smbemplsrv/rest/query/zamowienia/getZamowienieById', config).success(function(response){
                                         				$scope.zamowienieDetail = response;
                                         				$scope.listaProd = JSON.parse(response.listaProd);
                                         				$scope.aktywnosci = response.aktywnosci;
+                                        				$scope.zamowienie = response;
                                         			});
+                                			}
+                                			
+                                			$scope.closeTask = function(){
+                                				var zam = {
+                                						id_uzytkownika : $cookieStore.get('loggedId'),
+                                						lista: $scope.zamowienie.listaProd,
+                                						czyFaktura:  $scope.zamowienie.czyFaktura,
+                                						id:$routeParams.id_zamowienia,
+                                						dane_do_faktury:  $scope.zamowienie.daneDoFaktury
+                                				}
+                                				$http.post('/smbemplsrv/rest/command/zamowienie/closeZam',zam).success(function(data, status, headers, config) {
+                                					getZamowienieById();
+                                				});
+                                			}
+                                			
+                                			$scope.anulujZam = function(){
+                                				var zam = {
+                                						id_uzytkownika : $cookieStore.get('loggedId'),
+                                						lista: $scope.zamowienie.listaProd,
+                                						czyFaktura: $scope.zamowienie.czyFaktura,
+                                						id: $routeParams.id_zamowienia, 
+                                						daneDoFakt: $scope.zamowienie.daneDoFakt
+                                				}
+                                				$http.post('/smbemplsrv/rest/command/zamowienie/anulujZam',zam).success(function(data, status, headers, config) {
+                                					getZamowienieById();
+                                				});
                                 			}
                                 			
                                 			function getAktywnosciDoZamowienia(){
                                 				var config = {
                                         				tresc : $scope.tresc_wiadomosci,
-                                        				id_zamowienia: $routeParams.id_zamowienia,
+                                        				id: $routeParams.id_zamowienia,
                                         				id_zamawiajacego: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbcustsrv/rest/command/zamowienie/addMessageToOrder', config).success(
+                                        			$http.post('/smbemplsrv/rest/command/zamowienie/addMessageToOrder', config).success(
                                         					function(response){
                                         						getZamowienieById();
                                         						$scope.tresc_wiadomosci = "";
@@ -65,9 +111,3 @@ app.controller("zamowienieDetailController", [
                                 			
                                 		}]);
 			
-app.directive('zamowienietable',[function() {
-		 return {
-			    templateUrl: "zamowienieTable.html"
-			    };
-	 
-	}]);

@@ -1,0 +1,41 @@
+<div ng-app="smb" ng-controller="tranzakacjaController">
+<div class="row">
+		<div class="col-lg-12">
+			<div class="well well-md">
+				<input id="szuaj_oferta" type="text" class="form-control"
+					name="username" ng-model="search" value=""
+					placeholder="Czego szukasz ?">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12" style="margin: 20px; padding-left: 25px">
+			<button type="button" class="btn btn-default btn-md"
+				ng-click="goToMy()">
+				</span> Moje
+			</button>
+			<button type="button" class="btn btn-primary btn-md"
+				ng-click="goToAll()">
+				</span> Wszystkie
+			</button>
+		</div>
+	<table class="table" >
+	<thead>
+		<tr>
+			<th>Lp.</th>
+			<th>Data wystawienia</th>
+			<th>Typ</th>
+			<th>Nr faktury</th>
+			<th>Kwota</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="tranz in tanzakacje | filter: search">
+			<td>{{$index+1}}</td>
+			<td>{{tranz.dataWystawienia | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			<td>{{tranz.typ}}</td>
+			<td>{{tranz.nr_faktury}}</td>
+			<td>{{tranz.kwota | currency:''}} zł</td>
+		</tr>
+		</tbody>
+	</table>
+</div>

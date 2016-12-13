@@ -27,6 +27,9 @@ public class DaneFirmyRequestData{
     public String kodPocztowy;
     @XmlElement(name="miasto")
     public String miasto;
+    @XmlElement(name="id")
+    public String id;
+    
     
   
 }

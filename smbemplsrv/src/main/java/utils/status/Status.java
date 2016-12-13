@@ -1,6 +1,26 @@
 package utils.status;
 
 public class Status {
+	public static class FAKTURA_STATE {
+		public static final String SPRZEDARZ = "S";
+		public static final String ZAKUP = "K";
+
+		public static final String SPRZEDARZ_TEXT = "Sprzedaz";
+		public static final String ZAKUP_TEXT = "Zakup";
+
+		public static String getText(String fakState) {
+			switch (fakState) {
+				case SPRZEDARZ :
+					return SPRZEDARZ_TEXT;
+				case ZAKUP :
+					return ZAKUP_TEXT;
+				default :
+					return fakState;
+			}
+
+		}
+
+	}
 	public static class USER_STATE {
 		public static final String ACTIVE = "A";
 		public static final String NEW = "N";
@@ -106,8 +126,8 @@ public class Status {
 					return NOWE_TEXT;
 				case W_DOSTAWIE :
 					return W_DOSTWIE_TEXT;
-				case ANULOWANE_TEXT :
-					return ANULOWANE;
+				case ANULOWANE :
+					return ANULOWANE_TEXT;
 				case ZREALIZOWANE :
 					return ZREALIZOWANE_TEXT;
 				default :

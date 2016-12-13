@@ -6,10 +6,13 @@ app.controller("produktController", [
 		'$cookieStore',
 		'$route',
 		'$routeParams',
-		function($scope, $http, $location, $rootScope, $cookieStore, $route,
-				$routeParams) {
-			$rootScope.showKat = true;
-
+		function($scope, $http, $location, $rootScope, $cookieStore, $route, $routeParams) {
+			
+			$rootScope.showKS = false;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = false;
+			$rootScope.showMag = true;
+			
 			$rootScope.logged = $cookieStore.get("loggedIn");
 
 			var postData = {

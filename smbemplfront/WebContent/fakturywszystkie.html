@@ -1,0 +1,45 @@
+<div ng-app="smb" ng-controller="fakturaController">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well well-md">
+				<input id="szuaj_oferta" type="text" class="form-control"
+					name="username" ng-model="search" value=""
+					placeholder="Czego szukasz ?">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" style="margin: 20px; padding-left: 25px">
+			<button type="button" class="btn btn-default btn-md"
+				ng-click="goToMy()">
+				</span> Moje
+			</button>
+			<button type="button" class="btn btn-primary btn-md"
+				ng-click="goToAll()">
+				</span> Wszystkie
+			</button>
+		</div>
+	</div>
+	<table class="table" >
+	<thead>
+		<tr>
+			<th>Lp.</th>
+			<th>Nr faktury</th>
+			<th>Data wystawienia</th>
+			<th>Klient</th>
+			<th>Typ</th>
+			<th>Pobierz</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="faktura in faktury | filter: search">
+			<td>{{$index+1}}</td>
+			<td>{{faktura.numerFaktury}}</td>
+			<td>{{faktura.dataWystawienia | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			<td>{{faktura.daneKlienta}}</td>
+			<td>{{faktura.status}}</td>
+			<td><img ng-show="faktura.pdf" title="Pobierz" style="cursor: pointer;" width="30px" height="30px" src="lib/images/pdf_icon.png" ng-click="downloadPdf(faktura)"/></td>
+		</tr>
+		</tbody>
+	</table>
+</div>

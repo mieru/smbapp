@@ -42,16 +42,16 @@ app.controller("mainContoller", [
 				
 			$rootScope.kupSprzedMenu = [{
 				nazwa: 'Zamówienia',
-				href : '#/zamowienia'
+				href : '#/zamowieniamoje'
 			},{
 				nazwa: 'Faktury',
-				href : '#/faktury'
+				href : '#/fakturymoje'
 			},{
 				nazwa: 'Paragony',
-				href : '#/paragony'
+				href : '#/paragonymoje'
 			},{
 				nazwa: 'Hist. tranzakcji',
-				href : '#/histtranz'
+				href : '#/histtranzmoje'
 			}];
 			
 			$scope.wyloguj = function() {

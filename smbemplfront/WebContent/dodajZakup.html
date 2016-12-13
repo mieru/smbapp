@@ -2,36 +2,39 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="col-md-5">
-			<button style="margin-bottom: 10px" type="button"
-				class="btn btn-success btn-md" ng-click="goToAddProd()">
-				</span> Dodaj produkt
-			</button>
+				<button style="margin-bottom: 10px" type="button"
+					class="btn btn-success btn-md" ng-click="goToAddProd()">
+					</span> Dodaj produkt
+				</button>
 				<div class="well">
-							<input id="szuaj_oferta" type="text" class="form-control"
-								name="username" ng-model="search" value=""
-								placeholder="Czego szukasz ?">
-						</div>
-						<div id="products" class="row list-group">
-							<div class="item col-lg-12 list-group-item" style="max-height: 600px; overflow-y:auto">
-								<div ng-click="addToList(towar)" style="cursor: pointer" class="thumbnail" ng-repeat="towar in towary | filter:search  | offset: currentPage*itemOnPage| limitTo: itemOnPage ">
-									<div class="caption">
-										<div class="row">
-											<div class="col-lg-1">
-												<img class="group list-group-image"
-													src="data:image/gif;base64,{{towar.image}}"
-													style="width: 40px; height: 40px;" />
-											</div>
-											<div class="col-lg-6">
-												<h5 class="group inner list-group-item-heading">{{towar.nazwa}}</h5>
-											</div>
-											<div class="col-xs-5" style="text-align: right;">
-												{{towar.cbrutto | currency:''}} zł</div>
-
-										</div>
+					<input id="szuaj_oferta" type="text" class="form-control"
+						name="username" ng-model="search" value=""
+						placeholder="Czego szukasz ?">
+				</div>
+				<div id="products" class="row list-group">
+					<div class="item col-lg-12 list-group-item"
+						style="max-height: 600px; overflow-y: auto">
+						<div ng-click="addToList(towar)" style="cursor: pointer"
+							class="thumbnail"
+							ng-repeat="towar in towary | filter:search  | offset: currentPage*itemOnPage| limitTo: itemOnPage ">
+							<div class="caption">
+								<div class="row">
+									<div class="col-lg-1">
+										<img class="group list-group-image"
+											src="data:image/gif;base64,{{towar.image}}"
+											style="width: 40px; height: 40px;" />
 									</div>
+									<div class="col-lg-6">
+										<h5 class="group inner list-group-item-heading">{{towar.nazwa}}</h5>
+									</div>
+									<div class="col-xs-5" style="text-align: right;">
+										{{towar.cbrutto | currency:''}} zł</div>
+
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-7">
 				<table class="table" style="border-bottom: 1px solid">
@@ -39,20 +42,26 @@
 						<th>Lp.</th>
 						<th>Nazwa</th>
 						<th>Ilość</th>
-						<th>Cena netto</th>
+						<th>Cena netto/jedn.</th>
 						<th>Stawka VAT</th>
+						<th>Cena netto</th>
 						<th>Cena brutto</th>
 						<th></th>
 					</tr>
 					<tr ng-repeat="item in koszykLista">
 						<td>{{$index + 1}}</td>
 						<td>{{item.nazwa}}</td>
-						<td><input style="width: 70px" type="number" ng-model="item.ilosc"
-							ng-change="recalculateForm(item,$index)" min="1"><span>{{item.jednostka}}</span>
-						</td>
+						<td><input style="width: 70px" type="number"
+							ng-model="item.ilosc" ng-change="recalculateForm(item,$index)"
+							min="1"><span>{{item.jednostka}}</span></td>
+						<td><input ng-init="item.cnetto = '1.00'" style="width: 70px" type="text"
+							ng-model="item.cnetto" ng-change="recalculateForm(item,$index)"
+							 pattern="^\d+(\.|\,)\d{2}$"></td>
+						<td><input style="width: 70px" type="number"
+							ng-model="item.stawka_vat" ng-change="recalculateForm(item,$index)"
+							min="0"> %</td>
 						<td>{{item.cnetto * item.ilosc | currency:''}} zł</td>
-						<td>{{item.stawka_vat}} %</td>
-						<td>{{item.cbrutto * item.ilosc | currency:''}} zł</td>
+						<td >{{(item.cnetto * item.ilosc + (item.stawka_vat/100 * item.cnetto * item.ilosc)) | currency:''}} zł</td>
 						<td><span class="glyphicon glyphicon-remove"
 							ng-click="removeElement(item)" style="cursor: pointer;"></span></td>
 					</tr>
@@ -66,12 +75,19 @@
 					<div class="col-md-12" style="font-size: 20px; font-weight: bold">Suma
 						brutto: {{koszyk.wartoscAllBrutto | currency:''}} zł</div>
 				</div>
-				<form ng-submit="dodajProdAction()">
+				<form>
 					<div class="row" style="text-align: right; margin: 10px;">
-						<button id="btn-login" ng-click="clearFormAndSession()"
-						class="btn btn-primary">Wyczyść</button>
-						<button id="btn-login" ng-click="clearFormAndSession()"
-							class="btn btn-success">Zatwierdź</button>
+						<div class="col-md-8">
+							<spam>Dane sprzedawcy:</spam>
+							<textarea ng-required="zamowienie_faktuaVat"
+								ng-model="zamowienie_dane_do_faktury" class="form-control"
+								rows="4" cols="20" placeholder="Dane sprzedawcy:"></textarea>
+						</div>
+						<div class="col-md-4">
+							<button id="btn-login" ng-click="clearFormAndSession()"
+								class="btn btn-primary">Wyczyść</button>
+							<button id="btn-login" ng-click="submitZakup()" class="btn btn-success">Zatwierdź</button>
+						</div>
 					</div>
 				</form>
 			</div>

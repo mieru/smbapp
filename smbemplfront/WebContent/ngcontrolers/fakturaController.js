@@ -7,31 +7,40 @@ app.controller("fakturaController", [
 		'$route',
 		function($scope, $http, $location, $rootScope, $cookieStore, $route) {
 			$rootScope.pageTitle = 'Faktury';
-			$rootScope.showKat = false;
+			$rootScope.showKS = true;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = false;
+			$rootScope.showMag = false;
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
 
 			
-			var config = {
+				var config = {
 					id_uzytkownika : $cookieStore.get('loggedId'),
-					status : ''
 				}
-				$http.post('/smbcustsrv/rest/query/faktury/getFaktury', config).success(function(response){
+				
+				if($location.path() == '/fakturywszystkie'){
+					config = {};
+				}
+			
+				$http.post('/smbemplsrv/rest/query/faktury/getFaktury', config).success(function(response){
 					$scope.faktury = response;
 				});
 
+			$scope.goToMy = function(){
+				$location.path('/fakturymoje');   
+			}
+			
+			$scope.goToAll = function(){
+				$location.path('/fakturywszystkie');
+			}
+			
 			$scope.downloadPdf = function(faktura){
-				var url = '/smbcustsrv/rest/faktury/query/downloadPdf?';
+				var url = '/smbemplsrv/rest/query/faktury/downloadPdf?';
 					url += 'idFaktury=' + faktura.id;
 				window.location.replace(url);
 			}
 			
 		}]);
 			
-app.directive('fakturatable',[function() {
-	 return {
-		    templateUrl: "fakturaTable.html"
-		    };
-
-}]);

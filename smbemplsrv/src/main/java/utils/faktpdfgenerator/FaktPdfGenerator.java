@@ -95,10 +95,10 @@ public class FaktPdfGenerator {
         	   table.addCell(jsonObject.getString("nazwa"));
         	   table.addCell(jsonObject.getString("ilosc"));
         	   table.addCell(jsonObject.getString("jednostka"));
-        	   Double netto = Double.valueOf(jsonObject.getString("cnetto"));
+        	   Double netto = Double.valueOf(Double.valueOf(jsonObject.getString("cnetto"))  * Double.valueOf(jsonObject.getString("ilosc")));
         	   table.addCell(df.format(netto));
         	   table.addCell(jsonObject.getString("stawka_vat"));
-        	   Double brutto = Double.valueOf(jsonObject.getString("cbrutto"));
+        	   Double brutto = Double.valueOf(Double.valueOf(jsonObject.getString("cbrutto"))  * Double.valueOf(jsonObject.getString("ilosc")));
         	   table.addCell(df.format(brutto));
            }
                

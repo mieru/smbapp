@@ -61,14 +61,20 @@ public class ZgloszeniaFacade {
 	
 	
 	public String getZgloszenia(ZgloszeniaRequestQueryData zgloszeniaRequestQueryData) throws JSONException, IOException {
-		KategoiaZgloszenia kategoiaZgloszenia = katZglEjbQueryController.findEntityByID(zgloszeniaRequestQueryData.idKategorii);
+		KategoiaZgloszenia kategoiaZgloszenia = null;
+		if(zgloszeniaRequestQueryData.idKategorii != null)
+			 kategoiaZgloszenia = katZglEjbQueryController.findEntityByID(zgloszeniaRequestQueryData.idKategorii);
 		Uzytkownik uzytkownik = null;
 		List<Zgloszenie> colZgl = null;
-		if(kategoiaZgloszenia.getCzyMagazyn() != null && kategoiaZgloszenia.getCzyMagazyn()){
+		if(zgloszeniaRequestQueryData.idKategorii != null && kategoiaZgloszenia.getCzyMagazyn() != null && kategoiaZgloszenia.getCzyMagazyn()){
 			 colZgl = kategoiaZgloszenia.getZgloszenies();
 		}else{
+			if(zgloszeniaRequestQueryData.idUser != null){
 			 uzytkownik = uzytkownicyEjbQueryController.findEntityByID(zgloszeniaRequestQueryData.idUser);
 			 colZgl = uzytkownik.getZgloszenies1();
+			}else{
+				colZgl = zgloszeniaEjbQueryController.findAll();
+			}
 		}
 		
 		JSONArray jsonArray = new JSONArray();

@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.json.JSONException;
 
-import smbemplsrv.facade.magazyn.MagazynFacade;
 import smbemplsrv.facade.produkt.ProduktFacade;
 
 @RequestScoped

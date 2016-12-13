@@ -8,13 +8,32 @@ app.controller("zgloszenieController", [
 		'$routeParams',
 		function($scope, $http, $location, $rootScope, $cookieStore, $route, $routeParams) {
 			$rootScope.pageTitle = 'Zgloszenia';
-			$rootScope.showKat = false;
+			$rootScope.showKS = false;
+			$rootScope.showZgl = true;
+			$rootScope.showAdm = false;
+			$rootScope.showMag = false;
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
+			
+			
 			var config = {
-				id_uzytkownika : $cookieStore.get('loggedId'),
 				id_kategorii : $routeParams.katId
+			}
+			
+			if($location.path() == '/zgloszeniamoje'){
+				config = {
+						id_uzytkownika : $cookieStore.get('loggedId'),
+						id_kategorii : $routeParams.katId
+					}
+			}
+			
+			$scope.goToMy = function(){
+				$location.path('/zgloszeniamoje');   
+			}
+			
+			$scope.goToAll = function(){
+				$location.path('/zgloszeniawszystkie');
 			}
 			
 			

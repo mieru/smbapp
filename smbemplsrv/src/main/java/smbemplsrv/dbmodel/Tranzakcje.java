@@ -25,7 +25,7 @@ public class Tranzakcje implements Serializable {
 	@Column(name="id_faktury_kup")
 	private Integer idFakturyKup;
 
-	private double kwota;
+	private Double kwota;
 
 	@Column(name="lista_produktow")
 	private String listaProduktow;
@@ -41,6 +41,11 @@ public class Tranzakcje implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_paragonu")
 	private Paragon paragon;
+
+	//bi-directional many-to-one association to Uzytkownik
+	@ManyToOne
+	@JoinColumn(name="id_pracownika")
+	private Uzytkownik uzytkownik;
 
 	public Tranzakcje() {
 	}
@@ -69,11 +74,11 @@ public class Tranzakcje implements Serializable {
 		this.idFakturyKup = idFakturyKup;
 	}
 
-	public double getKwota() {
+	public Double getKwota() {
 		return this.kwota;
 	}
 
-	public void setKwota(double kwota) {
+	public void setKwota(Double kwota) {
 		this.kwota = kwota;
 	}
 
@@ -107,6 +112,14 @@ public class Tranzakcje implements Serializable {
 
 	public void setParagon(Paragon paragon) {
 		this.paragon = paragon;
+	}
+
+	public Uzytkownik getUzytkownik() {
+		return this.uzytkownik;
+	}
+
+	public void setUzytkownik(Uzytkownik uzytkownik) {
+		this.uzytkownik = uzytkownik;
 	}
 
 }

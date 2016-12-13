@@ -9,7 +9,10 @@ app.controller("uzytkownicyAdminController", [
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
-			$rootScope.showKat = false;
+			$rootScope.showKS = false;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = true;
+			$rootScope.showMag = false;
 			if ($location.path() == '/uzytkonfklient') {
 				$scope.type = 'C'
 			} else {
@@ -194,14 +197,13 @@ app.controller("dodajPracController", [
 					}
 				}
 				if ($scope.czyMagazyn) {
-					if ($scope.user.uprKod == "") {
-						$scope.user.uprKod = "M"
+					if ($scope.newUser.uprKod == "") {
+						$scope.newUser.uprKod = "M"
 					} else {
-						$scope.user.uprKod += ",M";
+						$scope.newUser.uprKod += ",M";
 					}
 				}
-				$http.post('/smbemplsrv/rest/command/uzytkonf/addNewUser',
-						$scope.newUser);
+				$http.post('/smbemplsrv/rest/command/uzytkonf/addNewUser',$scope.newUser);
 			}
 			
 		} ]);

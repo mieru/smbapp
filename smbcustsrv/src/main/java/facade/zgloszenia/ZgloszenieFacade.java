@@ -68,11 +68,18 @@ public class ZgloszenieFacade {
 
 	public String getZgloszeniaUzytkownika(ZgloszenieRequestData zgloszenieRequestData)
 			throws JSONException, AddressException, MessagingException {
-		Uzytkownik uzytkownik = uzytkownikEjbQueryController
-				.findEntityByID(zgloszenieRequestData.idUser);
+		
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = null;
-		List<Zgloszenie> colZgl = uzytkownik.getZgloszenies2();
+		List<Zgloszenie> colZgl = null;
+		
+		if(zgloszenieRequestData.idUser != null){
+			Uzytkownik uzytkownik = uzytkownikEjbQueryController.findEntityByID(zgloszenieRequestData.idUser);
+			colZgl = uzytkownik.getZgloszenies2();
+		}else{
+			colZgl = zgloszeniaEjbQueryController.findAll();
+		}
+		
 
 		for (Zgloszenie zgloszenie : colZgl) {
 			jsonObject = new JSONObject();

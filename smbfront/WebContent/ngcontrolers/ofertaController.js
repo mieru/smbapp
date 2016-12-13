@@ -80,6 +80,7 @@ app.controller("ofertaController", [
 						id : towar.id,
 						ilosc : towar.ilosc,
 						nazwa : towar.nazwa,
+						jednostka : towar.jednostka,
 						cbrutto : towar.cbrutto,
 						cnetto : towar.cnetto,
 						stawka_vat : towar.stawka_vat

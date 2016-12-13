@@ -10,6 +10,8 @@
 <script type="text/javascript" src="ngcontrolers/mainController.js"></script>
 <script type="text/javascript" src="ngcontrolers/routeController.js"></script>
 <script type="text/javascript" src="ngcontrolers/loginControler.js"></script>
+<script type="text/javascript" src="ngcontrolers/paragonController.js"></script>
+<script type="text/javascript" src="ngcontrolers/tranzakacjaController.js"></script>
 <script type="text/javascript" src="ngcontrolers/produktController.js"></script>
 <script type="text/javascript" src="ngcontrolers/zgloszenieController.js"></script>
 <script type="text/javascript" src="ngcontrolers/admin/adminController.js"></script>
@@ -20,6 +22,7 @@
 <script type="text/javascript" src="ngcontrolers/admin/katZglController.js"></script>
 <script type="text/javascript" src="ngcontrolers/kupSprzedController.js"></script>
 <script type="text/javascript" src="ngcontrolers/admin/uzytkownicyAdminController.js"></script>
+
 <script type="text/javascript" src="ngcontrolers/admin/magazynKonfController.js"></script>
 <script type="text/javascript" src="ngcontrolers/fakturaController.js"></script>
 <script type="text/javascript" src="ngcontrolers/ustawieniaController.js"></script>
@@ -37,13 +40,13 @@
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#/">Materiały Budowlane</a></li>
 				<li ng-show="logged && showPrac"><a href="#/sprzedaz">Kupno/Sprzedaz</a>
-				<kupsprzedmenu /></li>
+				<kupsprzedmenu ng-show="showKS" /></li>
 				<li ng-show="logged && showPrac"><a href="#/magazyn">Magazyny</a>
-				<magazynmenu ng-show="showKat" /></li>
-				<li ng-show="logged && showPrac"><a href="#/zgloszenia">Zgłoszenia</a>
-				<zglmenu /></li>
+				<magazynmenu ng-show="showMag" /></li>
+				<li ng-show="logged && showPrac"><a href="#/zgloszeniamoje">Zgłoszenia</a>
+				<zglmenu ng-show="showZgl" /></li>
 				<li ng-show="logged && showAdmin"><a href="#/administracja">Administracja</a>
-				<adminmenu /></li>
+				<adminmenu ng-show="showAdm"/></li>
 				<li ng-hide="logged"><a href="" ng-click="goToLoggin()">Zaloguj</a></li>
 			</ul>
 		</div>

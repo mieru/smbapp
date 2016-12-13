@@ -8,7 +8,12 @@ app.controller("kupSprzedController", [
 		'$routeParams',
 		function($scope, $http, $location, $rootScope, $cookieStore, $route, $routeParams) {
 			$rootScope.pageTitle = 'Kupno/Sprzedaz';
-			$rootScope.showKat = false;
+
+			$rootScope.showKS = true;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = false;
+			$rootScope.showMag = false;
+			
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
@@ -43,16 +48,14 @@ app.controller("dodajZakupController", [
                                			$scope.koszykLista = $cookieStore.get('koszykListaZakup');
                                			
                             			$scope.addToList = function(towar) {
-                            				$scope.koszyk.iloscAll += 1;
-                            				$scope.koszyk.wartoscAllBrutto += towar.cbrutto;
-                            				$scope.koszyk.wartoscAllNetto += towar.cnetto;
-                            				$scope.koszyk.sumaPodatkuVat += (towar.cnetto * (towar.stawka_vat/100));
-
-                            				$cookieStore.put("koszykIloscAllZakup", $scope.koszyk.iloscAll);
+                            				$scope.koszyk.wartoscAllBrutto += 1.00 + (1.00 * (towar.stawka_vat/100));
+                            				$scope.koszyk.wartoscAllNetto += 1.00;
+                            				$scope.koszyk.sumaPodatkuVat += 1.00 * (towar.stawka_vat/100);
+                            				
                             				$cookieStore.put("koszykwartoscAllBruttoZakup", $scope.koszyk.wartoscAllBrutto);
                             				$cookieStore.put("koszykwartoscAllNettoZakup", $scope.koszyk.wartoscAllNetto);
                             				$cookieStore.put("koszyksumaPodatkuVatZakup", $scope.koszyk.sumaPodatkuVat);
-
+                            				
                             				var koszykLista = $cookieStore.get('koszykListaZakup');
                             				if (koszykLista == null) {
                             					koszykLista = [];
@@ -72,8 +75,8 @@ app.controller("dodajZakupController", [
                             						ilosc : 1,
                             						jednostka: towar.jednostka,
                             						nazwa : towar.nazwa,
-                            						cbrutto : towar.cbrutto,
-                            						cnetto : towar.cnetto,
+                            						cbrutto : 0.00,
+                            						cnetto : 1.00,
                             						stawka_vat : towar.stawka_vat
                             					});
                             				}
@@ -87,12 +90,13 @@ app.controller("dodajZakupController", [
                             			
                             			
                             			$scope.removeElement = function(item) {
-                            				$scope.koszyk.iloscAll -= parseInt(item.ilosc);
-                            				$scope.koszyk.wartoscAllBrutto -= item.cbrutto * item.ilosc;
-                            				$scope.koszyk.wartoscAllNetto -= item.cnetto * item.ilosc;
-                            				$scope.koszyk.sumaPodatkuVat -= (item.cnetto * (item.stawka_vat/100)) * parseInt(item.ilosc);
+                            				var koszykListaOld = $cookieStore.get('koszykListaZakup');
+                            				var itemOld = koszykListaOld[$scope.koszykLista.indexOf(item)];
                             				
-                            				$cookieStore.put("koszykIloscAllZakup", $scope.koszyk.iloscAll);
+                            				$scope.koszyk.wartoscAllBrutto -= (itemOld.cnetto * itemOld.ilosc + (itemOld.stawka_vat/100 * itemOld.cnetto * itemOld.ilosc));
+                            				$scope.koszyk.wartoscAllNetto -= itemOld.cnetto * itemOld.ilosc;
+                            				$scope.koszyk.sumaPodatkuVat -= (itemOld.cnetto * (itemOld.stawka_vat/100)) * itemOld.ilosc;
+                            				
                             				$cookieStore.put("koszykwartoscAllBruttoZakup", $scope.koszyk.wartoscAllBrutto);
                             				$cookieStore.put("koszykwartoscAllNettoZakup", $scope.koszyk.wartoscAllNetto);
                             				$cookieStore.put("koszyksumaPodatkuVatZakup", $scope.koszyk.sumaPodatkuVat);
@@ -101,46 +105,38 @@ app.controller("dodajZakupController", [
                             			};
                             			
                             			
-                            			$scope.recalculateForm = function(item,idx) {
+                            			$scope.recalculateForm = function(itemNew,idx) {
                              				var koszykListaOld = $cookieStore.get('koszykListaZakup');
-                            				var iloscOld = koszykListaOld[idx].ilosc;
-                            				var iloscNew = item.ilosc;
-                            				var ilosc = iloscNew - iloscOld;
+                            				var itemOld = koszykListaOld[idx];
                             				
-                            				$scope.koszyk.iloscAll += ilosc;
-                            				$scope.koszyk.wartoscAllBrutto += item.cbrutto * ilosc;
-                            				$scope.koszyk.wartoscAllNetto += item.cnetto * ilosc;
-                            				$scope.koszyk.sumaPodatkuVat += (item.cnetto * (item.stawka_vat/100)) * ilosc;
+                            				$scope.koszyk.wartoscAllBrutto -= (itemOld.cnetto * itemOld.ilosc + (itemOld.stawka_vat/100 * itemOld.cnetto * itemOld.ilosc));
+                            				$scope.koszyk.wartoscAllNetto -= itemOld.cnetto * itemOld.ilosc;
+                            				$scope.koszyk.sumaPodatkuVat -= (itemOld.cnetto * (itemOld.stawka_vat/100)) * itemOld.ilosc;
                             				
-                            				$cookieStore.put("koszykIloscAllZakup", $scope.koszyk.iloscAll);
+                            				$scope.koszyk.wartoscAllBrutto += (itemNew.cnetto * itemNew.ilosc + (itemNew.stawka_vat/100 * itemNew.cnetto * itemNew.ilosc));
+                            				$scope.koszyk.wartoscAllNetto += itemNew.cnetto * itemNew.ilosc;
+                            				$scope.koszyk.sumaPodatkuVat += (itemNew.cnetto * (itemNew.stawka_vat/100)) * itemNew.ilosc;
+                            				
                             				$cookieStore.put("koszykwartoscAllBruttoZakup", $scope.koszyk.wartoscAllBrutto);
                             				$cookieStore.put("koszykwartoscAllNettoZakup", $scope.koszyk.wartoscAllNetto);
                             				$cookieStore.put("koszyksumaPodatkuVatZakup", $scope.koszyk.sumaPodatkuVat);
                             				
-                            				$scope.koszykLista[idx] = item;
-                            				$cookieStore.put("koszykLista", $scope.koszykLista);
+                            				$scope.koszykLista[idx] = itemNew;
+                            				$cookieStore.put("koszykListaZakup", $scope.koszykLista);
                             			};
                             			
-                            			$scope.submitOrder = function() {
+                            			$scope.submitZakup = function() {
                             				
-                            				if(!$cookieStore.get('loggedIn')){
-                            					alert('Aby zamówić musisz byc zalogowany.');
-                            					$location.path('/logowanie');
-                            				}
                             				
                              				var zamowienieData = {
                              						lista : JSON.stringify($scope.koszykLista),
-                             						czyFaktura : $scope.zamowienie_faktuaVat,
-                             						wiad_do_sprz: $scope.zamowienie_wiad_do_sprzedawcy,
-                             						adres_dostawy : $scope.zamowienie_adres_dostawy,
+                             						typ : 'K',
                              						dane_do_faktury: $scope.zamowienie_dane_do_faktury,
-                             						koszyk_info: JSON.stringify($scope.koszyk),
-                             						id_zamawiajacego : $cookieStore.get('loggedId')
+                             						id_pracownika : $cookieStore.get('loggedId')
                              				}
                             			
-                             				$http.post('/smbcustsrv/rest/command/zamowienie/addNewOrder', zamowienieData)
+                             				$http.post('/smbemplsrv/rest/command/sprzedaz/addNew', zamowienieData)
                             				.success(function(data) {
-                            					alert('zamowienie dodane !');
                             					clearOferta();
                             				})
                             				
@@ -155,11 +151,6 @@ app.controller("dodajZakupController", [
                             			function initScopeFromSession(){
                             				$rootScope.logged = $cookieStore.get("loggedIn");
                             				
-                            				var koszykIloscAll = $cookieStore.get('koszykIloscAllZakup');
-                            				if(koszykIloscAll == null){
-                            					koszykIloscAll = 0;
-                            				}
-                            				
                             				var koszykwartoscAllBrutto = $cookieStore.get('koszykwartoscAllBruttoZakup');
                             				if(koszykwartoscAllBrutto == null){
                             					koszykwartoscAllBrutto = 0;
@@ -176,42 +167,6 @@ app.controller("dodajZakupController", [
                             				}
                             				
                             				$scope.koszyk = {
-                            						iloscAll :  koszykIloscAll,
-                            						wartoscAllBrutto : koszykwartoscAllBrutto,
-                            						wartoscAllNetto: koszykwartoscAllNetto,
-                            						sumaPodatkuVat: koszyksumaPodatkuVat
-                            					}
-
-                            			}
-                            			$scope.clearFormAndSession = function() {
-                            				clearOferta();
-                            			};
-                            		
-                            			function initScopeFromSession(){
-                            				$rootScope.logged = $cookieStore.get("loggedIn");
-                            				
-                            				var koszykIloscAll = $cookieStore.get('koszykIloscAllZakup');
-                            				if(koszykIloscAll == null){
-                            					koszykIloscAll = 0;
-                            				}
-                            				
-                            				var koszykwartoscAllBrutto = $cookieStore.get('koszykwartoscAllBruttoZakup');
-                            				if(koszykwartoscAllBrutto == null){
-                            					koszykwartoscAllBrutto = 0;
-                            				}
-                            				
-                            				var koszykwartoscAllNetto  = $cookieStore.get('koszykwartoscAllNettoZakup');
-                            				if(koszykwartoscAllNetto  == null){
-                            					koszykwartoscAllNetto  = 0;
-                            				}
-                            				
-                            				var koszyksumaPodatkuVat  = $cookieStore.get('koszyksumaPodatkuVatZakup');
-                            				if(koszyksumaPodatkuVat  == null){
-                            					koszyksumaPodatkuVat  = 0;
-                            				}
-                            				
-                            				$scope.koszyk = {
-                            						iloscAll :  koszykIloscAll,
                             						wartoscAllBrutto : koszykwartoscAllBrutto,
                             						wartoscAllNetto: koszykwartoscAllNetto,
                             						sumaPodatkuVat: koszyksumaPodatkuVat
@@ -350,6 +305,7 @@ app.controller("dodajSprzedController", [
                             			$scope.submitSell = function() {
                              				var sprzedazData = {
                              						lista : JSON.stringify($scope.koszykLista),
+                             						typ : 'S',
                              						czyFaktura : $scope.zamowienie_faktuaVat,
                              						dane_do_faktury: $scope.zamowienie_dane_do_faktury,
                              						id_pracownika : $cookieStore.get('loggedId')
@@ -357,7 +313,12 @@ app.controller("dodajSprzedController", [
                             			
                              				$http.post('/smbemplsrv/rest/command/sprzedaz/addNew', sprzedazData)
                             				.success(function(data) {
-                            					clearOferta();
+                            					if(data.resp == ""){
+                            						clearOferta();
+                            					}else{
+                            						alert(data.resp);
+                            					}
+                            				
                             				})
                             				
                             				

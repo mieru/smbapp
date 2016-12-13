@@ -1,0 +1,43 @@
+<div ng-app="smb" ng-controller="zamowienieController">
+		<div class="row">
+		<div class="col-lg-12">
+			<div class="well well-md">
+				<input id="szuaj_oferta" type="text" class="form-control"
+					name="username" ng-model="search" value=""
+					placeholder="Czego szukasz ?">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12" style="margin: 20px; padding-left: 25px">
+			<button type="button" class="btn btn-primary btn-md"
+				ng-click="goToMy()">
+				</span> Moje
+			</button>
+			<button type="button" class="btn btn-default btn-md"
+				ng-click="goToAll()">
+				</span> Wszystkie
+			</button>
+		</div>
+	<table class="table table-hover" >
+	<thead>
+		<tr>
+			<th>Lp.</th>
+			<th>Data zamówienia</th>
+			<th>Numer zamówienia</th>
+			<th>Status</th>
+			<th>Klient</th>
+			<th>Data zakończenia</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="zamowienie in zamowienia | filter: search" style="cursor: pointer;" ng-click="showDetail(zamowienie)">
+			<td>{{$index+1}}</td>
+			<td>{{zamowienie.dataZlozenia | date:'yyyy-MM-dd HH:mm'}}</td>
+			<td>{{zamowienie.numer_zam}}</td>
+			<td>{{zamowienie.status}}</td>
+			<td>{{zamowienie.klient}}</td>
+			<td>{{zamowienie.dataZamkniecia | date:'yyyy-MM-dd HH:mm'}}</td>
+		</tr>
+		</tbody>
+	</table>
+</div>

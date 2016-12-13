@@ -24,6 +24,7 @@ import command.restaction.zamowieniesprzedaz.ZamowienieRequestCommandData;
 import dbmodel.Uzytkownik;
 import dbmodel.WiadomoscZamSprzedaz;
 import dbmodel.ZamowienieSprzedaz;
+import mailer.MailSender;
 import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
 import query.ejbcontrol.zamowieniasprzedarz.ZamowieniaSprzedEjbQueryController;
 import query.restaction.zamowienia.ZamowieniaRequestQueryData;
@@ -44,6 +45,9 @@ public class ZamowienieFacade {
 	
 	@EJB
 	WiadZamSprzedEjbCommandController wiadZamSprzedEjbCommandController;
+	
+	@EJB
+	MailSender mailSender;
 	
 	public String dodajNoweZamowienie(ZamowienieRequestCommandData zamowienieRequestCommandData) throws JSONException, AddressException, MessagingException {
 		JSONObject jsonObject = new JSONObject();
@@ -89,7 +93,7 @@ public class ZamowienieFacade {
 		return jsonObject.toString();
 	}
 	
-	private void dodajWiadomosc(Uzytkownik uzytkownik,ZamowienieSprzedaz zamowienieSprzedaz, ZamowienieRequestCommandData zamowienieRequestData){
+	private void dodajWiadomosc(Uzytkownik uzytkownik,ZamowienieSprzedaz zamowienieSprzedaz, ZamowienieRequestCommandData zamowienieRequestData) throws AddressException, MessagingException{
 		WiadomoscZamSprzedaz wiadomoscZamSprzedaz = new WiadomoscZamSprzedaz();
 		wiadomoscZamSprzedaz.setTresc(zamowienieRequestData.trescWiadomosci);
 		wiadomoscZamSprzedaz.setUzytkownik(uzytkownik);
@@ -97,6 +101,7 @@ public class ZamowienieFacade {
 		wiadomoscZamSprzedaz.setZamowienieSprzedaz(zamowienieSprzedaz);
 		
 		wiadZamSprzedEjbCommandController.insert(wiadomoscZamSprzedaz);
+		mailSender.sendMail("Nowa wiadomosc do zamowienia nr : " + zamowienieSprzedaz.getNumerZamowienia(), "Dodanow wiadomosc do zamowienia..", zamowienieSprzedaz.getUzytkownik2().getMail());
 	}
 	
 	public String getZamowienia(ZamowieniaRequestQueryData zamowieniaRequestQueryData) throws JSONException {

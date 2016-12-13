@@ -36,7 +36,7 @@ public class FakturaFacade {
 	}
 	File file = new File(System.getProperty("jboss.server.data.dir").toString() + fakturaSprzedazy.getFilePath());
 	ResponseBuilder response = Response.ok((Object) file);
-	response.header("Content-Disposition", "attachment; filename=\"" + fakturaSprzedazy.getFileName() + "\"");
+	response.header("Content-Disposition", "attachment; filename=\"Faktura-" + fakturaSprzedazy.getIdFaktury() + ".pdf\"");
 	return response.build();
 
 }
@@ -49,7 +49,9 @@ public class FakturaFacade {
 		if(fakturyResponseData.idUser != null){
 			Uzytkownik uzytkownik = uzytkownikEjbQueryController.findEntityByID(Integer.parseInt(fakturyResponseData.idUser));
 			fakCol = uzytkownik.getFakturaSprzedazies1();
-		
+		}else{
+			fakCol = fakturyEjbQueryController.findAll();
+		}
 		for (FakturaSprzedazy fakturaSprzedazy : fakCol) {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", fakturaSprzedazy.getIdFaktury());
@@ -63,7 +65,6 @@ public class FakturaFacade {
 			jsonObject.put("status", fakturaSprzedazy.getStatus());
 			
 			jsonArray.put(jsonObject);
-		}
 		}
 		return jsonArray.toString();
 	}

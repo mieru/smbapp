@@ -9,7 +9,10 @@ app.controller("magazynKonfController", [
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
-			$rootScope.showKat = false;
+			$rootScope.showKS = false;
+			$rootScope.showZgl = false;
+			$rootScope.showAdm = true;
+			$rootScope.showMag = false;
 			$http.post('/smbemplsrv/rest/query/magkonf/getAll').success(function(data){
 				$rootScope.magazyny = data;
 			})

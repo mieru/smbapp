@@ -16,11 +16,14 @@ import org.json.JSONObject;
 import com.lowagie.text.DocumentException;
 
 import smbemplsrv.command.ejbcontrol.faktua.FakturaEjbCommandController;
+import smbemplsrv.command.ejbcontrol.paragon.ParagonEjbCommandController;
 import smbemplsrv.command.ejbcontrol.produkt.ProduktEjbCommandController;
 import smbemplsrv.command.ejbcontrol.tranzakcje.TranzakcjaEjbCommandController;
 import smbemplsrv.command.restaction.tanzakcje.TanzakcjaRequestData;
 import smbemplsrv.dbmodel.DaneFirmy;
 import smbemplsrv.dbmodel.FakturaSprzedazy;
+import smbemplsrv.dbmodel.Paragon;
+import smbemplsrv.dbmodel.Towar;
 import smbemplsrv.dbmodel.Tranzakcje;
 import smbemplsrv.dbmodel.Uzytkownik;
 import smbemplsrv.query.ejbcontrol.danefirmy.DaneFimyEjbQueryController;
@@ -50,59 +53,129 @@ public class SprzedarzFacade {
 	FakturaEjbCommandController fakturaEjbCommandController;
 	@EJB
 	FakturaEjbQueryController fakturaEjbQueryController;
-	
+	@EJB
+	ParagonEjbCommandController paragonEjbCommandController;
+ 	
+	private StringBuilder response = new StringBuilder();
 
-	public String addNew(TanzakcjaRequestData tanzakcjaRequestData) throws AddressException, MessagingException, DocumentException, SQLException, IOException {
+	public String addNew(TanzakcjaRequestData tanzakcjaRequestData, Uzytkownik klient) throws AddressException, MessagingException, DocumentException, SQLException, IOException {
 		Tranzakcje tranzakcje = new Tranzakcje();
-		tranzakcje.setTyp("S");
+		tranzakcje.setTyp(tanzakcjaRequestData.typ);
 		tranzakcje.setDataTanzakcji(new Timestamp(System.currentTimeMillis()));
 		tranzakcje.setListaProduktow(tanzakcjaRequestData.listaPoduktow);
-
+		Uzytkownik uzytkownik = uzytkownicyEjbQueryController.findEntityByID(tanzakcjaRequestData.idPracownika);
+		tranzakcje.setUzytkownik(uzytkownik);
 		Float wartoscAllNetto = 0f;
 		Float wartoscAllBrutto = 0f;
 		
 		JSONArray jsonArray = new JSONArray(tanzakcjaRequestData.listaPoduktow);
-		for(int i = 0; i < jsonArray.length(); i++){
-			JSONObject objecTmp = new JSONObject(jsonArray.get(i).toString());
-			wartoscAllNetto += Float.valueOf(objecTmp.get("ilosc").toString()) * Float.valueOf(objecTmp.get("cnetto").toString());
-			wartoscAllBrutto += Float.valueOf(objecTmp.get("ilosc").toString()) * Float.valueOf(objecTmp.get("cbrutto").toString());
+		if("S".equals(tanzakcjaRequestData.typ)){
+			for(int i = 0; i < jsonArray.length(); i++){
+				JSONObject objecTmp = new JSONObject(jsonArray.get(i).toString());
+				sprawdzIlosciMagazynowe(objecTmp);
+			}
 		}
-		tranzakcje.setKwota(wartoscAllBrutto);
+		if(response.toString().isEmpty()){
+			for(int i = 0; i < jsonArray.length(); i++){
+				JSONObject objecTmp = new JSONObject(jsonArray.get(i).toString());
+				zmienStanMagazynowy(objecTmp, tanzakcjaRequestData.typ);
+				Float wNetto = Float.valueOf(objecTmp.get("ilosc").toString()) * Float.valueOf(objecTmp.get("cnetto").toString());
+				wartoscAllNetto += wNetto;
+				Float vat = 1.00f + Float.parseFloat(objecTmp.getString("stawka_vat")) * 0.01f;
+				wartoscAllBrutto += wNetto * vat;
+			}
+			
+			tranzakcje.setKwota(wartoscAllBrutto.doubleValue());
+			
+			
+			if((tanzakcjaRequestData.czyFaktura != null && tanzakcjaRequestData.czyFaktura) || "K".equals(tanzakcjaRequestData.typ)){
+				creteFV(tanzakcjaRequestData, tranzakcje, wartoscAllNetto, wartoscAllBrutto, tanzakcjaRequestData.typ, klient);
+			}else{
+				createParagon(tanzakcjaRequestData, tranzakcje, wartoscAllNetto, wartoscAllBrutto, tanzakcjaRequestData.typ);
+			}
+			
+			tranzakcjaEjbCommandController.insert(tranzakcje); 
+		}
+		JSONObject resp = new JSONObject();
+		resp.put("resp", response.toString());
+		return resp.toString();
+	}
+
+
+	private void createParagon(TanzakcjaRequestData tanzakcjaRequestData, Tranzakcje tranzakcje, Float wartoscAllNetto, Float wartoscAllBrutto, String typ) {
+		Paragon paragon = new Paragon();
+		paragon.setDataWystawienia(new Timestamp(System.currentTimeMillis()));
+		paragon.setListaTowarow(tanzakcjaRequestData.listaPoduktow);
 		
+		DaneFirmy daneFirmy = daneFimyEjbQueryController.findAll().iterator().next();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder
+		.append(daneFirmy.getNazwa()+"\n")
+		.append("NIP: " + daneFirmy.getNip()+"\n")
+		.append(daneFirmy.getUlica() + " " +daneFirmy.getNrBudynku() + "/" + daneFirmy.getNrLokalu()+"\n")
+		.append(daneFirmy.getKodPocztowy() + " " + daneFirmy.getMiasto()+"\n");
 		
-		if(tanzakcjaRequestData.czyFaktura != null && tanzakcjaRequestData.czyFaktura){
-			FakturaSprzedazy fakturaSprzedazy = new FakturaSprzedazy();
-			fakturaSprzedazy.setListaTowarow(tranzakcje.getListaProduktow());
-			fakturaSprzedazy.setDaneKlienta(tanzakcjaRequestData.daneDoFaktury);
-			fakturaSprzedazy.setStatus("S");
-			
-			Uzytkownik uzytkownik = uzytkownicyEjbQueryController.findEntityByID(tanzakcjaRequestData.idPracownika);
-			fakturaSprzedazy.setUzytkownik2(uzytkownik);
-			fakturaSprzedazy.setDataWystawienia(new Timestamp(System.currentTimeMillis()));
-			fakturaSprzedazy.setNumerFaktury(fakturaEjbQueryController.generujNumerZgloszenia());
-			
-			DaneFirmy daneFirmy = daneFimyEjbQueryController.findAll().iterator().next();
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder
-			.append(daneFirmy.getNazwa()+"\n")
-			.append("NIP: " + daneFirmy.getNip()+"\n")
-			.append(daneFirmy.getUlica() + " " +daneFirmy.getNrBudynku() + "/" + daneFirmy.getNrLokalu()+"\n")
-			.append(daneFirmy.getKodPocztowy() + " " + daneFirmy.getMiasto()+"\n");
-			
-			fakturaSprzedazy.setDaneWystawiajacego(stringBuilder.toString());
-			
-			fakturaSprzedazy = fakturaEjbCommandController.insert(fakturaSprzedazy);
-			
+		paragon.setDaneWystawiajacego(stringBuilder.toString());
+		Uzytkownik uzytkownik = uzytkownicyEjbQueryController.findEntityByID(tanzakcjaRequestData.idPracownika);
+		paragon.setUzytkownik(uzytkownik);
+		
+		paragon = paragonEjbCommandController.insert(paragon);
+		tranzakcje.setParagon(paragon);
+	}
+
+
+	private void sprawdzIlosciMagazynowe(JSONObject objecTmp) {
+		Towar towar = produktEjbQueryController.findEntityByID(objecTmp.getInt("id"));
+		if(towar.getIloscWMagazynie() < objecTmp.getInt("ilosc")){
+			response.append("Za mała ilosc " + towar.getNazwa() + "\n");
+		}
+	}
+
+
+	private void creteFV(TanzakcjaRequestData tanzakcjaRequestData, Tranzakcje tranzakcje, Float wartoscAllNetto, Float wartoscAllBrutto, String typ, Uzytkownik klient) throws AddressException, MessagingException, DocumentException, SQLException, IOException {
+		FakturaSprzedazy fakturaSprzedazy = new FakturaSprzedazy();
+		fakturaSprzedazy.setListaTowarow(tranzakcje.getListaProduktow());
+		fakturaSprzedazy.setDaneKlienta(tanzakcjaRequestData.daneDoFaktury);
+		fakturaSprzedazy.setStatus(typ);
+		if(klient != null)
+			fakturaSprzedazy.setUzytkownik1(klient);
+		
+		Uzytkownik uzytkownik = uzytkownicyEjbQueryController.findEntityByID(tanzakcjaRequestData.idPracownika);
+		fakturaSprzedazy.setUzytkownik2(uzytkownik);
+		fakturaSprzedazy.setDataWystawienia(new Timestamp(System.currentTimeMillis()));
+		fakturaSprzedazy.setNumerFaktury(fakturaEjbQueryController.generujNumerZgloszenia());
+		
+		DaneFirmy daneFirmy = daneFimyEjbQueryController.findAll().iterator().next();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder
+		.append(daneFirmy.getNazwa()+"\n")
+		.append("NIP: " + daneFirmy.getNip()+"\n")
+		.append(daneFirmy.getUlica() + " " +daneFirmy.getNrBudynku() + "/" + daneFirmy.getNrLokalu()+"\n")
+		.append(daneFirmy.getKodPocztowy() + " " + daneFirmy.getMiasto()+"\n");
+		
+		fakturaSprzedazy.setDaneWystawiajacego(stringBuilder.toString());
+		
+		fakturaSprzedazy = fakturaEjbCommandController.insert(fakturaSprzedazy);
+		
+		if("S".equals(typ)){
 			FaktPdfGenerator pdfGenerator =new FaktPdfGenerator();
 			fakturaSprzedazy.setFilePath(pdfGenerator.generatePdf(fakturaSprzedazy, wartoscAllNetto, wartoscAllBrutto));
-			
 			fakturaEjbCommandController.update(fakturaSprzedazy);
-			tranzakcje.setFakturaSprzedazy(fakturaSprzedazy);
 		}
 		
-		tranzakcjaEjbCommandController.insert(tranzakcje); 
+		tranzakcje.setFakturaSprzedazy(fakturaSprzedazy);
 		
-		return "";
+	}
+
+
+	private void zmienStanMagazynowy(JSONObject objecTmp, String typ) {
+		Towar towar = produktEjbQueryController.findEntityByID(objecTmp.getInt("id"));
+		if("S".equals(typ)){
+			towar.setIloscWMagazynie(towar.getIloscWMagazynie() - objecTmp.getInt("ilosc"));
+		}else{
+			towar.setIloscWMagazynie(towar.getIloscWMagazynie() + objecTmp.getInt("ilosc"));
+		}
+			produktEjbCommandController.update(towar);
 	}
 
 }

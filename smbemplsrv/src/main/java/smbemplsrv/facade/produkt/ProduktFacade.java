@@ -128,6 +128,9 @@ public class ProduktFacade {
 		towar.setOpis(produktRequestData.opis);
 		towar.setStawkaVat(produktRequestData.stawkaVat);
 		towar.setStanMinUzyt(produktRequestData.stan_min);
+		towar.setPowiadomiono(false);
+		towar.setCzyStanSys(true);
+		towar.setCzyStanUzyt(false);
 		towar.setStanMinSys(1);
 		if(produktRequestData.stan_min != null){
 			towar.setStanMinimalny(produktRequestData.stan_min);

@@ -30,7 +30,7 @@ public class TranzakcjaRestAction {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addNew(TanzakcjaRequestData tanzakcjaRequestData) throws AddressException, MessagingException, FileNotFoundException, IOException, DocumentException, SQLException {
-		return sprzedazFacade.addNew(tanzakcjaRequestData);
+		return sprzedazFacade.addNew(tanzakcjaRequestData, null);
 	}
 	
 }

@@ -31,7 +31,7 @@ app.config(function($routeProvider) {
 				}
 			}
 		},
-		templateUrl : "administracja.html"
+		templateUrl : "uzytKonfPrac.html"
 	}).when('/magazyn', {
 		resolve : {
 			"check" : function($location, $cookieStore) {
@@ -41,7 +41,7 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "obsMagazynu.html"
-	}).when('/zgloszenia', {
+	}).when('/zgloszeniamoje', {
 		resolve : {
 			"check" : function($location, $cookieStore) {
 				if (!$cookieStore.get("loggedIn")) {
@@ -49,7 +49,16 @@ app.config(function($routeProvider) {
 				}
 			}
 		},
-		templateUrl : "zgloszenia.html"
+		templateUrl : "zgloszeniamoje.html"
+	}).when('/zgloszeniawszystkie', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "zgloszeniawszystkie.html"
 	}).when('/sprzedaz', {
 		resolve : {
 			"check" : function($location, $cookieStore) {
@@ -242,6 +251,24 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "zgloszenieDetail.html"
+	}).when('/paragonDetail', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "paragonDetail.html"
+	}).when('/zamowienieDetail', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "zamowienieDetail.html"
 	}).when('/dodajSprzedaz', {
 		resolve : {
 			"check" : function($location, $cookieStore) {
@@ -260,7 +287,7 @@ app.config(function($routeProvider) {
 			}
 		},
 		templateUrl : "dodajZakup.html"
-	}).when('/zamowienia', {
+	}).when('/zamowieniamoje', {
 		resolve : {
 			"check" : function($location, $cookieStore) {
 				if (!$cookieStore.get("loggedIn")) {
@@ -268,7 +295,70 @@ app.config(function($routeProvider) {
 				}
 			}
 		},
-		templateUrl : "zamowienia.html"
+		templateUrl : "zamowieniamoje.html"
+	}).when('/fakturymoje', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "fakturymoje.html"
+	}).when('/paragonymoje', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "paragonymoje.html"
+	}).when('/paragonywszystkie', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "paragonywszystkie.html"
+	}).when('/histtranzmoje', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "histtranmoje.html"
+	}).when('/histtranzwszystkie', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "histtranwszystkie.html"
+	}).when('/fakturywszystkie', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "fakturywszystkie.html"
+	}).when('/zamowieniawszystkie', {
+		resolve : {
+			"check" : function($location, $cookieStore) {
+				if (!$cookieStore.get("loggedIn")) {
+					$location.path('/logowanie');
+				}
+			}
+		},
+		templateUrl : "zamowieniawszystkie.html"
 	}).otherwise({
 		resolve : {
 			"check" : function($location, $cookieStore) {

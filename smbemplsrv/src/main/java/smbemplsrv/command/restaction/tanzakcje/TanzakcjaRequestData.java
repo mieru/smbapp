@@ -17,6 +17,8 @@ public class TanzakcjaRequestData {
 	    public Integer idZamowienia;
 	    @XmlElement(name="id_pracownika")
 	    public Integer idPracownika;
+	    @XmlElement(name="typ")
+	    public String typ;
 	
 	
 	
