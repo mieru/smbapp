@@ -13,7 +13,7 @@ app.controller("magazynKonfController", [
 			$rootScope.showZgl = false;
 			$rootScope.showAdm = true;
 			$rootScope.showMag = false;
-			$http.post('/smbemplsrv/rest/query/magkonf/getAll').success(function(data){
+			$http.post('/smbemplsrv/rest/warehouseconf/getWarehouses').success(function(data){
 				$rootScope.magazyny = data;
 			})
 			$scope.dodajMagazyn = function(){
@@ -21,14 +21,14 @@ app.controller("magazynKonfController", [
 						name: $scope.name
 				}
 				
-				$http.post('/smbemplsrv/rest/command/magkonf/addNewMag',data).success(function(resp){
+				$http.post('/smbemplsrv/rest/warehouseconf/addWarehouse',data).success(function(resp){
 					$rootScope.magazyny.push(resp);
 				});
 				
 			}
 			
 			$scope.removeElement = function(kat){
-				$http.post('/smbemplsrv/rest/command/magkonf/deleteMag',kat).success(function(resp){
+				$http.post('/smbemplsrv/rest/warehouseconf/deleteWarehouse',kat).success(function(resp){
 					$rootScope.magazyny.splice($rootScope.magazyny.indexOf(kat), 1);
 				});
 			}

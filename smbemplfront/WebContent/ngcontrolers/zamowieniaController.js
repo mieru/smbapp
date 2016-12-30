@@ -24,7 +24,7 @@ app.controller("zamowienieController", [
 					}
 			}
 			
-			$http.post('/smbemplsrv/rest/query/zamowienia/getZamowienia', config).success(function(response){
+			$http.post('/smbemplsrv/rest/order/getOrders', config).success(function(response){
 				$scope.zamowienia = response;
 			});
 			
@@ -61,7 +61,7 @@ app.controller("zamowienieDetailController", [
                                 				var config = {
                                         				id_zamowienia : $routeParams.id_zamowienia,
                                         			}
-                                        			$http.post('/smbemplsrv/rest/query/zamowienia/getZamowienieById', config).success(function(response){
+                                        			$http.post('/smbemplsrv/rest/order/getOrderById', config).success(function(response){
                                         				$scope.zamowienieDetail = response;
                                         				$scope.listaProd = JSON.parse(response.listaProd);
                                         				$scope.aktywnosci = response.aktywnosci;
@@ -77,7 +77,7 @@ app.controller("zamowienieDetailController", [
                                 						id:$routeParams.id_zamowienia,
                                 						dane_do_faktury:  $scope.zamowienie.daneDoFaktury
                                 				}
-                                				$http.post('/smbemplsrv/rest/command/zamowienie/closeZam',zam).success(function(data, status, headers, config) {
+                                				$http.post('/smbemplsrv/rest/order/closeOrder',zam).success(function(data, status, headers, config) {
                                 					getZamowienieById();
                                 				});
                                 			}
@@ -90,7 +90,7 @@ app.controller("zamowienieDetailController", [
                                 						id: $routeParams.id_zamowienia, 
                                 						daneDoFakt: $scope.zamowienie.daneDoFakt
                                 				}
-                                				$http.post('/smbemplsrv/rest/command/zamowienie/anulujZam',zam).success(function(data, status, headers, config) {
+                                				$http.post('/smbemplsrv/rest/order/cancelOrder',zam).success(function(data, status, headers, config) {
                                 					getZamowienieById();
                                 				});
                                 			}
@@ -101,7 +101,7 @@ app.controller("zamowienieDetailController", [
                                         				id: $routeParams.id_zamowienia,
                                         				id_zamawiajacego: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbemplsrv/rest/command/zamowienie/addMessageToOrder', config).success(
+                                        			$http.post('/smbemplsrv/rest/order/addMessageToOrder', config).success(
                                         					function(response){
                                         						getZamowienieById();
                                         						$scope.tresc_wiadomosci = "";

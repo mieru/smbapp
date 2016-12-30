@@ -18,7 +18,7 @@ app.controller("loginController", [
 					password : $scope.login_password
 				};
 
-				$http.post('/smbemplsrv/rest/query/login/checkLogin',
+				$http.post('/smbemplsrv/rest/login/checkLogin',
 						dataObj).success(function(data) {
 					if (data.login_result == true) {
 						$cookieStore.put("loggedIn", true);

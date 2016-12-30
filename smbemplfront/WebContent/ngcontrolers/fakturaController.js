@@ -24,7 +24,7 @@ app.controller("fakturaController", [
 					config = {};
 				}
 			
-				$http.post('/smbemplsrv/rest/query/faktury/getFaktury', config).success(function(response){
+				$http.post('/smbemplsrv/rest/invoice/getUsersInvoice', config).success(function(response){
 					$scope.faktury = response;
 				});
 
@@ -37,7 +37,7 @@ app.controller("fakturaController", [
 			}
 			
 			$scope.downloadPdf = function(faktura){
-				var url = '/smbemplsrv/rest/query/faktury/downloadPdf?';
+				var url = '/smbemplsrv/rest/invoice/getInvoicePdfFile?';
 					url += 'idFaktury=' + faktura.id;
 				window.location.replace(url);
 			}

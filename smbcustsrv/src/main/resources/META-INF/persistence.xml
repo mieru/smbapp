@@ -21,21 +21,21 @@
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="smbcustsrv">
 	<jta-data-source>java:/PostgresDS</jta-data-source>
-	<class>dbmodel.DaneFirmy</class>
-	<class>dbmodel.FakturaSprzedazy</class>
-	<class>dbmodel.KategoiaZgloszenia</class>
-	<class>dbmodel.KategoriaTowar</class>
-	<class>dbmodel.Magazyn</class>
-	<class>dbmodel.MailKonf</class>
-	<class>dbmodel.Paragon</class>
-	<class>dbmodel.Producent</class>
-	<class>dbmodel.Towar</class>
-	<class>dbmodel.TowarImage</class>
-	<class>dbmodel.Uzytkownik</class>
-	<class>dbmodel.WiadomoscZamSprzedaz</class>
-	<class>dbmodel.ZamowienieSprzedaz</class>
-	<class>dbmodel.Zgloszenie</class>
-	<class>dbmodel.ZgloszenieKomentarz</class>
+	<class>dbmodel.Commodity</class>
+	<class>dbmodel.CommoditiesImage</class>
+	<class>dbmodel.CommodityCategory</class>
+	<class>dbmodel.CompanyInfo</class>
+	<class>dbmodel.Invoice</class>
+	<class>dbmodel.NotificationCategory</class>
+	<class>dbmodel.NotificationMessage</class>
+	<class>dbmodel.Notyfication</class>
+	<class>dbmodel.OrderMessage</class>
+	<class>dbmodel.Order</class>
+	<class>dbmodel.Receipt</class>
+	<class>dbmodel.SysEmailConfiguration</class>
+	<class>dbmodel.Transaction</class>
+	<class>dbmodel.Users</class>
+	<class>dbmodel.Warehouse</class>
 	</persistence-unit>
   
 </persistence>

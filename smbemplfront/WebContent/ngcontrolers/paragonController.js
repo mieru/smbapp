@@ -24,7 +24,7 @@ app.controller("paragonController", [
 				config = {};
 			}
 			
-				$http.post('/smbemplsrv/rest/query/paragon/getParagony', config).success(function(response){
+				$http.post('/smbemplsrv/rest/receipt/getUserReceipts', config).success(function(response){
 					$scope.paragony = response;
 				});
 
@@ -57,7 +57,7 @@ app.controller("paragonDetailController", [
                                       				var config = {
                                               				id_paragonu : $routeParams.id_paragon,
                                               			}
-                                              			$http.post('/smbemplsrv/rest/query/paragon/getParagonById', config).success(function(response){
+                                              			$http.post('/smbemplsrv/rest/receipt/getReceiptById', config).success(function(response){
                                               				$scope.paragonDetail = response;
                                               				$scope.listaProd = JSON.parse(response.listaProd);
                                               			});

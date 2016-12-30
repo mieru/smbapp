@@ -13,7 +13,7 @@ app.controller("katProdController", [
 			$rootScope.showZgl = false;
 			$rootScope.showAdm = true;
 			$rootScope.showMag = false;
-			$http.post('/smbemplsrv/rest/query/katprod/getAll').success(function(data){
+			$http.post('/smbemplsrv/rest/commoditycategory/getAll').success(function(data){
 				$rootScope.kategorieOferta = data;
 			})
 			$scope.dodajKategorie = function(){
@@ -21,14 +21,14 @@ app.controller("katProdController", [
 						name: $scope.name
 				}
 				
-				$http.post('/smbemplsrv/rest/command/katprod/addNewCategory',data).success(function(resp){
+				$http.post('/smbemplsrv/rest/commoditycategory/addNewCommodityCategoty',data).success(function(resp){
 					$rootScope.kategorieOferta.push(resp);
 				});
 				
 			}
 			
 			$scope.removeElement = function(kat){
-				$http.post('/smbemplsrv/rest/command/katprod/deleteCategory',kat).success(function(resp){
+				$http.post('/smbemplsrv/rest/commoditycategory/deleteCommodityCategory',kat).success(function(resp){
 					$rootScope.kategorieOferta.splice($rootScope.kategorieOferta.indexOf(kat), 1);
 				});
 			}

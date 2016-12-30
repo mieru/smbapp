@@ -13,13 +13,13 @@ app.controller("kontaktController", [
 			$rootScope.showKat = false;
 			
 			getZgloszeniaUzytkownika();
-			$http.post('/smbcustsrv/rest/query/zgloszenia/getKategorie').success(function(response){
+			$http.post('/smbcustsrv/rest/notificationcategory/getNotificationCategory').success(function(response){
 				$scope.katkontakt = response;
 			});
 			
 			
 			
-			$http.post('/smbcustsrv/rest/query/danefirmy/getDaneFirmy').success(function(response){
+			$http.post('/smbcustsrv/rest/companyinfo/getCompanyInfo').success(function(response){
 				initDaneFirmy(response);
 			});
 			
@@ -27,18 +27,6 @@ app.controller("kontaktController", [
 				
 			}
 			
-			$scope.dodajZgloszenie =function(){
-				var config = {
-						id_uzytkownika : $cookieStore.get('loggedId'),
-						id_kategoria: $scope.idKategoriaZgl,
-						tresc: $scope.tresc_zgloszenia,
-						temat: $scope.zgloszenie_temat
-					}
-				
-				$http.post('/smbcustsrv/rest/command/zgloszenia/dodajZgloszenie', config).success(function(response){
-					getZgloszeniaUzytkownika();
-				});
-			}
 			
 			function initDaneFirmy(response){
 				$scope.daneFirmy = {
@@ -62,7 +50,7 @@ app.controller("kontaktController", [
 				var config = {
 						id_uzytkownika : $cookieStore.get('loggedId'),
 					}
-				$http.post('/smbcustsrv/rest/query/zgloszenia/getZgloszeniaUzytkownika', config).success(function(response){
+				$http.post('/smbcustsrv/rest/notification/getNotyfication', config).success(function(response){
 					$scope.zgloszenia = response;
 				});
 			}
@@ -93,7 +81,7 @@ app.controller("zgloszenieDetailController", [
                                 				var config = {
                                         				id_zgloszenia : $routeParams.id_zgloszenia,
                                         			}
-                                        			$http.post('/smbcustsrv/rest/query/zgloszenia/getZgloszenieById', config).success(function(response){
+                                        			$http.post('/smbcustsrv/rest/notification/getNotificationById', config).success(function(response){
                                         				$scope.zgloszenieDetail = response;
                                         				$scope.aktywnosci = response.aktywnosci;
                                         			});
@@ -105,7 +93,7 @@ app.controller("zgloszenieDetailController", [
                                         				id_zgloszenia: $routeParams.id_zgloszenia,
                                         				id_uzytkownika: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbcustsrv/rest/command/zgloszenia/addActivity', config).success(
+                                        			$http.post('/smbcustsrv/rest/notification/addMessageToNotification', config).success(
                                         					function(response){
                                         						getZgloszenieById();
                                         						$scope.tresc_wiadomosci = "";

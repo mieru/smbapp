@@ -12,11 +12,11 @@ app.controller("mainContoller", [
 			$rootScope.showPrac = $cookieStore.get("isPrac");
 			$rootScope.showAdmin = $cookieStore.get("isAdm");
 			
-			$http.post('/smbemplsrv/rest/query/katzgl/getAll').success(function(data){
+			$http.post('/smbemplsrv/rest/notificationcategory/getNotificationCategory').success(function(data){
 				$rootScope.katZgl = data;
 			})
 			
-			$http.post('/smbemplsrv/rest/query/magkonf/getAll').success(function(data, status, headers, config) {
+			$http.post('/smbemplsrv/rest/warehouseconf/getWarehouses').success(function(data, status, headers, config) {
 				$rootScope.magazyny = data;
 			})
 			

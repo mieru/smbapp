@@ -14,12 +14,12 @@ app.controller("konfMailController", [
 			$rootScope.showAdm = true;
 			$rootScope.showMag = false;
 			
-			$http.post('/smbemplsrv/rest/query/konfmail/getMailConfiguration').success(function(data){
+			$http.post('/smbemplsrv/rest/sysconfmail/getSysMailConfiguration').success(function(data){
 				$scope.mailKonf = data;
 			})
 			
 			$scope.saveMailConf = function(){
-				$http.post('/smbemplsrv/rest/command/konfmail/saveMailKonfiguration',$scope.mailKonf);
+				$http.post('/smbemplsrv/rest/sysconfmail/saveMailConfiguration',$scope.mailKonf);
 			}
 			
 			

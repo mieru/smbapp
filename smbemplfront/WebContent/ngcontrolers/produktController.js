@@ -19,13 +19,13 @@ app.controller("produktController", [
 				id_magazynu : $routeParams.magId,
 			}
 
-			$http.post('/smbemplsrv/rest/query/magkonf/getMagazynById',
+			$http.post('/smbemplsrv/rest/warehouseconf/getWarehouseById',
 					postData).success(function(data) {
 				$scope.magazyn = data;
 				$rootScope.pageTitle = 'Obsługa magazynów - ' + data.name;
 			})
 
-			$http.post('/smbemplsrv/rest/query/produkt/getProdukty', postData)
+			$http.post('/smbemplsrv/rest/commodity/getProdukty', postData)
 					.success(
 							function(data) {
 								$scope.itemOnPage = 5;
@@ -77,12 +77,12 @@ app.controller("dodajProduktController", [
 				id_magazynu : $routeParams.magId,
 			}
 
-			$http.post('/smbemplsrv/rest/query/magkonf/getMagazynById',
+			$http.post('/smbemplsrv/rest/warehouseconf/getWarehouseById',
 					postData).success(function(data) {
 				$scope.magazyn = data;
 			})
 
-			$http.post('/smbemplsrv/rest/query/katprod/getAll').success(
+			$http.post('/smbemplsrv/rest/commoditycategory/getAll').success(
 					function(data) {
 						$scope.katprod = data;
 					})
@@ -91,7 +91,7 @@ app.controller("dodajProduktController", [
 				id_magazynu : $routeParams.magId,
 			}
 			$scope.dodajProdAction = function() {
-				$http.post('/smbemplsrv/rest/command/produkt/addNewProd',
+				$http.post('/smbemplsrv/rest/commodity/addNewProd',
 						$scope.newProd)
 			};
 		} ]);
@@ -110,7 +110,7 @@ app.controller("edytujProduktController", [
 			$rootScope.logged = $cookieStore.get("loggedIn");
 			$rootScope.pageTitle = 'Obsługa magazynów - edytuj produkt';
 
-			$http.post('/smbemplsrv/rest/query/katprod/getAll').success(
+			$http.post('/smbemplsrv/rest/commoditycategory/getAll').success(
 					function(data) {
 						$scope.katprod = data;
 					})
@@ -121,13 +121,13 @@ app.controller("edytujProduktController", [
 
 				
 			
-			$http.post('/smbemplsrv/rest/query/produkt/getProduktById', prod)
+			$http.post('/smbemplsrv/rest/commodity/getProduktById', prod)
 					.success(function(data) {
 						$scope.prod = data;
 					})
 					
 			$scope.edytujProdAction = function() {
-				$http.post('/smbemplsrv/rest/command/produkt/editProd',
+				$http.post('/smbemplsrv/rest/commodity/editProd',
 						$scope.prod)
 			};
 			

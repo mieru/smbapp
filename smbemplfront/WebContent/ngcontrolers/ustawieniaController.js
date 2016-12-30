@@ -14,7 +14,7 @@ app.controller("ustawieniaController", [
 			var config = {
 				id_uzytkownika : $cookieStore.get('loggedId'),
 			}
-			$http.post('/smbcustsrv/rest/query/uzytkownik/getUzytkownikaById', config).success(function(response){
+			$http.post('/smbcustsrv/rest/userconf/getUserById', config).success(function(response){
 				$scope.user = response;
 				if(response.company_name !== undefined){
 					$scope.userCompany = true;
@@ -28,7 +28,7 @@ app.controller("ustawieniaController", [
 			
 			
 			$scope.saveForm = function(){
-				$http.post('/smbcustsrv/rest/command/uzytkownik/saveUserData', $scope.user).success(function(response){
+				$http.post('/smbcustsrv/rest/userconf/editUser', $scope.user).success(function(response){
 					alert('dane poprawione');
 				});
 			}

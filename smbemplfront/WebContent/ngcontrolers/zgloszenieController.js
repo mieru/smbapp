@@ -37,7 +37,7 @@ app.controller("zgloszenieController", [
 			}
 			
 			
-			$http.post('/smbemplsrv/rest/query/zgloszenia/getZgloszenia', config).success(function(response){
+			$http.post('/smbemplsrv/rest/notification/getNotyfication', config).success(function(response){
 				$scope.zgloszenia = response;
 			});
 			
@@ -63,7 +63,7 @@ app.controller("zgloszenieDetailController", [
                                 				var config = {
                                         				id_zgloszenia : $routeParams.id_zgloszenia
                                         			}
-                                				$http.post('/smbemplsrv/rest/command/zgloszenie/closeZgl', config).success(function(data, status, headers, config) {
+                                				$http.post('/smbemplsrv/rest/notification/closeNotification', config).success(function(data, status, headers, config) {
                                 					getZgloszenieById();
                                 				});
                                 			}
@@ -76,7 +76,7 @@ app.controller("zgloszenieDetailController", [
                                 				var config = {
                                         				id_zgloszenia : $routeParams.id_zgloszenia,
                                         			}
-                                        			$http.post('/smbemplsrv/rest/query/zgloszenia/getZgloszenieById', config).success(function(response){
+                                        			$http.post('/smbemplsrv/rest/notification/getNotificationById', config).success(function(response){
                                         				$scope.zgloszenieDetail = response;
                                         				$scope.aktywnosci = response.aktywnosci;
                                         			});
@@ -88,7 +88,7 @@ app.controller("zgloszenieDetailController", [
                                         				id_zgloszenia : $routeParams.id_zgloszenia,
                                         				id_uzytkownika: $cookieStore.get('loggedId')
                                         			}
-                                        			$http.post('/smbemplsrv/rest/command/zgloszenie/addNewMessage', config).success(
+                                        			$http.post('/smbemplsrv/rest/notification/addMessageToNotification', config).success(
                                         					function(response){
                                         						getZgloszenieById();
                                         						$scope.tresc_wiadomosci = "";

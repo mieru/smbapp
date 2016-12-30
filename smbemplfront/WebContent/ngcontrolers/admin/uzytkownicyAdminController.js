@@ -23,14 +23,14 @@ app.controller("uzytkownicyAdminController", [
 				type : $scope.type
 			}
 
-			$http.post('/smbemplsrv/rest/query/uzytkonf/getUsers', data)
+			$http.post('/smbemplsrv/rest/userconf/getUsers', data)
 					.success(function(resp) {
 						$rootScope.uzytkownicy = resp;
 					})
 
 			$scope.removeElement = function(uzyt) {
 				$http
-						.post('/smbemplsrv/rest/command/uzytkonf/deleteUser',
+						.post('/smbemplsrv/rest/userconf/deleteUser',
 								uzyt);
 				$rootScope.uzytkownicy.splice($rootScope.uzytkownicy
 						.indexOf(uzyt), 1);
@@ -86,7 +86,7 @@ app.controller("editKlientController",
 						id : $routeParams.id_user,
 					}
 
-					$http.post('/smbemplsrv/rest/query/uzytkonf/getUserById',
+					$http.post('/smbemplsrv/rest/userconf/getUserById',
 							data).success(function(resp) {
 						$scope.user = resp;
 						if (resp.company_name !== undefined) {
@@ -99,13 +99,13 @@ app.controller("editKlientController",
 					})
 					$scope.editKlientAction = function() {
 						$http.post(
-								'/smbemplsrv/rest/command/uzytkonf/editUser',
+								'/smbemplsrv/rest/userconf/editUser',
 								$scope.user);
 					}
 
 					$scope.removeElement = function() {
 						http.post(
-								'/smbemplsrv/rest/command/uzytkonf/deleteUser',
+								'/smbemplsrv/rest/userconf/deleteUser',
 								uzyt);
 					}
 
@@ -128,7 +128,7 @@ app.controller("editPracController", [
 			$scope.czyPrac = false;
 			$scope.czyAdmin = false;
 
-			$http.post('/smbemplsrv/rest/query/uzytkonf/getUserById', data)
+			$http.post('/smbemplsrv/rest/userconf/getUserById', data)
 					.success(function(resp) {
 						$scope.user = resp;
 
@@ -163,7 +163,7 @@ app.controller("editPracController", [
 						$scope.user.uprKod += ",M";
 					}
 				}
-				$http.post('/smbemplsrv/rest/command/uzytkonf/editUser',
+				$http.post('/smbemplsrv/rest/userconf/editUser',
 						$scope.user);
 			}
 
@@ -203,7 +203,7 @@ app.controller("dodajPracController", [
 						$scope.newUser.uprKod += ",M";
 					}
 				}
-				$http.post('/smbemplsrv/rest/command/uzytkonf/addNewUser',$scope.newUser);
+				$http.post('/smbemplsrv/rest/userconf/addUser',$scope.newUser);
 			}
 			
 		} ]);
@@ -229,7 +229,7 @@ app.controller("dodajKlientaController", [
 					$scope.newUser.customer_type = "C";
 				}
 				
-				$http.post('/smbemplsrv/rest/command/uzytkonf/addNewUser',
+				$http.post('/smbemplsrv/rest/userconf/addUser',
 						$scope.newUser);
 			}
 			

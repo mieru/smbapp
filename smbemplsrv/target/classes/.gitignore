@@ -1,3 +1,6 @@
-/META-INF/
-/smbemplsrv/
+/businesslogic/
+/dbmenager/
+/dbmodel/
+/restapi/
 /utils/
+/META-INF/

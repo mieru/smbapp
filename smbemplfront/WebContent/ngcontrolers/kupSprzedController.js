@@ -39,7 +39,7 @@ app.controller("dodajZakupController", [
                                			
                                			var postData = {};
                                			
-                               			$http.post('/smbemplsrv/rest/query/produkt/getProdukty', postData)
+                               			$http.post('/smbemplsrv/rest/commodity/getProdukty', postData)
                     					.success(function(data) {
                     								$scope.towary = data;
                     							});
@@ -135,7 +135,7 @@ app.controller("dodajZakupController", [
                              						id_pracownika : $cookieStore.get('loggedId')
                              				}
                             			
-                             				$http.post('/smbemplsrv/rest/command/sprzedaz/addNew', zamowienieData)
+                             				$http.post('/smbemplsrv/rest/commodity/addNewProd', zamowienieData)
                             				.success(function(data) {
                             					clearOferta();
                             				})
@@ -216,7 +216,7 @@ app.controller("dodajSprzedController", [
                                			
                                			var postData = {};
                                			
-                               			$http.post('/smbemplsrv/rest/query/produkt/getProdukty', postData)
+                               			$http.post('/smbemplsrv/rest/commodity/getProdukty', postData)
                     					.success(function(data) {
                     								$scope.towary = data;
                     							});
@@ -311,7 +311,7 @@ app.controller("dodajSprzedController", [
                              						id_pracownika : $cookieStore.get('loggedId')
                              				}
                             			
-                             				$http.post('/smbemplsrv/rest/command/sprzedaz/addNew', sprzedazData)
+                             				$http.post('/smbemplsrv/rest/commodity/addNewProd', sprzedazData)
                             				.success(function(data) {
                             					if(data.resp == ""){
                             						clearOferta();

@@ -14,7 +14,7 @@ app.controller("katZglController", [
 			$rootScope.showAdm = true;
 			$rootScope.showMag = false;
 			
-			$http.post('/smbemplsrv/rest/query/katzgl/getAll').success(
+			$http.post('/smbemplsrv/rest/notificationcategory/getNotificationCategory').success(
 					function(data) {
 						$rootScope.katZgl = data;
 					})
@@ -26,7 +26,7 @@ app.controller("katZglController", [
 					czyMagazyn : $scope.czyMagazyn
 				}
 
-				$http.post('/smbemplsrv/rest/command/katzgl/addNewCategory',
+				$http.post('/smbemplsrv/rest/notificationcategory/addNewCategory',
 						data).success(function(resp) {
 					$rootScope.katZgl.push(resp);
 				});
@@ -34,7 +34,7 @@ app.controller("katZglController", [
 			}
 
 			$scope.removeElement = function(kat) {
-				$http.post('/smbemplsrv/rest/command/katzgl/deleteCategory',
+				$http.post('/smbemplsrv/rest/notificationcategory/deleteCategory',
 						kat).success(
 						function() {
 							$rootScope.katZgl.splice($rootScope.katZgl

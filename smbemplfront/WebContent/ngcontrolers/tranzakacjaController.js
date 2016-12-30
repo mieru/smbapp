@@ -24,7 +24,7 @@ app.controller("tranzakacjaController", [
 				config = {};
 			}
 			
-				$http.post('/smbemplsrv/rest/query/tranzakcje/getTranzakcje', config).success(function(response){
+				$http.post('/smbemplsrv/rest/transaction/getTransactions', config).success(function(response){
 					$scope.tanzakacje = response;
 				});
 

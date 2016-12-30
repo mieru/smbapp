@@ -13,12 +13,12 @@ app.controller("daneFirmyController", [
 			$rootScope.showZgl = false;
 			$rootScope.showAdm = true;
 			$rootScope.showMag = false;
-			$http.post('/smbemplsrv/rest/query/danefirmy/getData').success(function(data){
+			$http.post('/smbemplsrv/rest/companyinfo/getCompanyInfo').success(function(data){
 				$rootScope.firma = data;
 			})
 			
 			$scope.saveForm = function(){
-				$http.post('/smbemplsrv/rest/command/danefirmy/saveData',$scope.firma);
+				$http.post('/smbemplsrv/rest/companyinfo/saveCompanyInfo',$scope.firma);
 			}
 			
 		} ]);

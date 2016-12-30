@@ -16,41 +16,35 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import command.ejbcontrol.abst.AbstractEjbCommandController;
-import command.ejbcontrol.uzytkownik.UzytkownikEjbCommandController;
-import command.restaction.register.RegisterRequestData;
-import command.restaction.uzytkownik.UzytkownikRequestCommandData;
-import dbmodel.DaneFirmy;
-import dbmodel.FakturaSprzedazy;
-import dbmodel.KategoiaZgloszenia;
-import dbmodel.KategoriaTowar;
-import dbmodel.KonfMail;
-import dbmodel.Magazyn;
-import dbmodel.Paragon;
-import dbmodel.Producent;
-import dbmodel.Towar;
-import dbmodel.TowarImage;
-import dbmodel.Uzytkownik;
-import dbmodel.WiadomoscZamSprzedaz;
-import dbmodel.ZamowienieSprzedaz;
-import dbmodel.Zgloszenie;
-import dbmodel.ZgloszenieKomentarz;
-import facade.rejestracja.RejestracjaFacade;
-import facade.uzytkownik.UzytkownikFacade;
-import mailer.MailSender;
-import query.ejbcontrol.abst.AbstractEjbQueryController;
-import query.ejbcontrol.konfmail.KonfMailEjbQueryController;
-import query.ejbcontrol.uzytkownik.UzytkownikEjbQueryController;
-import query.restaction.uzytkownik.UzytkwonikRequestQueryData;
+import businesslogic.register.RegisterLogicController;
+import businesslogic.user.UserLogicController;
+import dbmenager.abstr.AbstractDAO;
+import dbmenager.mailconfiguration.SystemMailCongifurationDAO;
+import dbmenager.user.UserDAO;
+import dbmodel.CommoditiesImage;
+import dbmodel.Commodity;
+import dbmodel.CommodityCategory;
+import dbmodel.CompanyInfo;
+import dbmodel.Invoice;
+import dbmodel.NotificationCategory;
+import dbmodel.NotificationMessage;
+import dbmodel.Notyfication;
+import dbmodel.Order;
+import dbmodel.OrderMessage;
+import dbmodel.Receipt;
+import dbmodel.SysEmailConfiguration;
+import dbmodel.Users;
+import dbmodel.Warehouse;
+import mailmenager.MailSender;
+import restapi.register.RegisterRestData;
+import restapi.user.UserRestData;
 import smbcustsrv.testinteface.IntegrationTest;
-import utils.SmbUtil;
-import utils.status.Status;
+import utils.SmallSmbUtils;
+import utils.Status;
 
 @RunWith(Arquillian.class)
 public class TestPoprawaDanychUzytkownika implements IntegrationTest{
@@ -60,80 +54,72 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	      return ShrinkWrap.create(WebArchive.class, "test.war")
 	    		  .addAsLibraries(new File("C:\\Users\\Czarek\\git\\smbapp\\smbcustsrv\\src\\lib\\json.jar"))
 	    		  .addClasses(IntegrationTest.class,
-	    				      RegisterRequestData.class,
-	    				      UzytkownikRequestCommandData.class,
-	    				      UzytkwonikRequestQueryData.class,
-	    				      SmbUtil.class,
+	    				      RegisterRestData.class,
+	    				      UserRestData.class,
+	    				      SmallSmbUtils.class,
 	    				      Status.class,
 	    				      MailSender.class,
-	    				      KonfMailEjbQueryController.class,
-	    				      UzytkownikEjbQueryController.class,
-	    				      UzytkownikEjbCommandController.class,
-	    				      AbstractEjbCommandController.class,
-	    				      RejestracjaFacade.class,
-	    				      UzytkownikFacade.class,
-	    				      AbstractEjbQueryController.class,
-	    				  	  Uzytkownik.class,
-	    				  	  KonfMail.class,
-	    				      DaneFirmy.class,
-		        		 	  FakturaSprzedazy.class,
-		        			  KategoiaZgloszenia.class,
-		        			  KategoriaTowar.class,
-		        			  Magazyn.class,
-		        			  Paragon.class,
-		        			  Producent.class,
-		        			  Towar.class,
-		        			  TowarImage.class,
-		        			  Uzytkownik.class,
-		        			  WiadomoscZamSprzedaz.class,
-		        			  ZamowienieSprzedaz.class,
-		        			  Zgloszenie.class,
-		        			  ZgloszenieKomentarz.class)
+	    				      SystemMailCongifurationDAO.class,
+	    				      UserDAO.class,
+	    				      AbstractDAO.class,
+	    				      RegisterLogicController.class,
+	    				      UserLogicController.class,
+	    				  	  Users.class,
+	    				  	  SysEmailConfiguration.class,
+	    				      CompanyInfo.class,
+		        		 	  Invoice.class,
+		        			  NotificationCategory.class,
+		        			  CommodityCategory.class,
+		        			  Warehouse.class,
+		        			  Receipt.class,
+		        			  Commodity.class,
+		        			  CommoditiesImage.class,
+		        			  OrderMessage.class,
+		        			  Order.class,
+		        			  Notyfication.class,
+		        			  NotificationMessage.class)
 	    		  .addAsResource("META-INF/persistence.xml");
 	   }
 	
 		@EJB
-		RejestracjaFacade rejestracjaFacade;
+		RegisterLogicController registerLogicController;
 		
 		@EJB
-		UzytkownikFacade uzytkownikFacade;
+		UserLogicController userLogicController;
 		
 		@EJB
-		UzytkownikEjbQueryController uzytkownikEjbQueryController ;
-		
-		@EJB
-		UzytkownikEjbCommandController uzytkownikEjbCommandController;
+		UserDAO userDAO;
 
-	private RegisterRequestData registerRequestData = null;
-	private UzytkownikRequestCommandData uzytkownikRequestData = null;
-	private  Uzytkownik uzytkownik = null;
+	private RegisterRestData registerRestData = null;
+	private UserRestData userRestData = null;
+	private  Users user = null;
 
 	@Before
 	public void initDataToTest(){
 	//inicjalizacja danych testowego klienta
-		 registerRequestData = new RegisterRequestData();
-		 registerRequestData.url = "http://localhost:8080/smbfront/#/rejestracja_osoba";
-		 registerRequestData.username = "test123";
-		 registerRequestData.password = "test123";
-		 registerRequestData.name = "Test";
-		 registerRequestData.surname = "Testowy";
-		 registerRequestData.email = "smbpracinz@gmail.com";
-		 registerRequestData.phone = "777777777";
-		 registerRequestData.street = "Testowa";
-		 registerRequestData.buildingNumber = "1";
-		 registerRequestData.city = "Testowe";
-		 registerRequestData.postCode = "11-111";
+		 registerRestData = new RegisterRestData();
+		 registerRestData.url = "http://localhost:8080/smbfront/#/rejestracja_osoba";
+		 registerRestData.username = "test123";
+		 registerRestData.password = "test123";
+		 registerRestData.name = "Test";
+		 registerRestData.surname = "Testowy";
+		 registerRestData.email = "smbpracinz@gmail.com";
+		 registerRestData.phone = "777777777";
+		 registerRestData.street = "Testowa";
+		 registerRestData.buildingNumber = "1";
+		 registerRestData.city = "Testowe";
+		 registerRestData.postCode = "11-111";
 	
 	//nowe dane do poprawienia
-			uzytkownikRequestData  = new UzytkownikRequestCommandData();
-			uzytkownikRequestData.name = "TestNEW";
-			uzytkownikRequestData.surname = "TestowyNEW";
-			uzytkownikRequestData.email = "smbpracinz@gmail.com";
-			uzytkownikRequestData.phone = "22222222";
-			uzytkownikRequestData.street = "TestowaNEW";
-			uzytkownikRequestData.buildingNumber = "11";
-			uzytkownikRequestData.city = "TestoweNEW";
-			uzytkownikRequestData.postCode = "21-111";
+			userRestData  = new UserRestData();
+			userRestData.name = "TestNEW";
+			userRestData.surname = "TestowyNEW";
+			userRestData.email = "smbpracinz@gmail.com";
+			userRestData.phone = "22222222";
+			userRestData.street = "TestowaNEW";
+			userRestData.buildingNumber = "11";
+			userRestData.city = "TestoweNEW";
+			userRestData.postCode = "21-111";
 	
 	}
 	
@@ -141,12 +127,12 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	@Test
 	@InSequence(1)
 	public void cleanBeforeTest() throws AddressException, JSONException, MessagingException {
-		 uzytkownik = new Uzytkownik();
-		 uzytkownik.setLogin(registerRequestData.username);
-		 List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
+		 user = new Users();
+		 user.setLogin(registerRestData.username);
+		 List<Users> resultList = userDAO.findEntity(user);
 			if(resultList.size() > 0){
-				for (Uzytkownik uzyt : resultList) {
-					uzytkownikEjbCommandController.delete(uzyt);
+				for (Users uzyt : resultList) {
+					userDAO.delete(uzyt);
 				}
 			}
 	}
@@ -154,31 +140,31 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	@Test
 	@InSequence(2)
 	public void registerUser() throws AddressException, JSONException, MessagingException {
-		rejestracjaFacade.rejestrujUzytkownika(registerRequestData);
+		registerLogicController.registerUser(registerRestData);
 		
-		 uzytkownik = new Uzytkownik();
-		 uzytkownik.setLogin(registerRequestData.username);
-		List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
+		 user = new Users();
+		 user.setLogin(registerRestData.username);
+		List<Users> resultList = userDAO.findEntity(user);
 		
 		assertNotNull(resultList);
 		assertEquals(resultList.size(), 1);
 			
-		uzytkownik = resultList.iterator().next();
+		user = resultList.iterator().next();
 		 
-		assertNotNull(uzytkownik);
-		assertNotNull(uzytkownik.getIdUser());
-	    assertEquals(uzytkownik.getLogin(), registerRequestData.username);
-		assertEquals(SmbUtil.decodeString(uzytkownik.getPassword()), registerRequestData.password);
-		assertEquals(uzytkownik.getName(), registerRequestData.name);
-		assertEquals(uzytkownik.getSurname(), registerRequestData.surname);
-		assertEquals(uzytkownik.getMail(), registerRequestData.email);
-		assertEquals(uzytkownik.getPhone(), registerRequestData.phone);
-		assertEquals(uzytkownik.getStreet(), registerRequestData.street);
-		assertEquals(uzytkownik.getBuildingNumber(), registerRequestData.buildingNumber);
-		assertEquals(uzytkownik.getCity(), registerRequestData.city);
-		assertEquals(uzytkownik.getPosCode(), registerRequestData.postCode);
-		assertEquals(uzytkownik.getState(), Status.USER_STATE.NEW);
-		assertEquals(uzytkownik.getRole(), Status.USER_ROLE.CUSTOMER);
+		assertNotNull(user);
+		assertNotNull(user.getId());
+	    assertEquals(user.getLogin(), registerRestData.username);
+		assertEquals(SmallSmbUtils.decodeString(user.getPassword()), registerRestData.password);
+		assertEquals(user.getName(), registerRestData.name);
+		assertEquals(user.getSurname(), registerRestData.surname);
+		assertEquals(user.getEmail(), registerRestData.email);
+		assertEquals(user.getPhone(), registerRestData.phone);
+		assertEquals(user.getStreet(), registerRestData.street);
+		assertEquals(user.getBuildingNumber(), registerRestData.buildingNumber);
+		assertEquals(user.getCity(), registerRestData.city);
+		assertEquals(user.getPostCode(), registerRestData.postCode);
+		assertEquals(user.getState(), Status.USER_STATE.NEW);
+		assertEquals(user.getRole(), Status.USER_ROLE.CUSTOMER);
 		
 		
 	}
@@ -187,35 +173,35 @@ public class TestPoprawaDanychUzytkownika implements IntegrationTest{
 	@Test
 	@InSequence(3)
 	public void changeUserData() throws AddressException, JSONException, MessagingException {
-		 uzytkownik = new Uzytkownik();
-		 uzytkownik.setLogin(registerRequestData.username);
-		 List<Uzytkownik> resultList = uzytkownikEjbQueryController.findEntity(uzytkownik);
-		 uzytkownik = resultList.iterator().next();
+		 user = new Users();
+		 user.setLogin(registerRestData.username);
+		 List<Users> resultList = userDAO.findEntity(user);
+		 user = resultList.iterator().next();
 		 
-		uzytkownikRequestData.idUser = uzytkownik.getIdUser();
-		uzytkownikFacade.poprawDaneUzytkownika(uzytkownikRequestData);
+		userRestData.idUser = user.getId();
+		userLogicController.saveUsersData(userRestData);
 		
-		uzytkownik = uzytkownikEjbQueryController.findEntityByID(uzytkownik.getIdUser());
+		user = userDAO.findEntityByID(user.getId());
 		
-		assertNotNull(uzytkownik);
-		assertNotNull(uzytkownik.getIdUser());
-		assertEquals(uzytkownik.getName(), uzytkownikRequestData.name);
-		assertEquals(uzytkownik.getSurname(), uzytkownikRequestData.surname);
-		assertEquals(uzytkownik.getMail(), uzytkownikRequestData.email);
-		assertEquals(uzytkownik.getPhone(), uzytkownikRequestData.phone);
-		assertEquals(uzytkownik.getStreet(), uzytkownikRequestData.street);
-		assertEquals(uzytkownik.getBuildingNumber(), uzytkownikRequestData.buildingNumber);
-		assertEquals(uzytkownik.getCity(), uzytkownikRequestData.city);
-		assertEquals(uzytkownik.getPosCode(), uzytkownikRequestData.postCode);
-		assertEquals(uzytkownik.getState(), Status.USER_STATE.NEW);
-		assertEquals(uzytkownik.getRole(), Status.USER_ROLE.CUSTOMER);
+		assertNotNull(user);
+		assertNotNull(user.getId());
+		assertEquals(user.getName(), userRestData.name);
+		assertEquals(user.getSurname(), userRestData.surname);
+		assertEquals(user.getEmail(), userRestData.email);
+		assertEquals(user.getPhone(), userRestData.phone);
+		assertEquals(user.getStreet(), userRestData.street);
+		assertEquals(user.getBuildingNumber(), userRestData.buildingNumber);
+		assertEquals(user.getCity(), userRestData.city);
+		assertEquals(user.getPostCode(), userRestData.postCode);
+		assertEquals(user.getState(), Status.USER_STATE.NEW);
+		assertEquals(user.getRole(), Status.USER_ROLE.CUSTOMER);
 		
 	}
 	
 	@Test
 	@InSequence(4)
 	public void cleanAfterTest(){
-		uzytkownikEjbCommandController.delete(uzytkownik);
+		userDAO.delete(user);
 	}
 	
 
